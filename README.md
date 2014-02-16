@@ -5,6 +5,8 @@ Set of working code snippets designed for getting started with Coherence along w
 The tests and examples are supported by a multi-process test suite which was a precursor to the little-grid work done
 in the coherence incubator*.
 
+Topics covered:
+
 **Basics:**
 * Aggregators
 * Cache Stores (Async/Sync)
