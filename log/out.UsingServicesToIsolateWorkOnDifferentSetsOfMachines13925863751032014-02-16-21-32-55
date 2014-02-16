@@ -1,4 +1,0 @@
-0.543: [GC 0.543: [DefNew: 17472K->2175K(19648K), 0.0097080 secs] 17472K->3725K(63360K), 0.0097410 secs] [Times: user=0.01 sys=0.00, real=0.01 secs] 
-1.162: [GC 1.162: [DefNew: 19647K->2176K(19648K), 0.0132670 secs] 21197K->5823K(63360K), 0.0133030 secs] [Times: user=0.01 sys=0.00, real=0.01 secs] 
-16.397: [GC 16.397: [DefNew: 19648K->2116K(19648K), 0.0163650 secs] 23295K->7093K(63360K), 0.0164070 secs] [Times: user=0.01 sys=0.00, real=0.01 secs] 
-Ran invocable
