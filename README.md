@@ -1,7 +1,9 @@
 coherence-bootstrap
 ===================
 
-Set of working code snippets for getting started with Coherence along with some more advanced tips and tricks
+Set of working code snippets designed for getting started with Coherence along with some more advanced tips and tricks.
+The tests and examples are supported by a multi-process test suite which was a precursor to the little-grid work done
+in the coherence incubator*.
 
 **Basics:**
 * Aggregators
@@ -25,3 +27,7 @@ Set of working code snippets for getting started with Coherence along with some 
 * PutAll that reports individual errors
 * Overflow caches
 * Using services to isolate work onto groups of hardware
+
+
+
+*(I'll move it over at some point)
