@@ -3,7 +3,7 @@ coherence-bootstrap
 
 Set of working code snippets for getting started with Coherence along with some more advanced tips and tricks
 
-**Basics:
+**Basics:**
 * Aggregators
 * Cache Stores (Async/Sync)
 * CQCs
@@ -17,7 +17,7 @@ Set of working code snippets for getting started with Coherence along with some 
 * Put & Get
 * Triggers
 
-**More Complex
+**More Complex**
 * Hopping between caches on the server
 * How listeners can lose data
 * Membership listeners
