@@ -17,7 +17,7 @@ public class NearCaching extends TestBase {
 
         NamedCache cacheWithNoNearScheme = connectOverExtend();
 
-        cacheWithNoNearScheme.put("x", new SizableObjectFactory().buildObject(10 * 1000));
+        cacheWithNoNearScheme.put("x", new SizableObjectFactory().buildObject(1000));
 
         System.out.println("Get times without near cache:");
         getFromCacheAndPrintTimings(cacheWithNoNearScheme);

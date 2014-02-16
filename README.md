@@ -1,4 +1,4 @@
 coherence-bootstrap
 ===================
 
-Set of working code snippets covering getting started with Coherence and some more advanced tips and tricks
+Set of working code snippets for getting started with Coherence along with some more advanced tips and tricks
