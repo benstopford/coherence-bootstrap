@@ -1,0 +1,71 @@
+2014-02-16 21:33:10.415/0.232 Oracle Coherence 3.5.1/461p1 <Info> (thread=main, member=n/a): Loaded operational configuration from resource "jar:file:/Users/benji/BensWorld/Dev/coherence/coherence-bootstrap/lib/coherence-3.5.1.jar!/tangosol-coherence.xml"
+2014-02-16 21:33:10.420/0.236 Oracle Coherence 3.5.1/461p1 <Info> (thread=main, member=n/a): Loaded operational overrides from resource "jar:file:/Users/benji/BensWorld/Dev/coherence/coherence-bootstrap/lib/coherence-3.5.1.jar!/tangosol-coherence-override-dev.xml"
+2014-02-16 21:33:10.421/0.237 Oracle Coherence 3.5.1/461p1 <D5> (thread=main, member=n/a): Optional configuration override "/tangosol-coherence-override.xml" is not specified
+2014-02-16 21:33:10.426/0.242 Oracle Coherence 3.5.1/461p1 <D5> (thread=main, member=n/a): Optional configuration override "/custom-mbeans.xml" is not specified
+2014-02-16 21:33:10.426/0.242 Oracle Coherence 3.5.1/461p1 <D6> (thread=main, member=n/a): Loaded edition data from "jar:file:/Users/benji/BensWorld/Dev/coherence/coherence-bootstrap/lib/coherence-3.5.1.jar!/coherence-grid.xml"
+
+Oracle Coherence Version 3.5.1/461p1
+ Grid Edition: Development mode
+Copyright (c) 2000, 2009, Oracle and/or its affiliates. All rights reserved.
+
+2014-02-16 21:33:10.624/0.440 Oracle Coherence GE 3.5.1/461p1 <Info> (thread=main, member=n/a): Loaded cache configuration from "jar:file:/Users/benji/BensWorld/Dev/coherence/coherence-bootstrap/lib/coherence-3.5.1.jar!/reports/report-group.xml"
+2014-02-16 21:33:10.632/0.448 Oracle Coherence GE 3.5.1/461p1 <Info> (thread=main, member=n/a): Loaded cache configuration from "file:/Users/benji/BensWorld/Dev/coherence/coherence-bootstrap/config/basic-invocation-service-2.xml"
+2014-02-16 21:33:10.940/0.756 Oracle Coherence GE 3.5.1/461p1 <D5> (thread=Cluster, member=n/a): Service Cluster joined the cluster with senior service member n/a
+2014-02-16 21:33:11.144/0.960 Oracle Coherence GE 3.5.1/461p1 <Info> (thread=Cluster, member=n/a): This Member(Id=5, Timestamp=2014-02-16 21:33:10.947, Address=192.168.0.3:8092, MachineId=26627, Location=process:94718, Role=CoherenceServer, Edition=Grid Edition, Mode=Development, CpuCount=8, SocketCount=8) joined cluster "com.rbs.hpc.gettingstarted" with senior Member(Id=1, Timestamp=2014-02-16 21:32:51.857, Address=192.168.0.3:8088, MachineId=26627, Location=process:93282, Role=IntellijRtExecutionAppMain, Edition=Grid Edition, Mode=Development, CpuCount=8, SocketCount=8)
+2014-02-16 21:33:11.147/0.963 Oracle Coherence GE 3.5.1/461p1 <D5> (thread=Cluster, member=n/a): Member(Id=2, Timestamp=2014-02-16 21:32:55.942, Address=192.168.0.3:8089, MachineId=26627, Location=process:94656, Role=CoherenceServer) joined Cluster with senior member 1
+2014-02-16 21:33:11.147/0.963 Oracle Coherence GE 3.5.1/461p1 <D5> (thread=Cluster, member=n/a): Member(Id=3, Timestamp=2014-02-16 21:33:00.964, Address=192.168.0.3:8090, MachineId=26627, Location=process:94677, Role=CoherenceServer) joined Cluster with senior member 1
+2014-02-16 21:33:11.147/0.963 Oracle Coherence GE 3.5.1/461p1 <D5> (thread=Cluster, member=n/a): Member(Id=4, Timestamp=2014-02-16 21:33:05.976, Address=192.168.0.3:8091, MachineId=26627, Location=process:94696, Role=CoherenceServer) joined Cluster with senior member 1
+2014-02-16 21:33:11.150/0.966 Oracle Coherence GE 3.5.1/461p1 <D5> (thread=Cluster, member=n/a): Member 1 joined Service Management with senior member 1
+2014-02-16 21:33:11.153/0.969 Oracle Coherence GE 3.5.1/461p1 <D5> (thread=Cluster, member=n/a): Member 2 joined Service Management with senior member 1
+2014-02-16 21:33:11.153/0.970 Oracle Coherence GE 3.5.1/461p1 <D5> (thread=Cluster, member=n/a): Member 2 joined Service simple-caching-for-invocables with senior member 2
+2014-02-16 21:33:11.154/0.970 Oracle Coherence GE 3.5.1/461p1 <D5> (thread=Cluster, member=n/a): Member 2 joined Service MyInvocationService1 with senior member 2
+2014-02-16 21:33:11.154/0.970 Oracle Coherence GE 3.5.1/461p1 <D5> (thread=Cluster, member=n/a): Member 3 joined Service Management with senior member 1
+2014-02-16 21:33:11.154/0.970 Oracle Coherence GE 3.5.1/461p1 <D5> (thread=Cluster, member=n/a): Member 3 joined Service simple-caching-for-invocables with senior member 2
+2014-02-16 21:33:11.154/0.970 Oracle Coherence GE 3.5.1/461p1 <D5> (thread=Cluster, member=n/a): Member 3 joined Service MyInvocationService1 with senior member 2
+2014-02-16 21:33:11.154/0.970 Oracle Coherence GE 3.5.1/461p1 <D5> (thread=Cluster, member=n/a): Member 4 joined Service Management with senior member 1
+2014-02-16 21:33:11.154/0.970 Oracle Coherence GE 3.5.1/461p1 <D5> (thread=Cluster, member=n/a): Member 4 joined Service unlimited-partitioned with senior member 4
+2014-02-16 21:33:11.154/0.970 Oracle Coherence GE 3.5.1/461p1 <D5> (thread=Cluster, member=n/a): Member 4 joined Service MyInvocationService2 with senior member 4
+2014-02-16 21:33:11.181/0.997 Oracle Coherence GE 3.5.1/461p1 <D5> (thread=Invocation:Management, member=5): Service Management joined the cluster with senior service member 1
+2014-02-16 21:33:11.344/1.160 Oracle Coherence GE 3.5.1/461p1 <D5> (thread=Cluster, member=5): TcpRing: connecting to member 3 using TcpSocket{State=STATE_OPEN, Socket=Socket[addr=/192.168.0.3,port=8090,localport=54416]}
+2014-02-16 21:33:11.760/1.576 Oracle Coherence GE 3.5.1/461p1 <D5> (thread=DistributedCache:unlimited-partitioned, member=5): Service unlimited-partitioned joined the cluster with senior service member 4
+2014-02-16 21:33:11.767/1.583 Oracle Coherence GE 3.5.1/461p1 <D5> (thread=DistributedCache:unlimited-partitioned, member=5): Service unlimited-partitioned: received ServiceConfigSync containing 258 entries
+2014-02-16 21:33:11.774/1.590 Oracle Coherence GE 3.5.1/461p1 <D4> (thread=DistributedCache:unlimited-partitioned, member=5): Asking member 4 for 128 primary partitions
+2014-02-16 21:33:11.779/1.595 Oracle Coherence GE 3.5.1/461p1 <D5> (thread=Invocation:MyInvocationService2, member=5): Service MyInvocationService2 joined the cluster with senior service member 4
+2014-02-16 21:33:11.789/1.605 Oracle Coherence GE 3.5.1/461p1 <Info> (thread=main, member=5): Started DefaultCacheServer...
+
+SafeCluster: Name=com.rbs.hpc.gettingstarted
+
+Group{Address=239.255.12.30, Port=1234, TTL=0}
+
+MasterMemberSet
+  (
+  ThisMember=Member(Id=5, Timestamp=2014-02-16 21:33:10.947, Address=192.168.0.3:8092, MachineId=26627, Location=process:94718, Role=CoherenceServer)
+  OldestMember=Member(Id=1, Timestamp=2014-02-16 21:32:51.857, Address=192.168.0.3:8088, MachineId=26627, Location=process:93282, Role=IntellijRtExecutionAppMain)
+  ActualMemberSet=MemberSet(Size=5, BitSetCount=2
+    Member(Id=1, Timestamp=2014-02-16 21:32:51.857, Address=192.168.0.3:8088, MachineId=26627, Location=process:93282, Role=IntellijRtExecutionAppMain)
+    Member(Id=2, Timestamp=2014-02-16 21:32:55.942, Address=192.168.0.3:8089, MachineId=26627, Location=process:94656, Role=CoherenceServer)
+    Member(Id=3, Timestamp=2014-02-16 21:33:00.964, Address=192.168.0.3:8090, MachineId=26627, Location=process:94677, Role=CoherenceServer)
+    Member(Id=4, Timestamp=2014-02-16 21:33:05.976, Address=192.168.0.3:8091, MachineId=26627, Location=process:94696, Role=CoherenceServer)
+    Member(Id=5, Timestamp=2014-02-16 21:33:10.947, Address=192.168.0.3:8092, MachineId=26627, Location=process:94718, Role=CoherenceServer)
+    )
+  RecycleMillis=120000
+  RecycleSet=MemberSet(Size=0, BitSetCount=0
+    )
+  )
+
+Services
+  (
+  TcpRing{TcpSocketAccepter{State=STATE_OPEN, ServerSocket=192.168.0.3:8092}, Connections=[3]}
+  ClusterService{Name=Cluster, State=(SERVICE_STARTED, STATE_JOINED), Id=0, Version=3.5, OldestMemberId=1}
+  InvocationService{Name=Management, State=(SERVICE_STARTED), Id=1, Version=3.1, OldestMemberId=1}
+  DistributedCache{Name=unlimited-partitioned, State=(SERVICE_STARTED), LocalStorage=enabled, PartitionCount=257, BackupCount=1, AssignedPartitions=0, BackupPartitions=0}
+  InvocationService{Name=MyInvocationService2, State=(SERVICE_STARTED), Id=5, Version=3.1, OldestMemberId=4}
+  )
+
+2014-02-16 21:33:15.130/4.946 Oracle Coherence GE 3.5.1/461p1 <D5> (thread=Cluster, member=5): Member 1 joined Service MyInvocationService1 with senior member 2
+2014-02-16 21:33:15.143/4.959 Oracle Coherence GE 3.5.1/461p1 <D5> (thread=Cluster, member=5): Member 1 joined Service MyInvocationService2 with senior member 4
+2014-02-16 21:33:15.152/4.968 Oracle Coherence GE 3.5.1/461p1 <D5> (thread=Cluster, member=5): Member 1 left service Management with senior member 2
+2014-02-16 21:33:15.152/4.968 Oracle Coherence GE 3.5.1/461p1 <D5> (thread=Cluster, member=5): Member 1 left service MyInvocationService1 with senior member 2
+2014-02-16 21:33:15.155/4.971 Oracle Coherence GE 3.5.1/461p1 <D5> (thread=Cluster, member=5): Member 1 left service MyInvocationService2 with senior member 4
+2014-02-16 21:33:15.169/4.985 Oracle Coherence GE 3.5.1/461p1 <D5> (thread=Cluster, member=5): MemberLeft notification for Member 1 received from Member(Id=1, Timestamp=2014-02-16 21:32:51.857, Address=192.168.0.3:8088, MachineId=26627, Location=process:93282, Role=IntellijRtExecutionAppMain)
+2014-02-16 21:33:15.169/4.985 Oracle Coherence GE 3.5.1/461p1 <D5> (thread=Cluster, member=5): Member(Id=1, Timestamp=2014-02-16 21:33:15.169, Address=192.168.0.3:8088, MachineId=26627, Location=process:93282, Role=IntellijRtExecutionAppMain) left Cluster with senior member 2
