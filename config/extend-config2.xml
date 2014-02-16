@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<cache-config xmlns="http://schemas.tangosol.com/cache">
+
+    <caching-scheme-mapping>
+        <cache-mapping>
+            <cache-name>*</cache-name>
+            <scheme-name>regionconnect2</scheme-name>
+        </cache-mapping>
+    </caching-scheme-mapping>
+
+    <caching-schemes>
+        <remote-cache-scheme>
+            <scheme-name>regionconnect2</scheme-name>
+            <service-name>extend-service2</service-name>
+            <initiator-config>
+                <tcp-initiator>
+                    <remote-addresses>
+                        <socket-address>
+                            <address>localhost</address>
+                            <port system-property="com.rbs.hpc.test.extend.port2">32002</port>
+                        </socket-address>
+                    </remote-addresses>
+                    <connect-timeout>20s</connect-timeout>
+                </tcp-initiator>
+            </initiator-config>
+        </remote-cache-scheme>
+    </caching-schemes>
+
+
+</cache-config>

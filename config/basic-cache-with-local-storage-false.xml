@@ -1,0 +1,40 @@
+<!DOCTYPE cache-config SYSTEM "cache-config.dtd">
+
+<cache-config>
+    <caching-scheme-mapping>
+        <cache-mapping>
+            <cache-name>*</cache-name>
+            <scheme-name>foo</scheme-name>
+        </cache-mapping>
+    </caching-scheme-mapping>
+    <caching-schemes>
+
+        <distributed-scheme>
+            <scheme-name>foo</scheme-name>
+            <service-name>replicated-partitioned-with-listener</service-name>
+            <backing-map-scheme>
+                <read-write-backing-map-scheme>
+                    <internal-cache-scheme>
+                        <local-scheme/>
+                    </internal-cache-scheme>
+                </read-write-backing-map-scheme>
+            </backing-map-scheme>
+            <autostart>true</autostart>
+
+            <partition-listener>
+                <class-name>com.benstopford.coherence.bootstrap.structures.MyPartitionListener</class-name>
+            </partition-listener>
+
+            <!--NB-->
+            <local-storage>false</local-storage>
+
+        </distributed-scheme>
+
+        <!--This scheme is only added so that we can get a handel on the cluster from a DefaultConfigurableCacheFactory-->
+        <distributed-scheme>
+            <scheme-name>bar</scheme-name>
+            <service-name>bar</service-name>
+        </distributed-scheme>
+
+    </caching-schemes>
+</cache-config>

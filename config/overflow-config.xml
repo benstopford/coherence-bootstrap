@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<cache-config xmlns="http://schemas.tangosol.com/cache">
+
+    <caching-scheme-mapping>
+        <cache-mapping>
+            <cache-name>*</cache-name>
+            <scheme-name>timed-default</scheme-name>
+        </cache-mapping>
+    </caching-scheme-mapping>
+
+    <caching-schemes>
+        <distributed-scheme>
+            <scheme-name>timed-default</scheme-name>
+            <service-name>OverflowService</service-name>
+            <backing-map-scheme>
+                <overflow-scheme>
+                    <scheme-ref>OverflowScheme</scheme-ref>
+                </overflow-scheme>
+            </backing-map-scheme>
+            <!--<backup-storage>-->
+                <!--<type>scheme</type>-->
+                <!--<scheme-name>OverflowScheme</scheme-name>-->
+            <!--</backup-storage>-->
+        </distributed-scheme>
+
+        <overflow-scheme>
+            <scheme-name>OverflowScheme</scheme-name>
+
+            <front-scheme>
+                <local-scheme>
+                    <scheme-name>MemoryScheme</scheme-name>
+                    <high-units>8000</high-units>
+                    <expiry-delay>2s</expiry-delay>
+                </local-scheme>
+            </front-scheme>
+            <back-scheme>
+                <external-scheme>
+                    <scheme-name>DiskScheme</scheme-name>
+                    <lh-file-manager>
+                    </lh-file-manager>
+                </external-scheme>
+            </back-scheme>
+            <expiry-enabled>true</expiry-enabled>
+            <expiry-delay>4s</expiry-delay>
+        </overflow-scheme>
+    </caching-schemes>
+
+</cache-config>

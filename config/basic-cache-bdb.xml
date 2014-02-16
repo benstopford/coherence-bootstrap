@@ -1,0 +1,25 @@
+<!DOCTYPE cache-config SYSTEM "cache-config.dtd">
+
+<cache-config>
+    <caching-scheme-mapping>
+        <cache-mapping>
+            <cache-name>*</cache-name>
+            <scheme-name>foo</scheme-name>
+        </cache-mapping>
+    </caching-scheme-mapping>
+    <caching-schemes>
+
+        <distributed-scheme>
+            <scheme-name>foo</scheme-name>
+            <service-name>unlimited-partitioned</service-name>
+            <backing-map-scheme>
+                    <external-scheme>
+                        <bdb-store-manager>
+                            <directory>c:\temp</directory>
+                        </bdb-store-manager>
+                    </external-scheme>
+            </backing-map-scheme>
+            <autostart>true</autostart>
+        </distributed-scheme>
+    </caching-schemes>
+</cache-config>

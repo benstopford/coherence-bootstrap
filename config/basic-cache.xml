@@ -1,0 +1,31 @@
+<!DOCTYPE cache-config SYSTEM "cache-config.dtd">
+
+<cache-config>
+    <caching-scheme-mapping>
+
+
+        <cache-mapping>
+            <cache-name>*</cache-name>
+            <scheme-name>simple</scheme-name>
+        </cache-mapping>
+    </caching-scheme-mapping>
+
+
+    <caching-schemes>
+        <distributed-scheme>
+            <scheme-name>simple</scheme-name>
+            <service-name>unlimited-partitioned</service-name>
+            <backing-map-scheme>
+                <read-write-backing-map-scheme>
+                    <internal-cache-scheme>
+                        <local-scheme>
+                            <unit-calculator>BINARY</unit-calculator>
+                        </local-scheme>
+                    </internal-cache-scheme>
+                </read-write-backing-map-scheme>
+            </backing-map-scheme>
+            <autostart>true</autostart>
+        </distributed-scheme>
+
+    </caching-schemes>
+</cache-config>
