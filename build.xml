@@ -4,7 +4,7 @@
     <property name="build.dir" location="out"/>
     <property name="classes.dir" value="${build.dir}/classes"/>
     <property name="jar.dir"     value="${build.dir}/jar"/>
-    <property name="reports.dir"     value="reports"/>
+    <property name="reports.dir"     value="out/reports"/>
 
     <path id="built-jar" location="${jar.dir}/${ant.project.name}.jar"/>
 
@@ -49,11 +49,12 @@
             </classpath>
 
             <batchtest fork="yes" todir="${reports.dir}">
-                <fileset dir="${src.dir}" includes="**/basic/POF.java"/>
-                <fileset dir="${src.dir}" includes="**/basic/Triggers.java"/>
                 <fileset dir="${src.dir}" includes="**/basic/*.java"/>
                 <fileset dir="${src.dir}" includes="**/morecomplex/*.java"/>
             </batchtest>
         </junit>
+        <delete>
+            <fileset dir="." includes="junit*.properties"/>
+        </delete>
     </target>
 </project>
