@@ -1,13 +1,12 @@
 <project name="coherence-bootstrap" default="junit" basedir=".">
     <property name="lib.dir" value="lib"/>
     <property name="src.dir" location="src"/>
-    <property name="build.dir" location="out"/>
+    <property name="build.dir" location="build"/>
     <property name="classes.dir" value="${build.dir}/classes"/>
     <property name="jar.dir"     value="${build.dir}/jar"/>
-    <property name="reports.dir"     value="out/reports"/>
+    <property name="reports.dir"     value="reports"/>
 
-    <path id="built-jar" location="${jar.dir}/${ant.project.name}.jar"/>
-
+    <path id="application" location="${jar.dir}/${ant.project.name}.jar"/>
 
     <path id="classpath">
         <fileset dir="${lib.dir}" includes="**/*.jar"/>
@@ -44,13 +43,13 @@
             <formatter type="plain"/>
             <classpath>
                 <path refid="classpath"/>
-                <path refid="built-jar"/>
+                <path refid="application"/>
                 <path location="."/>
             </classpath>
 
             <batchtest fork="yes" todir="${reports.dir}">
-                <fileset dir="${src.dir}" includes="**/basic/*.java"/>
-                <fileset dir="${src.dir}" includes="**/morecomplex/*.java"/>
+                <fileset dir="${src.dir}" includes="**/Triggers.java"/>
+                <fileset dir="${src.dir}" includes="**/POF.java"/>
             </batchtest>
         </junit>
         <delete>
