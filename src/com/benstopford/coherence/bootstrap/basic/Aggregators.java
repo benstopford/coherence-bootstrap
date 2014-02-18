@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.framework.TestBase;
+import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.benstopford.coherence.bootstrap.structures.ParallelSumAggregator;
 import com.benstopford.coherence.bootstrap.structures.SumAggregator;
 import com.tangosol.net.NamedCache;
@@ -12,7 +12,7 @@ import java.io.Serializable;
 /**
  * BTS, 07-Dec-2007
  */
-public class Aggregators extends TestBase implements Serializable
+public class Aggregators extends CoherenceClusteredTest implements Serializable
 {
 
     public void testSimpleAggregation() throws InterruptedException {

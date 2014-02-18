@@ -1,11 +1,11 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
-import com.benstopford.coherence.bootstrap.structures.framework.TestBase;
+import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.tangosol.net.NamedCache;
 
 import java.io.IOException;
 
-public final class UsingAnOverflowCacheToExpireEntriesToDiskExample extends TestBase {
+public final class UsingAnOverflowCacheToExpireEntriesToDiskExample extends CoherenceClusteredTest {
     private static final String OVERFLOW_CONFIG_XML = "config/overflow-config.xml";
     private boolean firstEntryWasExpired = false;
     private int i = 0;

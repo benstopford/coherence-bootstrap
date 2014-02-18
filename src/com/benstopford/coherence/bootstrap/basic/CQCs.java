@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.framework.TestBase;
+import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.tangosol.net.NamedCache;
 import com.tangosol.net.cache.ContinuousQueryCache;
 import com.tangosol.util.Filter;
@@ -13,7 +13,7 @@ import java.io.IOException;
 /**
  * BTS, 16-Jan-2008
  */
-public class CQCs extends TestBase {
+public class CQCs extends CoherenceClusteredTest {
 
     public void testCqcShouldLoadSubsetToLocalProcess() throws IOException, InterruptedException {
         startOutOfProcess("config/basic-extend-enabled-cache-32001.xml");

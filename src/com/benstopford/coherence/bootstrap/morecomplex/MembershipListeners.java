@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
-import com.benstopford.coherence.bootstrap.structures.framework.TestBase;
+import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.tangosol.net.*;
 import com.tangosol.util.Base;
 
@@ -10,7 +10,7 @@ import java.io.IOException;
 /**
  * BTS, 12-May-2008
  */
-public class MembershipListeners extends TestBase {
+public class MembershipListeners extends CoherenceClusteredTest {
     private Process otherMemberProcess;
     private static final String CONFIG_BASIC_CACHE_ON_DIFFERENT_CACHE_SERVICE_XML = "config/basic-cache-on-different-cache-service.xml";
 

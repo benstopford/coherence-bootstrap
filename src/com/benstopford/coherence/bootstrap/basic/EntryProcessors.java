@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.framework.TestBase;
+import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.InvocableMap;
 import com.tangosol.util.processor.AbstractProcessor;
@@ -8,7 +8,7 @@ import com.tangosol.util.processor.AbstractProcessor;
 /**
  * BTS, 07-Dec-2007
  */
-public final class EntryProcessors extends TestBase {
+public final class EntryProcessors extends CoherenceClusteredTest {
 
     public void testDoSomethingAtomicallyWithAnEntryProcessor() {
         NamedCache cache = getBasicCache("stuff");

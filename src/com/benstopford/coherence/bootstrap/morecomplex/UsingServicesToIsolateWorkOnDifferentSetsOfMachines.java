@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
-import com.benstopford.coherence.bootstrap.structures.framework.TestBase;
+import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.benstopford.coherence.bootstrap.structures.SampleInvocable;
 import com.tangosol.net.DefaultConfigurableCacheFactory;
 import com.tangosol.net.InvocationService;
@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * BTS, 03-Sep-2008
  */
-public class UsingServicesToIsolateWorkOnDifferentSetsOfMachines extends TestBase {
+public class UsingServicesToIsolateWorkOnDifferentSetsOfMachines extends CoherenceClusteredTest {
 
     
     public void testSplitMachinesIntoTwoSetsWithServices() throws IOException, InterruptedException {

@@ -1,13 +1,13 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.framework.TestBase;
+import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.benstopford.coherence.bootstrap.structures.TestCacheStore;
 import com.tangosol.net.NamedCache;
 
 /**
  * BTS, 07-Dec-2007
  */
-public class CacheStoreSynchronous extends TestBase {
+public class CacheStoreSynchronous extends CoherenceClusteredTest {
     public void testCacheStore() {
 
         NamedCache cache = getCache("config/synch-cachestore.xml","foo");

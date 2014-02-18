@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.framework.TestBase;
+import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.tangosol.net.NamedCache;
 import functional.fixtures.SizableObjectFactory;
 
@@ -9,7 +9,7 @@ import java.io.IOException;
 /**
  * BTS, 25-Jan-2008
  */
-public class NearCaching extends TestBase {
+public class NearCaching extends CoherenceClusteredTest {
 
     public void testShouldBeAbleToNearCacheDataForInProcessReRetrieval() throws IOException, InterruptedException {
         startOutOfProcess("config/basic-extend-enabled-cache-32001.xml");

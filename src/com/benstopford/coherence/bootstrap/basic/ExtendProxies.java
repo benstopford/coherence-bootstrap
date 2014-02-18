@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.framework.TestBase;
+import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.tangosol.net.DefaultConfigurableCacheFactory;
 import com.tangosol.net.NamedCache;
 
@@ -9,7 +9,7 @@ import java.io.IOException;
 /**
  * BTS, 25-Jan-2008
  */
-public class ExtendProxies extends TestBase {
+public class ExtendProxies extends CoherenceClusteredTest {
 
     public void testWithExtendNode() throws IOException, InterruptedException {
         //start data enabled node

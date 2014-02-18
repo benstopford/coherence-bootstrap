@@ -1,12 +1,12 @@
 package com.benstopford.coherence.bootstrap.basic;
 
+import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.tangosol.net.NamedCache;
-import com.benstopford.coherence.bootstrap.structures.framework.TestBase;
 
 /**
  * BTS, 07-Dec-2007
  */
-public class PutAndGet extends TestBase {
+public class PutAndGet extends CoherenceClusteredTest {
 
     public void testPutAndGetFromCache() {
         NamedCache cache = getBasicCache("foo");

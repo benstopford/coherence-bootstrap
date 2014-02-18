@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.framework.TestBase;
+import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.AbstractMapListener;
 
@@ -10,7 +10,7 @@ import java.io.IOException;
  * Also see intermediate.SimulatingLostUpdatesInClientListenersExample
  * BTS, 25-Jan-2008
  */
-public class MapListeners extends TestBase {
+public class MapListeners extends CoherenceClusteredTest {
     int notificationCount = 0;
 
     public void testMapListenerShouldBeCalledWhenEntryInserted() throws IOException, InterruptedException {

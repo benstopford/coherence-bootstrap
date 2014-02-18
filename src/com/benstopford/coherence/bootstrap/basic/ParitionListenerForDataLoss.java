@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.framework.TestBase;
+import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.benstopford.coherence.bootstrap.structures.MyPartitionListener;
 import com.tangosol.net.*;
 
@@ -10,7 +10,7 @@ import java.io.File;
 /**
  * BTS, 12-May-2008
  */
-public class ParitionListenerForDataLoss extends TestBase {
+public class ParitionListenerForDataLoss extends CoherenceClusteredTest {
 
     /**
      * A PartitionListener tells you that a data partition has been lost. This is really important as otherwise you

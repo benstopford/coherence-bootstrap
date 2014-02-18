@@ -1,12 +1,12 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.framework.TestBase;
+import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.tangosol.net.NamedCache;
 
 /**
  * BTS, 07-Dec-2007
  */
-public class CacheStoreAsync extends TestBase {
+public class CacheStoreAsync extends CoherenceClusteredTest {
 
     public void testDemoOfCacheStoreRetryCapabilityWithAsyncCacheStore() throws InterruptedException {
         NamedCache cache = getCache("config/async-cachestore.xml", "foo");

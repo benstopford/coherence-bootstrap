@@ -1,10 +1,10 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.framework.TestBase;
+import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
 
-public class Triggers extends TestBase {
+public class Triggers extends CoherenceClusteredTest {
     
     public void testShouldPut() throws InterruptedException {
 

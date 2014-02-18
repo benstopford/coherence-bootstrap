@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
-import com.benstopford.coherence.bootstrap.structures.framework.TestBase;
+import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.InvocableMap;
 import com.tangosol.util.processor.AbstractProcessor;
@@ -8,7 +8,7 @@ import com.tangosol.util.processor.AbstractProcessor;
 /**
  * BTS, 20-Feb-2008
  */
-public class HopBetweenCaches extends TestBase {
+public class HopBetweenCaches extends CoherenceClusteredTest {
 
     public void testShouldBeAbleToAcceessDifferentCacheFromAnEntryProcessorIfTheyAreInDifferentCacheServices() {
         //*****NB - this is only safe to do if the two caches are in different cache services*****

@@ -1,13 +1,13 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
-import com.benstopford.coherence.bootstrap.structures.framework.TestBase;
+import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.benstopford.coherence.bootstrap.structures.PutAllWithErrorReporting;
 import com.tangosol.net.*;
 
 import java.util.Map;
 import java.util.TreeMap;
 
-public class PutAllThatReportsIndividualExceptions extends TestBase {
+public class PutAllThatReportsIndividualExceptions extends CoherenceClusteredTest {
 
     public void testShouldPut() throws InterruptedException {
         String cacheName = "regular-cache";
