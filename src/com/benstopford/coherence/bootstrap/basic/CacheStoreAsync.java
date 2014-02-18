@@ -9,7 +9,7 @@ import com.tangosol.net.NamedCache;
 public class CacheStoreAsync extends TestBase {
 
     public void testDemoOfCacheStoreRetryCapabilityWithAsyncCacheStore() throws InterruptedException {
-        NamedCache cache = getCache("config/failing-cachestore.xml", "foo");
+        NamedCache cache = getCache("config/async-cachestore.xml", "foo");
 
         cache.put("Key1", "Value");
         cache.put("Key2", "Value");

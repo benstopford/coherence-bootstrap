@@ -16,7 +16,7 @@ import java.io.IOException;
 public class CQCs extends TestBase {
 
     public void testContinuousQueryShouldBlowUpIfTheQueryDoesNotFitInTheClientHeap() throws IOException, InterruptedException {
-        startOutOfProcess("config/basic-extend-enabled-cache.xml");
+        startOutOfProcess("config/basic-extend-enabled-cache-32001.xml");
 
         NamedCache backingCache = connectOverExtend();
 

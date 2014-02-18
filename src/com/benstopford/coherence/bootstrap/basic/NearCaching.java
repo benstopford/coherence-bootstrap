@@ -12,7 +12,7 @@ import java.io.IOException;
 public class NearCaching extends TestBase {
 
     public void testShouldBeAbleToNearCacheDataForInProcessReRetrieval() throws IOException, InterruptedException {
-        startOutOfProcess("config/basic-extend-enabled-cache.xml");
+        startOutOfProcess("config/basic-extend-enabled-cache-32001.xml");
         Thread.sleep(5000);
 
         NamedCache cacheWithNoNearScheme = connectOverExtend();
@@ -25,7 +25,7 @@ public class NearCaching extends TestBase {
         getFromCacheAndPrintTimings(cacheWithNoNearScheme);
         getFromCacheAndPrintTimings(cacheWithNoNearScheme);
 
-        NamedCache cachWithNearScheme = getCache("config/extend-config-with-near-cache.xml", "foo");
+        NamedCache cachWithNearScheme = getCache("config/extend-client-with-near-cache.xml", "foo");
 
         System.out.println("Get times with near cache:");
         getFromCacheAndPrintTimings(cachWithNearScheme);

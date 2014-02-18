@@ -14,10 +14,10 @@ import java.util.HashSet;
 
 /**
  * BTS, 07-Dec-2007
- *
+ * <p/>
  * EDIT 2014: This test framework predates the work done by the Coherence team to internalise this kind of testing
  * into a single JVM and multiple classloaders.Credit for this excellent pattern goes to Andrew (Orange Pheonix) Wilson
- *
+ * <p/>
  * I strongly suggest that, in your own code, you use the LittleGrid. See JK's post here:
  * http://thegridman.com/coherence/oracle-coherence-testing-with-oracle-tools/
  */
@@ -57,7 +57,7 @@ public abstract class TestBase extends TestCase {
                 "-Dtangosol.coherence.log.level=" + LOGGING_LEVEL + " " +
                 "-Dtangosol.coherence.cacheconfig=" + config + " " +
                 "-Dcom.rbs.hpc.test.extend.port=" + System.getProperty("com.rbs.hpc.test.extend.port") + " " +
-                "-Dcom.rbs.hpc.test.extend.port2=" + System.getProperty("com.rbs.hpc.test.extend.port2") + " " +   getCoherenceJMXProperties()+ " " +
+                "-Dcom.rbs.hpc.test.extend.port2=" + System.getProperty("com.rbs.hpc.test.extend.port2") + " " + getCoherenceJMXProperties() + " " +
                 propertiesAdditions + " " +
                 "-cp classes" + SEPERATOR + "lib/coherence-3.5.1.jar" + SEPERATOR + "lib/coherence-utils.jar" + SEPERATOR + "config" +
                 classPathAdditions + " " +
@@ -113,8 +113,10 @@ public abstract class TestBase extends TestCase {
 
     private void deleteContentsOfLogDir() {
         File[] logs = new File("log").listFiles();
-        for(File log: logs){
-            log.delete();
+        if (logs != null) {
+            for (File log : logs) {
+                log.delete();
+            }
         }
     }
 
@@ -174,7 +176,7 @@ public abstract class TestBase extends TestCase {
     }
 
     private static String getJMXProperties(int jmx_port) {
-        return  getSunJMXProperties(jmx_port);
+        return getSunJMXProperties(jmx_port);
     }
 
     private static String getCoherenceJMXProperties() {
@@ -182,6 +184,7 @@ public abstract class TestBase extends TestCase {
                 "-Dtangosol.coherence.management=all " +
                 "-Dtangosol.coherence.management.remote=true";
     }
+
     private static String getSunJMXProperties(int jmx_port) {
         return "" +
                 "-Dcom.sun.management.jmxremote.ssl=false " +
@@ -195,24 +198,25 @@ public abstract class TestBase extends TestCase {
     protected void addData(NamedCache cache, int mbToAdd) {
         prefix++;
         for (int i = 0; i < mbToAdd; i++) {
-            cache.put(prefix + new Integer(i).toString(), new SizableObjectFactory().buildObject(1000));
+            cache.put(prefix + Integer.toString(i), new SizableObjectFactory().buildObject(1000));
         }
         System.out.println("added " + mbToAdd + "MB");
     }
 
     protected NamedCache getRemoteCache() {
-        return new DefaultConfigurableCacheFactory("config/extend-config.xml").ensureCache("foo", getClass().getClassLoader());
+        return new DefaultConfigurableCacheFactory("config/extend-client-32001.xml").ensureCache("foo", getClass().getClassLoader());
     }
 
     protected void startBasicCacheProcess() throws IOException, InterruptedException {
         startOutOfProcess("config/basic-cache.xml", "", "");
     }
+
     protected void startBasicCacheProcessWithJMX() throws IOException, InterruptedException {
         startOutOfProcess("config/basic-cache.xml", "", getJMXProperties(3000));
     }
 
     protected void startDataDisabledExtendProxy() throws IOException, InterruptedException {
-        startOutOfProcess("config/basic-extend-enabled-cache.xml", "", "-Dtangosol.coherence.distributed.localstorage=false");
+        startOutOfProcess("config/basic-extend-enabled-cache-32001.xml", "", "-Dtangosol.coherence.distributed.localstorage=false");
     }
 
     protected void startExtendEnabledDataNode(boolean enableJMX, String config) throws IOException, InterruptedException {
@@ -223,8 +227,8 @@ public abstract class TestBase extends TestCase {
         startOutOfProcess(config, "", jmxProps);
     }
 
-    HashSet<CacheService> services = new HashSet();
-    HashSet<NamedCache> caches = new HashSet();
+    HashSet<CacheService> services = new HashSet<CacheService>();
+    HashSet<NamedCache> caches = new HashSet<NamedCache>();
 
     protected void addToShutdownList(NamedCache cache) {
         services.add(cache.getCacheService());
@@ -239,13 +243,15 @@ public abstract class TestBase extends TestCase {
     }
 
     protected NamedCache connectOverExtend() {
-        return getCache("config/extend-config.xml", "foo");
+        return getCache("config/extend-client-32001.xml", "foo");
     }
 
     private long start = 0;
+
     protected void startTimer() {
-        start =  System.currentTimeMillis();
+        start = System.currentTimeMillis();
     }
+
     protected long took() {
         long took = System.currentTimeMillis() - start;
         start = 0;

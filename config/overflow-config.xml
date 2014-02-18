@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<cache-config xmlns="http://schemas.tangosol.com/cache">
+<cache-config>
 
     <caching-scheme-mapping>
         <cache-mapping>

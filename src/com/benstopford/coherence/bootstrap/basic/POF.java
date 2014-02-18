@@ -14,7 +14,8 @@ public class POF extends TestCase {
      * see config/my-pof-config
      */
     public void testUsingPof() throws IOException {
-        DefaultConfigurableCacheFactory factory = new DefaultConfigurableCacheFactory("config/cluster-with-pof.xml");
+//        System.setProperty("tangosol.pof.config", "config/my-pof-config.xml");
+        DefaultConfigurableCacheFactory factory = new DefaultConfigurableCacheFactory("config/basic-cache-with-pof.xml");
         NamedCache cache = factory.ensureCache("stuff", getClass().getClassLoader());
 
         cache.put("key", new MyPofObject("some data"));

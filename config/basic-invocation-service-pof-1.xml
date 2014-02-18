@@ -39,7 +39,7 @@
                 <init-params>
                     <init-param>
                         <param-type>string</param-type>
-                        <param-value>my-pof-config.xml</param-value>
+                        <param-value>config/my-pof-config.xml</param-value>
                     </init-param>
                 </init-params>
             </serializer>
@@ -70,7 +70,7 @@
                 <init-params>
                     <init-param>
                         <param-type>string</param-type>
-                        <param-value>my-pof-config.xml</param-value>
+                        <param-value>config/my-pof-config.xml</param-value>
                     </init-param>
                 </init-params>
             </serializer>
@@ -86,7 +86,7 @@
                 <init-params>
                     <init-param>
                         <param-type>string</param-type>
-                        <param-value>my-pof-config.xml</param-value>
+                        <param-value>config/my-pof-config.xml</param-value>
                     </init-param>
                 </init-params>
             </serializer>

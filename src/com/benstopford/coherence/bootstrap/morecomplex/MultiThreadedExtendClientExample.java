@@ -1,7 +1,7 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
-import com.benstopford.coherence.bootstrap.structures.framework.TestBase;
 import com.benstopford.coherence.bootstrap.structures.SleepingProcessor;
+import com.benstopford.coherence.bootstrap.structures.framework.TestBase;
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.processor.AbstractProcessor;
 
@@ -12,7 +12,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -20,7 +19,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  * - change the thread counts in the config files to make the multithreaded invocation fast or slow
  */
 public class MultiThreadedExtendClientExample extends TestBase {
-    private AtomicInteger atomicI = new AtomicInteger();
 
     public void testShouldBeFasterMultithreaded() throws IOException, InterruptedException {
 
@@ -29,7 +27,7 @@ public class MultiThreadedExtendClientExample extends TestBase {
         startOutOfProcess("config/basic-extend-enabled-threaded-cache.xml", "", "-Dtangosol.coherence.distributed.localstorage=false ");
         Thread.sleep(1000);
 
-        NamedCache cache = getCache("config/extend-config.xml", "foo");
+        NamedCache cache = getCache("config/extend-client-32001.xml", "foo");
 
         System.out.println("--------Single----------");
 

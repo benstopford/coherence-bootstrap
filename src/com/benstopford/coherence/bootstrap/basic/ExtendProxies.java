@@ -16,10 +16,10 @@ public class ExtendProxies extends TestBase {
         startOutOfProcess("config/basic-cache.xml", "", "");
 
         //start data disabled node as extend proxy
-        startOutOfProcess("config/basic-extend-enabled-cache.xml", "", "-Dtangosol.coherence.distributed.localstorage=false");
+        startOutOfProcess("config/basic-extend-enabled-cache-32001.xml", "", "-Dtangosol.coherence.distributed.localstorage=false");
 
         //use extend config for this client
-        NamedCache cache = new DefaultConfigurableCacheFactory("config/extend-config.xml")
+        NamedCache cache = new DefaultConfigurableCacheFactory("config/extend-client-32001.xml")
                 .ensureCache("stuff", getClass().getClassLoader());
 
         //write

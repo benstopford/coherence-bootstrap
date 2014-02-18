@@ -1,0 +1,31 @@
+<!DOCTYPE cache-config SYSTEM "cache-config.dtd">
+
+<cache-config>
+    <caching-scheme-mapping>
+        <cache-mapping>
+            <cache-name>*</cache-name>
+            <scheme-name>basic-cache-store</scheme-name>
+        </cache-mapping>
+    </caching-scheme-mapping>
+    <caching-schemes>
+
+        <distributed-scheme>
+            <scheme-name>basic-cache-store</scheme-name>
+            <service-name>replicated-partitioned</service-name>
+            <backing-map-scheme>
+                <read-write-backing-map-scheme>
+                    <internal-cache-scheme>
+                        <local-scheme/>
+                    </internal-cache-scheme>
+                    <cachestore-scheme>
+                        <class-scheme>
+                            <class-name>com.benstopford.coherence.bootstrap.structures.TestCacheStore</class-name>
+                        </class-scheme>
+                    </cachestore-scheme>
+                </read-write-backing-map-scheme>
+            </backing-map-scheme>
+            <autostart>true</autostart>
+            <thread-count>50</thread-count>
+        </distributed-scheme>
+    </caching-schemes>
+</cache-config>

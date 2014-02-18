@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<cache-config>
+
+    <caching-scheme-mapping>
+        <cache-mapping>
+            <cache-name>*</cache-name>
+            <scheme-name>near-limited</scheme-name>
+        </cache-mapping>
+    </caching-scheme-mapping>
+
+    <caching-schemes>
+        <remote-cache-scheme>
+            <scheme-name>regionconnect</scheme-name>
+            <service-name>near-cache-extend-service</service-name>
+            <initiator-config>
+                <tcp-initiator>
+                    <remote-addresses>
+                        <socket-address>
+                            <address>localhost</address>
+                            <port system-property="com.rbs.hpc.test.extend.port">32001</port>
+                        </socket-address>
+                    </remote-addresses>
+                    <connect-timeout>20s</connect-timeout>
+                </tcp-initiator>
+            </initiator-config>
+        </remote-cache-scheme>
+
+        <near-scheme>
+            <scheme-name>near-limited</scheme-name>
+            <front-scheme>
+                <local-scheme>
+                    <!-- this is the max count of objects to keep locally on the  "client" side -->
+                    <high-units>10</high-units>
+                </local-scheme>
+            </front-scheme>
+            <back-scheme>
+                <remote-cache-scheme>
+                    <scheme-ref>regionconnect</scheme-ref>
+                </remote-cache-scheme>
+            </back-scheme>
+            <autostart>true</autostart>
+        </near-scheme>
+
+    </caching-schemes>
+</cache-config>

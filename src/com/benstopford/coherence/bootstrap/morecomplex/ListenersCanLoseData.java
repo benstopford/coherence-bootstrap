@@ -28,8 +28,8 @@ public final class ListenersCanLoseData extends TestBase {
 
         //start three nodes. Two of which are extend proxies listening on different ports
         startOutOfProcess("config/basic-cache.xml", "", "");
-        Process extendProxy1 = startOutOfProcess("config/basic-extend-enabled-cache.xml", "", "-Dtangosol.coherence.distributed.localstorage=false ");
-        startOutOfProcess("config/basic-extend-enabled-cache2.xml", "", "-Dtangosol.coherence.distributed.localstorage=false ");
+        Process extendProxy1 = startOutOfProcess("config/basic-extend-enabled-cache-32001.xml", "", "-Dtangosol.coherence.distributed.localstorage=false ");
+        startOutOfProcess("config/basic-extend-enabled-cache-32002.xml", "", "-Dtangosol.coherence.distributed.localstorage=false ");
 
 
         //connect to each of the extend proxies
@@ -83,7 +83,7 @@ public final class ListenersCanLoseData extends TestBase {
         Thread.sleep(1000);
 
         //restart dead extend proxy
-        extendProxy1 = startOutOfProcess("config/basic-extend-enabled-cache.xml", "", "-Dtangosol.coherence.distributed.localstorage=false ");
+        extendProxy1 = startOutOfProcess("config/basic-extend-enabled-cache-32001.xml", "", "-Dtangosol.coherence.distributed.localstorage=false ");
         Thread.sleep(1000);
 
         //add value via restarted extend proxy
@@ -110,7 +110,7 @@ public final class ListenersCanLoseData extends TestBase {
     }
 
     private NamedCache getCacheConnection2() {
-        return getCache("config/extend-config2.xml", "foo");
+        return getCache("config/extend-config-32002.xml", "foo");
     }
 
 

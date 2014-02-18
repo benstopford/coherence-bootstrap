@@ -10,7 +10,7 @@ import com.tangosol.net.NamedCache;
 public class CacheStoreSynchronous extends TestBase {
     public void testCacheStore() {
 
-        NamedCache cache = getCache("config/synchronous-cachestore.xml","foo");
+        NamedCache cache = getCache("config/synch-cachestore.xml","foo");
 
         cache.put("Key1", "Value");
 
