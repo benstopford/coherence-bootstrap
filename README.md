@@ -34,7 +34,7 @@ Topics covered:
 *(I'll move it over at some point)
 
 
-Loading the project is really simple:
+**Getting started is simple:**
 * Download the zip or clone this repository
 * Create a project in your IDE of choice
 * Add the lib directory and "." to your classpath
