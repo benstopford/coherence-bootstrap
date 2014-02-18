@@ -1,7 +1,7 @@
-coherence-bootstrap
+Coherence Bootstrap
 ===================
 
-Set of working code snippets designed for getting started with Coherence along with some more advanced tips and tricks.
+Set of working code snippets designed for getting started with Coherence quickly along with some more advanced tips and tricks.
 The tests and examples are supported by a multi-process test suite which was a precursor to the little-grid work done
 in the coherence incubator*.
 
