@@ -48,8 +48,8 @@
             </classpath>
 
             <batchtest fork="yes" todir="${reports.dir}">
-                <fileset dir="${src.dir}" includes="**/Triggers.java"/>
-                <fileset dir="${src.dir}" includes="**/POF.java"/>
+                <fileset dir="${src.dir}" includes="**/basics/*.java"/>
+                <fileset dir="${src.dir}" includes="**/morecomplex/*.java"/>
             </batchtest>
         </junit>
         <delete>
