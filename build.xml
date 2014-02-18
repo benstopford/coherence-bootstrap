@@ -7,6 +7,7 @@
     <property name="reports.dir"     value="reports"/>
 
     <path id="application" location="${jar.dir}/${ant.project.name}.jar"/>
+    <path id="local" location="."/>
 
     <path id="classpath">
         <fileset dir="${lib.dir}" includes="**/*.jar"/>
@@ -44,7 +45,7 @@
             <classpath>
                 <path refid="classpath"/>
                 <path refid="application"/>
-                <path location="."/>
+                <path refid="local"/>
             </classpath>
 
             <batchtest fork="yes" todir="${reports.dir}">
