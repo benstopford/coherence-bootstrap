@@ -110,7 +110,7 @@ public final class ListenersCanLoseData extends TestBase {
     }
 
     private NamedCache getCacheConnection2() {
-        return getCache("config/extend-config-32002.xml", "foo");
+        return getCache("config/extend-client-32002.xml", "foo");
     }
 
 
