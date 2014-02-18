@@ -24,17 +24,17 @@ import java.util.HashSet;
 public abstract class TestBase extends TestCase {
     private static final String SEPERATOR = System.getProperty("path.separator");
     protected static final ClassLoader CLASS_LOADER = TestBase.class.getClassLoader();
-    protected static final String HPC_MULTICAST_ADDRESS_1 = "239.255.12.30";
+    protected static final String MULTICAST_ADDRESS_1 = "239.255.12.30";
     protected static final String CLUSTER_NAME = "com.rbs.hpc.gettingstarted";
     protected static final String BASIC_CACHE_XML = "config/basic-cache.xml";
-    private final ArrayList<Process> runningProcesses = new ArrayList<Process>();
     protected static final String CLUSTER_PORT = "1234";
     protected static final String LOGGING_LEVEL = "9";
     protected static final String TTL = "0";
+    private final ArrayList<Process> runningProcesses = new ArrayList<Process>();
 
 
     protected static void setDefaultProperties() {
-        System.setProperty("tangosol.coherence.clusteraddress", HPC_MULTICAST_ADDRESS_1);
+        System.setProperty("tangosol.coherence.clusteraddress", MULTICAST_ADDRESS_1);
         System.setProperty("tangosol.coherence.clusterport", CLUSTER_PORT);
         System.setProperty("tangosol.coherence.cluster", CLUSTER_NAME);
         System.setProperty("tangosol.coherence.cacheconfig", BASIC_CACHE_XML);
@@ -48,27 +48,43 @@ public abstract class TestBase extends TestCase {
 
 
     protected Process startOutOfProcess(String config, String classPathAdditions, String propertiesAdditions) throws IOException, InterruptedException {
-        String command = "java -Xms64m -Xmx128m " +
-                "-verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDetails " +
+        String command = "java -Xms64m -Xmx128m -verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDetails " +
                 "-Dtangosol.coherence.ttl=" + TTL + " " +
                 "-Dtangosol.coherence.clusterport=" + CLUSTER_PORT + " " +
                 "-Dtangosol.coherence.cluster=" + CLUSTER_NAME + " " +
-                "-Dtangosol.coherence.clusteraddress=" + HPC_MULTICAST_ADDRESS_1 + " " +
+                "-Dtangosol.coherence.clusteraddress=" + MULTICAST_ADDRESS_1 + " " +
                 "-Dtangosol.coherence.log.level=" + LOGGING_LEVEL + " " +
                 "-Dtangosol.coherence.cacheconfig=" + config + " " +
-                "-Dcom.rbs.hpc.test.extend.port=" + System.getProperty("com.rbs.hpc.test.extend.port") + " " +
-                "-Dcom.rbs.hpc.test.extend.port2=" + System.getProperty("com.rbs.hpc.test.extend.port2") + " " + getCoherenceJMXProperties() + " " +
+                "-Dcom.benstopford.extend.port=" + System.getProperty("com.benstopford.extend.port") + " " +
+                "-Dcom.benstopford.extend.port2=" + System.getProperty("com.benstopford.extend.port2") + " " + getCoherenceJMXProperties() + " " +
                 propertiesAdditions + " " +
                 "-cp classes" + SEPERATOR + "lib/coherence-3.5.1.jar" + SEPERATOR + "lib/coherence-utils.jar" + SEPERATOR + "config" +
-                classPathAdditions + " " +
+                classPathAdditions + SEPERATOR + parse(System.getProperty("java.class.path")) + " " +
                 "com.tangosol.net.DefaultCacheServer";
-        System.out.println("Running " + command);
+
+        System.out.println("Spawning Coherence Process: " + command);
 
         Process process = Runtime.getRuntime().exec(command);
         startLogging(process);
         checkForSuccesfulStart(command, process);
 
         return process;
+    }
+
+    private String parse(String property) {
+        System.out.println("classpath of this junit process: "+property);
+        //intelij adds crap onto the classpath :(
+        String[] split = property.split(" ");
+        String found = "";
+        for(String s:split){
+            if(s.contains("coherence")){ //hack to identify the actual entry for the classpath
+                found = s;
+            }else{
+                System.out.println("Skipping inherited classpath entry "+ s);
+            }
+        }
+
+        return found;
     }
 
     private void startLogging(Process process) throws FileNotFoundException {

@@ -15,10 +15,10 @@ import java.io.IOException;
  */
 public class CQCs extends TestBase {
 
-    public void testContinuousQueryShouldBlowUpIfTheQueryDoesNotFitInTheClientHeap() throws IOException, InterruptedException {
+    public void testCqcShouldLoadSubsetToLocalProcess() throws IOException, InterruptedException {
         startOutOfProcess("config/basic-extend-enabled-cache-32001.xml");
 
-        NamedCache backingCache = connectOverExtend();
+        NamedCache backingCache = getCache("config/extend-client-32001.xml", "foo");
 
         addValuesToCache(backingCache, 10);
 

@@ -6,11 +6,11 @@ import java.io.*;
  * BTS, 05-Feb-2009
  */
 public class PersistentPortTracker {
-    private static final String PORT_FILE_NAME = "classes/port.txt";
+    private static final String PORT_FILE_NAME = "port";
 
     public void incrementExtendPort() {
         int port = readPort();
-        setPort(port, "com.rbs.hpc.test.extend.port");
+        setPort(port, "com.benstopford.extend.port");
     }
     public void incrementExtendPort(String prop) {
         int port = readPort();

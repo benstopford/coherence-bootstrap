@@ -3,8 +3,10 @@
     <property name="src.dir" location="src"/>
     <property name="build.dir" location="build"/>
     <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="build.config.dir" value="${build.dir}/config"/>
     <property name="jar.dir"     value="${build.dir}/jar"/>
     <property name="reports.dir"     value="reports"/>
+    <property name="config.dir"     value="config"/>
 
     <path id="application" location="${jar.dir}/${ant.project.name}.jar"/>
     <path id="local" location="."/>
@@ -17,14 +19,16 @@
         <tstamp/>
         <mkdir dir="${build.dir}"/>
         <mkdir dir="${classes.dir}"/>
+        <mkdir dir="${build.config.dir}"/>
         <mkdir dir="${reports.dir}"/>
     </target>
 
     <target name="compile" depends="clean, init">
+        <!--build to classes directory-->
         <javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="classpath" includeantruntime="false" debug="on"/>
-        <!--now copy config etc-->
-        <copy todir="${classes.dir}">
-            <fileset dir="${src.dir}" excludes="**/*.java"/>
+        <!--now copy config etc to classes dir-->
+        <copy todir="${classes.dir}/config">
+            <fileset dir="${config.dir}" excludes="**/*.java"/>
         </copy>
     </target>
 
@@ -40,8 +44,8 @@
     </target>
 
     <target name="junit" depends="jar" >
-        <junit printsummary="yes" fork="yes" showoutput="on" haltonfailure="true" logfailedtests="on">
-            <formatter type="plain"/>
+        <junit printsummary="withOutAndErr" fork="yes" showoutput="true" haltonfailure="true" logfailedtests="on">
+            <formatter type="plain" usefile="true"/>
             <classpath>
                 <path refid="classpath"/>
                 <path refid="application"/>

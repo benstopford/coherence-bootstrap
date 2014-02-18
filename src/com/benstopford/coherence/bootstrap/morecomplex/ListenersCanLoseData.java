@@ -24,7 +24,7 @@ public final class ListenersCanLoseData extends TestBase {
 
     public void testShouldLoseUpdateWhenConnectionProxyGoesDown() throws Exception {
 
-        new PersistentPortTracker().incrementExtendPort("com.rbs.hpc.test.extend.port2");
+        new PersistentPortTracker().incrementExtendPort("com.benstopford.extend.port2");
 
         //start three nodes. Two of which are extend proxies listening on different ports
         startOutOfProcess("config/basic-cache.xml", "", "");
@@ -67,8 +67,8 @@ public final class ListenersCanLoseData extends TestBase {
 
         //kill the first extend proxy process
         extendProxy1.destroy();
-        System.out.println("waiting for tcp timeout");
-        Thread.sleep(35 * 1000);
+        System.out.println("waiting for socket to timeout");
+        Thread.sleep(40 * 1000);
 
 
         //check that connection 1 now throws as exception due to the proxy being dead.

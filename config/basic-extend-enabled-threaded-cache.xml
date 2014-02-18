@@ -38,7 +38,7 @@
                 <tcp-acceptor>
                     <local-address>
                         <address>localhost</address>
-                        <port system-property="com.rbs.hpc.test.extend.port">32001</port>
+                        <port system-property="com.benstopford.extend.port">32001</port>
                     </local-address>
                 </tcp-acceptor>
             </acceptor-config>
