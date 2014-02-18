@@ -46,7 +46,6 @@ public abstract class CoherenceClusteredTest extends TestCase {
         return startOutOfProcess(config, "", "");
     }
 
-
     protected Process startOutOfProcess(String config, String classPathAdditions, String propertiesAdditions) throws IOException, InterruptedException {
         String command = "java -Xms64m -Xmx128m -verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDetails " +
                 "-Dtangosol.coherence.ttl=" + TTL + " " +
@@ -63,7 +62,6 @@ public abstract class CoherenceClusteredTest extends TestCase {
                 "com.tangosol.net.DefaultCacheServer";
 
         System.out.println("Spawning Coherence Process: " + config);
-
         Process process = Runtime.getRuntime().exec(command);
         startLogging(process);
         checkForSuccesfulStart(command, process);
@@ -88,10 +86,8 @@ public abstract class CoherenceClusteredTest extends TestCase {
 
     private void startLogging(Process process) throws FileNotFoundException {
         String name = getClass().getSimpleName() + String.valueOf(System.currentTimeMillis());
-        StreamGobbler errorGobbler = new StreamGobbler(process, process.getErrorStream(), new File("log"), "err." + name);
-        errorGobbler.gobble();
-        StreamGobbler errorGobbler2 = new StreamGobbler(process, process.getInputStream(), new File("log"), "out." + name);
-        errorGobbler2.gobble();
+        new StreamGobbler(process, process.getErrorStream(), new File("log"), "err." + name).gobble();
+        new StreamGobbler(process, process.getInputStream(), new File("log"), "out." + name).gobble();
     }
 
     private void checkForSuccesfulStart(String command, Process process) throws InterruptedException {

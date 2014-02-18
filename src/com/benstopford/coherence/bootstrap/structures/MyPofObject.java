@@ -8,26 +8,36 @@ import java.io.IOException;
 
 
 public class MyPofObject implements PortableObject {
-    private String data;
+    private Object data;
+    private boolean logSerialisation;
 
     public MyPofObject() {
     }//serialization
 
-    public MyPofObject(String data) {
-        this.data = data;
+    public MyPofObject(Object data) {
+        this(data, true);
     }
 
-    public String getData() {
+    public MyPofObject(Object data, boolean logSerialisation) {
+        this.data = data;
+        this.logSerialisation = logSerialisation;
+    }
+
+    public Object getData() {
         return data;
     }
 
     public void readExternal(PofReader pofReader) throws IOException {
-        System.out.println("pof is deserialising");
-        data = pofReader.readString(1);
+        if (logSerialisation) {
+            System.out.println("pof is deserialising");
+        }
+        data = pofReader.readObject(1);
     }
 
     public void writeExternal(PofWriter pofWriter) throws IOException {
-        System.out.println("pof is serialising");
-        pofWriter.writeString(1, data);
+        if (logSerialisation) {
+            System.out.println("pof is serialising");
+        }
+        pofWriter.writeObject(1, data);
     }
 }
