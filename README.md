@@ -13,6 +13,7 @@ Topics covered:
 * CQCs
 * Entry Processors
 * Extend Proxies
+* Filters
 * Index Performance
 * MapListeners
 * Near Caching
@@ -23,6 +24,7 @@ Topics covered:
 
 **More Complex**
 * Hopping between caches on the server
+* Is POF always a good idea - testing serialisation times
 * How listeners can lose data
 * Membership listeners
 * Multithreaded clients
