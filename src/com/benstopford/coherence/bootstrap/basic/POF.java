@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.MyPofObject;
+import com.benstopford.coherence.bootstrap.structures.dataobjects.SimplePofObject;
 import com.tangosol.net.DefaultConfigurableCacheFactory;
 import com.tangosol.net.NamedCache;
 import junit.framework.TestCase;
@@ -18,9 +18,9 @@ public class POF extends TestCase {
         DefaultConfigurableCacheFactory factory = new DefaultConfigurableCacheFactory("config/basic-cache-with-pof.xml");
         NamedCache cache = factory.ensureCache("stuff", getClass().getClassLoader());
 
-        cache.put("key", new MyPofObject("some data"));
+        cache.put("key", new SimplePofObject("some data"));
 
-        MyPofObject object = (MyPofObject) cache.get("key");
+        SimplePofObject object = (SimplePofObject) cache.get("key");
 
         assertEquals("some data", object.getData());
     }

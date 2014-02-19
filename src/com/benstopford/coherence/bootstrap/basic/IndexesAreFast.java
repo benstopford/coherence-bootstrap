@@ -1,7 +1,7 @@
 package com.benstopford.coherence.bootstrap.basic;
 
+import com.benstopford.coherence.bootstrap.structures.dataobjects.PoJo;
 import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
-import com.benstopford.coherence.bootstrap.structures.ValueObject;
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.extractor.ReflectionExtractor;
 import com.tangosol.util.filter.EqualsFilter;
@@ -68,7 +68,7 @@ public final class IndexesAreFast extends CoherenceClusteredTest {
     private void addValuesToCache(NamedCache cache, int numberToAdd) {
         List value = new ArrayList();
         for (int i = 0; i < numberToAdd; i++) {
-            ValueObject valueObject = new ValueObject(i);
+            PoJo valueObject = new PoJo(i);
             value.add(i);
             cache.put("Key" + i, valueObject);
         }

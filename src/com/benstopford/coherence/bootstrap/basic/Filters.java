@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.MyPofObject;
+import com.benstopford.coherence.bootstrap.structures.dataobjects.SimplePofObject;
 import com.tangosol.io.pof.reflect.SimplePofPath;
 import com.tangosol.net.DefaultConfigurableCacheFactory;
 import com.tangosol.net.NamedCache;
@@ -37,7 +37,7 @@ public class Filters extends TestCase {
         cache = this.factory.ensureCache("stuff", getClass().getClassLoader());
 
         for (int i = 1; i <= 100; i++) {
-            cache.put("Key" + i, new MyPofObject("Value" + i, false));
+            cache.put("Key" + i, new SimplePofObject("Value" + i, false));
         }
 
         ValueExtractor pofExtractor = new PofExtractor (new SimplePofPath(1));
@@ -52,8 +52,8 @@ public class Filters extends TestCase {
         cache = factory.ensureCache("stuff", getClass().getClassLoader());
 
         for (int i = 1; i <= 100; i++) {
-            MyPofObject child = new MyPofObject("Value" + i, false);
-            MyPofObject parent = new MyPofObject(child, false);
+            SimplePofObject child = new SimplePofObject("Value" + i, false);
+            SimplePofObject parent = new SimplePofObject(child, false);
             cache.put("Key" + i, parent);
         }
 
