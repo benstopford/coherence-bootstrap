@@ -64,14 +64,16 @@ public class IsPofAlwaysAGoodIdea extends TestCase {
         testFullObjectDeserialiation(fieldCount);
         testFullObjectDeserialiation(fieldCount);
 
-        System.out.println("--");
-        System.out.println("Conclusion: for large objects of 5 fields the break even point is deserialising 2 fields with pof");
-        System.out.println("Conclusion: for large objects of 20 fields the break even point is deserialising 4 fields with pof");
-        System.out.println("Conclusion: for large objects of 50 fields the break even point is deserialising 5 fields with pof");
-        System.out.println("Conclusion: for large objects of 100 fields the break even point is deserialising 7 fields with pof");
-        System.out.println("Conclusion: for very large objects of 200 fields the break even point is deserialising 9 fields with pof");
-        System.out.println("--");
-        System.out.println("Conclusion: the size of the field (adjusted with fieldPadding) doesn't affect performance much");
+        System.out.println("----Break Even Points (on my machine) for objects with different numbers of fields----");
+        System.out.println("- for large objects of 5 fields the break even point is deserialising 2 fields with pof");
+        System.out.println("- for large objects of 20 fields the break even point is deserialising 4 fields with pof");
+        System.out.println("- for large objects of 50 fields the break even point is deserialising 5 fields with pof");
+        System.out.println("- for large objects of 100 fields the break even point is deserialising 7 fields with pof");
+        System.out.println("- for large objects of 200 fields the break even point is deserialising 9 fields with pof");
+        System.out.println("----Varying Field Size----");
+        System.out.println("- the size of the field (adjusted with fieldPadding) doesn't affect performance much");System.out.println("----Varying Field Size----");
+        System.out.println("----Conclusion----");
+        System.out.println("Using pof extractors in filters and for indexing is a good idea but if you are doing complex operations in the cache that require access to a broad range of fields it may actually be more efficient to deserialise the whole object");
     }
 
 
