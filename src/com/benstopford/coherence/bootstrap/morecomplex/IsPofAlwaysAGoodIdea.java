@@ -8,24 +8,30 @@ import com.tangosol.io.pof.reflect.SimplePofPath;
 import com.tangosol.util.Binary;
 import com.tangosol.util.ExternalizableHelper;
 import com.tangosol.util.extractor.PofExtractor;
-import junit.framework.TestCase;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static com.benstopford.coherence.bootstrap.structures.framework.PerformanceTimer.TimeFormat.ns;
+import static com.benstopford.coherence.bootstrap.structures.framework.PerformanceTimer.*;
 
-public class IsPofAlwaysAGoodIdea extends TestCase {
+
+/*
+Class to look at performance of pof-extractors in comparison to deserilising the whole object
+I'm using:
+     -Xmx8g -Xms8g
+     (and tweaking these for fun) -XX:NewSize=5g -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps
+ */
+public class IsPofAlwaysAGoodIdea  {
     public static int objectCount;
     static byte[] padding = new byte[10];
     enum Type {start, end, random};
 
-    /*
-    Class to look at performance of pof-extractors in comparison to deserilising the whole object
-    I'm using:
-         -Xmx8g -Xms8g
-         (and tweaking these for fun) -XX:NewSize=5g -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps
-     */
+    public static void main(String[] args) throws InterruptedException {
+        new IsPofAlwaysAGoodIdea().testStuff();
+    }
+
     public void testStuff() throws InterruptedException {
 
         padding = new byte[64];
@@ -92,13 +98,14 @@ public class IsPofAlwaysAGoodIdea extends TestCase {
         }
 
         //deserialise them all
-        long start = System.nanoTime();
+        start();
         for (Binary b : data) {
             ExternalizableHelper.fromBinary(b, context);
         }
-        long took = (System.nanoTime() - start);
+        Took end = end();
 
-        System.out.printf("On average full deserialisation of %s field object took %,dns\n", numberOfFieldsOnObject, took / data.size());
+        Double d = Double.valueOf(end.average(data.size(), ns));
+        System.out.printf("On average full deserialisation of %s field object took %sns\n", numberOfFieldsOnObject, d);
     }
 
     public static void testPofExtractionOfNAtrributes(int numberOfFieldsOnObject, int numberOfFieldsToExract, Type entryPoint) {
@@ -123,7 +130,7 @@ public class IsPofAlwaysAGoodIdea extends TestCase {
 
 
         //PofExtract some number of fields from the start/end of stream
-        long start = System.nanoTime();
+        start();
         for (Binary b : data) {
             for (int i = 0; i < numberOfFieldsToExract; i++) {
                 if (entryPoint==Type.end) {
@@ -135,13 +142,12 @@ public class IsPofAlwaysAGoodIdea extends TestCase {
                 }
             }
         }
-        long took = (System.nanoTime() - start);
-
-        System.out.printf("On average pof extraction of %s %s fields of %s took %,dns\n", entryPoint==Type.end ? "last" : entryPoint==Type.start?"start":"random", numberOfFieldsToExract, numberOfFieldsOnObject, took / data.size());
+        Took took = end();
+        System.out.printf("On average pof extraction of %s %s fields of %s took %sns\n", entryPoint==Type.end ? "last" : entryPoint==Type.start?"start":"random", numberOfFieldsToExract, numberOfFieldsOnObject, took.average(data.size(), ns));
     }
 
     private static void extract(SimplePofContext context, Binary b, int index) {
-        PofExtractor pofExtractor = new PofExtractor(new SimplePofPath(index));
+        PofExtractor pofExtractor = new PofExtractor(null, new SimplePofPath(index));
         PofValue value = PofValueParser.parse(b, context);
         pofExtractor.getNavigator().navigate(value).getValue();
     }

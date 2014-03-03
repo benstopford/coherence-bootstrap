@@ -45,7 +45,6 @@ public class Aggregators extends CoherenceClusteredTest implements Serializable
 
 
     protected void setUp() throws Exception {
-        removeCoherenceLogging();
         super.setUp();
         setDefaultProperties();
         startBasicCacheProcess();

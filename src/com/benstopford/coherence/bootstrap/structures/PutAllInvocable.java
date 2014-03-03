@@ -40,6 +40,7 @@ public class PutAllInvocable implements Invocable, PortableObject {
                 cache().put(key, entriesForMember.get(key));
             } catch (Throwable e) {
                 errors.put(key, e);
+                e.printStackTrace();
             }
         }
         System.out.println("Completed invocation with error count of " + errors.size());

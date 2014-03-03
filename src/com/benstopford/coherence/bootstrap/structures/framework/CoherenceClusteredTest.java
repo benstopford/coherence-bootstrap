@@ -1,10 +1,7 @@
 package com.benstopford.coherence.bootstrap.structures.framework;
 
 import com.rbs.hpcg.util.StreamGobbler;
-import com.tangosol.net.CacheFactory;
-import com.tangosol.net.CacheService;
-import com.tangosol.net.DefaultConfigurableCacheFactory;
-import com.tangosol.net.NamedCache;
+import com.tangosol.net.*;
 import functional.fixtures.SizableObjectFactory;
 import junit.framework.TestCase;
 
@@ -57,7 +54,7 @@ public abstract class CoherenceClusteredTest extends TestCase {
                 "-Dcom.benstopford.extend.port=" + System.getProperty("com.benstopford.extend.port") + " " +
                 "-Dcom.benstopford.extend.port2=" + System.getProperty("com.benstopford.extend.port2") + " " + getCoherenceJMXProperties() + " " +
                 propertiesAdditions + " " +
-                "-cp classes" + SEPERATOR + "lib/coherence-3.5.1.jar" + SEPERATOR + "lib/coherence-utils.jar" + SEPERATOR + "config" +
+                "-cp classes" + SEPERATOR + "lib/coherence-utils.jar" + SEPERATOR + "config" +
                 classPathAdditions + SEPERATOR + parse(System.getProperty("java.class.path")) + " " +
                 "com.tangosol.net.DefaultCacheServer";
 
@@ -76,8 +73,6 @@ public abstract class CoherenceClusteredTest extends TestCase {
         for(String s:split){
             if(s.contains("coherence")){ //hack to identify the actual entry for the classpath
                 found = s;
-            }else{
-                System.out.println("Skipping inherited classpath entry "+ s);
             }
         }
 
@@ -102,7 +97,7 @@ public abstract class CoherenceClusteredTest extends TestCase {
 
 
     protected void setUp() throws Exception {
-        removeCoherenceLogging();
+//        removeCoherenceLogging();
         super.setUp();
         deleteContentsOfLogDir();
         new PersistentPortTracker().incrementExtendPort();
@@ -112,7 +107,7 @@ public abstract class CoherenceClusteredTest extends TestCase {
     public static void removeCoherenceLogging() {
         System.out.println();
         System.out.println("********************  COHERENCE LOGGING HAS BEEN REMOVED  *******************");
-        System.out.println("*****************(enable in TestBase.removeCoherenceLogging())***************");
+        System.out.println("**********(enable in "+CoherenceClusteredTest.class.getSimpleName()+".removeCoherenceLogging())********");
         System.out.println();
         System.setErr(new PrintStream(new OutputStream() {
             @Override
@@ -247,7 +242,8 @@ public abstract class CoherenceClusteredTest extends TestCase {
     }
 
     protected NamedCache getCache(String configLocation, String cacheName) {
-        NamedCache cache = new DefaultConfigurableCacheFactory(configLocation).ensureCache(cacheName, getClass().getClassLoader());
+        ConfigurableCacheFactory factory = CacheFactory.getCacheFactoryBuilder().getConfigurableCacheFactory(configLocation, getClass().getClassLoader());
+        NamedCache cache = factory.ensureCache(cacheName, getClass().getClassLoader());
         addToShutdownList(cache);
         cache.size();//initialise it
         return cache;

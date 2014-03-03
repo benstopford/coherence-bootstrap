@@ -1,6 +1,7 @@
 package com.benstopford.coherence.bootstrap.basic;
 
 import com.benstopford.coherence.bootstrap.structures.dataobjects.SimplePofObject;
+import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.tangosol.io.pof.reflect.SimplePofPath;
 import com.tangosol.net.DefaultConfigurableCacheFactory;
 import com.tangosol.net.NamedCache;
@@ -9,11 +10,10 @@ import com.tangosol.util.ValueExtractor;
 import com.tangosol.util.extractor.KeyExtractor;
 import com.tangosol.util.extractor.PofExtractor;
 import com.tangosol.util.filter.LikeFilter;
-import junit.framework.TestCase;
 
 import java.util.Set;
 
-public class Filters extends TestCase {
+public class Filters extends CoherenceClusteredTest {
 
     private DefaultConfigurableCacheFactory factory;
     private NamedCache cache;
@@ -40,7 +40,7 @@ public class Filters extends TestCase {
             cache.put("Key" + i, new SimplePofObject("Value" + i, false));
         }
 
-        ValueExtractor pofExtractor = new PofExtractor (new SimplePofPath(1));
+        ValueExtractor pofExtractor = new PofExtractor (null, new SimplePofPath(1));
         Filter filter = new LikeFilter(pofExtractor, "%1%", '/', true);
 
         Set set = cache.entrySet(filter);
@@ -57,7 +57,7 @@ public class Filters extends TestCase {
             cache.put("Key" + i, parent);
         }
 
-        ValueExtractor pofExtractor = new PofExtractor (new SimplePofPath(new int[]{1,1}));
+        ValueExtractor pofExtractor = new PofExtractor (null,  new SimplePofPath(new int[]{1,1}));
         Filter filter = new LikeFilter(pofExtractor, "%1%", '/', true);
 
         Set set = cache.entrySet(filter);

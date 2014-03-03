@@ -28,8 +28,9 @@ public class SimplePofObject implements PortableObject {
     }
 
     public void readExternal(PofReader pofReader) throws IOException {
-        log("deserialising");
         data = pofReader.readObject(1);
+        logSerialisation = pofReader.readBoolean(2);
+        log("deserialising");
     }
 
     private void log(String type) {
@@ -39,8 +40,8 @@ public class SimplePofObject implements PortableObject {
     }
 
     public void writeExternal(PofWriter pofWriter) throws IOException {
-        log("serialising");
         pofWriter.writeObject(1, data);
-        pofWriter.writeRemainder(null);
+        pofWriter.writeBoolean(2, logSerialisation);
+        log("serialising");
     }
 }
