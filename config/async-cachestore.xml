@@ -19,13 +19,16 @@
                     </internal-cache-scheme>
                     <cachestore-scheme>
                         <class-scheme>
-                            <class-name>com.benstopford.coherence.bootstrap.structures.PsedoDatabaseCacheStore
+                            <class-name>
+                                com.benstopford.coherence.bootstrap.structures.PsedoDatabaseCacheStore
                             </class-name>
                         </class-scheme>
                     </cachestore-scheme>
-                    <write-delay>1s</write-delay>
-                    <write-batch-factor>1</write-batch-factor>
+                    <cachestore-timeout>0</cachestore-timeout>
+                    <write-delay>200ms</write-delay>
+                    <write-batch-factor>0.5</write-batch-factor>
                     <write-requeue-threshold>10000</write-requeue-threshold>
+                    <rollback-cachestore-failures>false</rollback-cachestore-failures>
                 </read-write-backing-map-scheme>
             </backing-map-scheme>
             <autostart>true</autostart>

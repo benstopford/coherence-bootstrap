@@ -6,6 +6,7 @@ import com.benstopford.coherence.bootstrap.structures.SumAggregator;
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.filter.EqualsFilter;
 import com.tangosol.util.filter.NotFilter;
+import org.junit.Test;
 
 import java.io.Serializable;
 
@@ -15,6 +16,7 @@ import java.io.Serializable;
 public class Aggregators extends CoherenceClusteredTest implements Serializable
 {
 
+    @Test
     public void testSimpleAggregation() throws InterruptedException {
         NotFilter grabEverything = new NotFilter(new EqualsFilter("toString", "it won't be this"));
         NamedCache cache = getBasicCache("foo");
