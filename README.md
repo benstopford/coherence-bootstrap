@@ -8,7 +8,7 @@ in the coherence incubator*.
 Topics covered:
 
 **Basics:**
-* Aggregators
+* Agregators
 * Cache Stores (Async/Sync)
 * CQCs
 * Entry Processors
@@ -41,3 +41,8 @@ Topics covered:
 * Create a project in your IDE of choice
 * Add the lib directory and "." to your classpath
 * run/refer to the ant script if you have any problems
+
+
+**Outstanding Tasks**
+* Some tests are still running Junit3-style!
+* Async Cache Store test is not testing (or working) asynchronously

@@ -59,6 +59,7 @@
         </junit>
         <delete>
             <fileset dir="." includes="junit*.properties"/>
+            <fileset dir="." includes="CLUSTER_DATA_LOSS_DETECTED"/>
         </delete>
     </target>
 </project>

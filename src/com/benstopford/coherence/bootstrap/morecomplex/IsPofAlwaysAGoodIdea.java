@@ -8,6 +8,7 @@ import com.tangosol.io.pof.reflect.SimplePofPath;
 import com.tangosol.util.Binary;
 import com.tangosol.util.ExternalizableHelper;
 import com.tangosol.util.extractor.PofExtractor;
+import junit.framework.TestCase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,23 +20,19 @@ import static com.benstopford.coherence.bootstrap.structures.framework.Performan
 
 /*
 Class to look at performance of pof-extractors in comparison to deserilising the whole object
-I'm using:
+  It is best to use the below memory settings and a larger objectCount to get reliable results:
      -Xmx8g -Xms8g
      (and tweaking these for fun) -XX:NewSize=5g -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps
  */
-public class IsPofAlwaysAGoodIdea  {
+public class IsPofAlwaysAGoodIdea  extends TestCase {
     public static int objectCount;
     static byte[] padding = new byte[10];
     enum Type {start, end, random};
 
-    public static void main(String[] args) throws InterruptedException {
-        new IsPofAlwaysAGoodIdea().testStuff();
-    }
-
-    public void testStuff() throws InterruptedException {
+    public void testWherePofExtractionStopsBeingMoreEfficient() throws InterruptedException {
 
         padding = new byte[64];
-        objectCount = 100000;
+        objectCount = 10000; //Set to ~1,000,000 for accurate test
         int fieldCount = 50;
 
         testFullObjectDeserialiation(fieldCount);
@@ -45,23 +42,23 @@ public class IsPofAlwaysAGoodIdea  {
         System.gc();
         Thread.sleep(1000);
 
-        testPofExtractionOfNAtrributes(fieldCount, 5, Type.start);
-        testPofExtractionOfNAtrributes(fieldCount, 5, Type.start);
-        testPofExtractionOfNAtrributes(fieldCount, 5, Type.start);
+        testPofExtractionOfNAttributes(fieldCount, 5, Type.start);
+        testPofExtractionOfNAttributes(fieldCount, 5, Type.start);
+        testPofExtractionOfNAttributes(fieldCount, 5, Type.start);
 
         System.gc();
         Thread.sleep(1000);
 
-        testPofExtractionOfNAtrributes(fieldCount, 5, Type.end);
-        testPofExtractionOfNAtrributes(fieldCount, 5, Type.end);
-        testPofExtractionOfNAtrributes(fieldCount, 5, Type.end);
+        testPofExtractionOfNAttributes(fieldCount, 5, Type.end);
+        testPofExtractionOfNAttributes(fieldCount, 5, Type.end);
+        testPofExtractionOfNAttributes(fieldCount, 5, Type.end);
 
         System.gc();
         Thread.sleep(1000);
 
-        testPofExtractionOfNAtrributes(fieldCount, 5, Type.random);
-        testPofExtractionOfNAtrributes(fieldCount, 5, Type.random);
-        testPofExtractionOfNAtrributes(fieldCount, 5, Type.random);
+        testPofExtractionOfNAttributes(fieldCount, 5, Type.random);
+        testPofExtractionOfNAttributes(fieldCount, 5, Type.random);
+        testPofExtractionOfNAttributes(fieldCount, 5, Type.random);
 
         System.gc();
         Thread.sleep(1000); //sanity check same as first results
@@ -108,7 +105,7 @@ public class IsPofAlwaysAGoodIdea  {
         System.out.printf("On average full deserialisation of %s field object took %sns\n", numberOfFieldsOnObject, d);
     }
 
-    public static void testPofExtractionOfNAtrributes(int numberOfFieldsOnObject, int numberOfFieldsToExract, Type entryPoint) {
+    public static void testPofExtractionOfNAttributes(int numberOfFieldsOnObject, int numberOfFieldsToExract, Type entryPoint) {
         SimplePofContext context = new SimplePofContext();
         List<Binary> data = new ArrayList<Binary>();
 

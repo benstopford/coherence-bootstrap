@@ -8,6 +8,7 @@ import com.tangosol.net.NamedCache;
  * BTS, 07-Dec-2007
  */
 public class CacheStoreSynchronous extends CoherenceClusteredTest {
+
     public void testCacheStore() {
 
         NamedCache cache = getCache("config/synch-cachestore.xml","foo");

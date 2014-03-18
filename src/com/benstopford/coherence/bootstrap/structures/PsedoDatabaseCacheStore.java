@@ -19,16 +19,23 @@ public class PsedoDatabaseCacheStore extends AbstractCacheStore {
     public void store(Object key, Object val) {
         System.out.printf("Trying to write %s to database\n", key);
 
-        int lastCall = keysCalled.get(key)==null?0:keysCalled.get(key);
-        keysCalled.put(key,++lastCall);
+        recordCall(key);
 
         throw new RuntimeException("something went wrong writing to database");
+    }
+
+    private void recordCall(Object key) {
+        int lastCall = keysCalled.get(key)==null?0:keysCalled.get(key);
+        keysCalled.put(key,++lastCall);
     }
 
 
     @Override
     public void storeAll(Map mapEntries) {
-        throw new RuntimeException("something went wrong writing to database for all");
+        for(Object o: mapEntries.entrySet()){
+            Map.Entry entry = (Map.Entry) o;
+            store(entry.getKey(), entry.getValue());
+        }
     }
 
     public Object load(Object object) {

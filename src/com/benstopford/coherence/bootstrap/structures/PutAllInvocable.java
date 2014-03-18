@@ -24,10 +24,10 @@ public class PutAllInvocable implements Invocable, PortableObject {
     public PutAllInvocable() {
     }
 
-    public PutAllInvocable(Map entriesForMember, String cacheName, String service) {
+    public PutAllInvocable(Map entriesForMember, String cacheName, String scheme) {
         this.entriesForMember = entriesForMember;
         this.cacheName = cacheName;
-        this.scheme = service;
+        this.scheme = scheme;
     }
 
     public void init(InvocationService service) {
@@ -48,8 +48,8 @@ public class PutAllInvocable implements Invocable, PortableObject {
 
     private NamedCache cache() {
         if (cache == null) {
-            cache = new DefaultConfigurableCacheFactory(scheme)
-                    .ensureCache(cacheName, getClass().getClassLoader());
+            ConfigurableCacheFactory factory = CacheFactory.getCacheFactoryBuilder().getConfigurableCacheFactory(scheme, getClass().getClassLoader());
+            cache = factory.ensureCache(cacheName, getClass().getClassLoader());
         }
         return cache;
     }

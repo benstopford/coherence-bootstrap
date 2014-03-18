@@ -97,7 +97,7 @@ public abstract class CoherenceClusteredTest extends TestCase {
 
 
     protected void setUp() throws Exception {
-//        removeCoherenceLogging();
+        removeCoherenceLogging();
         super.setUp();
         deleteContentsOfLogDir();
         new PersistentPortTracker().incrementExtendPort();

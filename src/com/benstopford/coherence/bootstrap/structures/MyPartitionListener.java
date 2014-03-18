@@ -10,7 +10,7 @@ import java.io.IOException;
  * BTS, 12-May-2008
  */
 public class MyPartitionListener implements PartitionListener {
-    public static final File CLUSTER_DATA_LOSS_FLAG_FILE = new File("CLUSTER_DATA_LOSS_DATECTED");
+    public static final File CLUSTER_DATA_LOSS_FLAG_FILE = new File("CLUSTER_DATA_LOSS_DETECTED");
 
     public void onPartitionEvent(PartitionEvent partitionEvent) {
         if (partitionEvent.getId() == PartitionEvent.PARTITION_LOST) {
