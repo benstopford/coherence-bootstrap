@@ -21,7 +21,7 @@ public class PersistentPortTracker {
         port++;
         System.setProperty(property, String.valueOf(port));
         writePort(port);
-        System.out.println("Running with extend port:" + property + " set to " + System.getProperty(property));
+//        System.out.println("Running with extend port:" + property + " set to " + System.getProperty(property));
     }
 
     private void writePort(int port) {

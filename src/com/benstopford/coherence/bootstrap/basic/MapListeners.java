@@ -3,8 +3,13 @@ package com.benstopford.coherence.bootstrap.basic;
 import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.AbstractMapListener;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
+
+import static junit.framework.Assert.assertEquals;
 
 /**
  * Also see intermediate.SimulatingLostUpdatesInClientListenersExample
@@ -13,7 +18,8 @@ import java.io.IOException;
 public class MapListeners extends CoherenceClusteredTest {
     int notificationCount = 0;
 
-    public void testMapListenerShouldBeCalledWhenEntryInserted() throws IOException, InterruptedException {
+    @Test
+    public void mapListenerShouldBeCalledWhenEntryInserted() throws IOException, InterruptedException {
 
         startBasicCacheProcess();
         startDataDisabledExtendProxy();
@@ -40,11 +46,13 @@ public class MapListeners extends CoherenceClusteredTest {
         assertEquals(2, notificationCount);
     }
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
     }
 
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         super.tearDown();
     }
 }

@@ -4,6 +4,9 @@ import com.benstopford.coherence.bootstrap.structures.SleepingProcessor;
 import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.processor.AbstractProcessor;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +23,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class MultiThreadedExtendClientExample extends CoherenceClusteredTest {
 
-    public void testShouldBeFasterMultithreaded() throws IOException, InterruptedException {
+    @Test
+    public void shouldBeFasterMultithreaded() throws IOException, InterruptedException {
 
         //Start two nodes, one data enabled the other the extend proxy
         startOutOfProcess("config/basic-cache-threaded.xml");
@@ -80,11 +84,11 @@ public class MultiThreadedExtendClientExample extends CoherenceClusteredTest {
     }
 
 
-    protected void setUp() throws Exception {
+    @Before public void setUp() throws Exception {
         super.setUp();
     }
 
-    protected void tearDown() throws Exception {
+    @After public void tearDown() throws Exception {
         super.tearDown();
     }
 }

@@ -24,9 +24,7 @@
     </target>
 
     <target name="compile" depends="clean, init">
-        <!--build to classes directory-->
         <javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="classpath" includeantruntime="false" debug="on"/>
-        <!--now copy config etc to classes dir-->
         <copy todir="${classes.dir}/config">
             <fileset dir="${config.dir}" excludes="**/*.java"/>
         </copy>

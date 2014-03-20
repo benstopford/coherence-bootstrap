@@ -5,6 +5,9 @@ import com.benstopford.coherence.bootstrap.structures.framework.CoherenceCluster
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.extractor.ReflectionExtractor;
 import com.tangosol.util.filter.EqualsFilter;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,7 +21,8 @@ public final class IndexesAreFast extends CoherenceClusteredTest {
     private final List<Object> valuesSentToClient1 = new ArrayList<Object>();
     private final List<Object> valuesSentToClient2 = new ArrayList<Object>();
 
-    public void testIsUsingAnEntrySetWithAnIndexFasterAndDoesItScaleBetterAsTheClusterSizeIncreases() throws IOException, InterruptedException {
+    @Test
+    public void isUsingAnEntrySetWithAnIndexFasterAndDoesItScaleBetterAsTheClusterSizeIncreases() throws IOException, InterruptedException {
 
         startOutOfProcess("config/basic-cache.xml", "", "");
         startOutOfProcess("config/basic-cache.xml", "", "");
@@ -74,14 +78,16 @@ public final class IndexesAreFast extends CoherenceClusteredTest {
         }
     }
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         System.setProperty("tangosol.coherence.distributed.localstorage", "false");
         valuesSentToClient1.clear();
         valuesSentToClient2.clear();
         super.setUp();
     }
 
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         System.clearProperty("tangosol.coherence.distributed.localstorage");
         super.tearDown();
     }

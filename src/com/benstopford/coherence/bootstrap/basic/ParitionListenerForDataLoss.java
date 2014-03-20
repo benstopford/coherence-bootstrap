@@ -1,11 +1,17 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.benstopford.coherence.bootstrap.structures.MyPartitionListener;
-import com.tangosol.net.*;
+import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
+import com.tangosol.net.NamedCache;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.io.IOException;
 import java.io.File;
+import java.io.IOException;
+
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
 
 /**
  * BTS, 12-May-2008
@@ -18,7 +24,8 @@ public class ParitionListenerForDataLoss extends CoherenceClusteredTest {
      * repartitioning event. That is to say that if a node is lost, say the process dies or the Cache Service restarts
      * itself etc, Coherence will restore the data from its backup copy.
      */
-    public void testDataLossShouldTriggerPartitionListenerActivation() throws IOException, InterruptedException {
+    @Test
+    public void dataLossShouldTriggerPartitionListenerActivation() throws IOException, InterruptedException {
         //create 2 external data enabled processes
         Process nodeToBeKilled = startOutOfProcess("config/basic-cache-with-a-partition-listener-local-storage-true.xml");
         Process nodeToBeKilled2 = startOutOfProcess("config/basic-cache-with-a-partition-listener-local-storage-true.xml");
@@ -41,7 +48,8 @@ public class ParitionListenerForDataLoss extends CoherenceClusteredTest {
         assertTrue(MyPartitionListener.CLUSTER_DATA_LOSS_FLAG_FILE.exists());
     }
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
         File flagFile = MyPartitionListener.CLUSTER_DATA_LOSS_FLAG_FILE;
         if (flagFile.exists()) {
@@ -50,7 +58,8 @@ public class ParitionListenerForDataLoss extends CoherenceClusteredTest {
         }
     }
 
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         super.tearDown();
     }
 }

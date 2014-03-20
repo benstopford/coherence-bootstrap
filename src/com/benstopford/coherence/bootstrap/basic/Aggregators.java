@@ -1,14 +1,19 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.benstopford.coherence.bootstrap.structures.ParallelSumAggregator;
 import com.benstopford.coherence.bootstrap.structures.SumAggregator;
+import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.filter.EqualsFilter;
 import com.tangosol.util.filter.NotFilter;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.Serializable;
+
+import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 /**
  * BTS, 07-Dec-2007
@@ -17,7 +22,7 @@ public class Aggregators extends CoherenceClusteredTest implements Serializable
 {
 
     @Test
-    public void testSimpleAggregation() throws InterruptedException {
+    public void simpleAggregation() throws InterruptedException {
         NotFilter grabEverything = new NotFilter(new EqualsFilter("toString", "it won't be this"));
         NamedCache cache = getBasicCache("foo");
 
@@ -46,7 +51,8 @@ public class Aggregators extends CoherenceClusteredTest implements Serializable
     }
 
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
         setDefaultProperties();
         startBasicCacheProcess();
@@ -54,7 +60,8 @@ public class Aggregators extends CoherenceClusteredTest implements Serializable
     }
 
 
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         super.tearDown();
     }
 }

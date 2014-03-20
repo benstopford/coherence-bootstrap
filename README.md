@@ -22,7 +22,7 @@ Topics covered:
 * Put & Get
 * Triggers
 
-**More Complex**
+**More Complex:**
 * Hopping between caches on the server
 * Is POF always a good idea - testing serialisation times
 * How listeners can lose data
@@ -44,5 +44,6 @@ Topics covered:
 
 
 **Outstanding Tasks**
-* Some tests are still running Junit3-style!
+* Remove repetative logging when running suite
 * Async Cache Store test is not behaving correctly (and the test is actually deficient)
+* Port cluster framework to LittleGrid

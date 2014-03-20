@@ -5,9 +5,16 @@ import com.benstopford.coherence.bootstrap.structures.framework.PersistentPortTr
 import com.tangosol.net.NamedCache;
 import com.tangosol.net.messaging.ConnectionException;
 import com.tangosol.util.AbstractMapListener;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static junit.framework.Assert.assertTrue;
+import static junit.framework.Assert.fail;
+import static org.junit.Assert.assertFalse;
 
 /**
  * This test shows how updates can be lost if you use simple listeners. Here update 3 will be lost.
@@ -22,7 +29,8 @@ public final class ListenersCanLoseData extends CoherenceClusteredTest {
     private final List<Object> valuesSentToClient2 = new ArrayList<Object>();
 
 
-    public void testShouldLoseUpdateWhenConnectionProxyGoesDown() throws Exception {
+    @Test
+    public void shouldLoseUpdateWhenConnectionProxyGoesDown() throws Exception {
 
         new PersistentPortTracker().incrementExtendPort("com.benstopford.extend.port2");
 
@@ -114,13 +122,15 @@ public final class ListenersCanLoseData extends CoherenceClusteredTest {
     }
 
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         valuesSentToClient1.clear();
         valuesSentToClient2.clear();
         super.setUp();
     }
 
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         super.tearDown();
     }
 }

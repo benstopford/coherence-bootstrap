@@ -3,17 +3,20 @@ package com.benstopford.coherence.bootstrap.basic;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.SimplePofObject;
 import com.tangosol.net.DefaultConfigurableCacheFactory;
 import com.tangosol.net.NamedCache;
-import junit.framework.TestCase;
+import org.junit.Test;
 
 import java.io.IOException;
 
+import static junit.framework.Assert.assertEquals;
 
-public class POF extends TestCase {
+
+public class POF {
 
     /**
      * see config/my-pof-config
      */
-    public void testUsingPof() throws IOException {
+    @Test
+    public void putAndGetPofEncodedObject() throws IOException {
 
         DefaultConfigurableCacheFactory factory = new DefaultConfigurableCacheFactory("config/basic-cache-with-pof.xml");
         NamedCache cache = factory.ensureCache("stuff", getClass().getClassLoader());
@@ -23,14 +26,6 @@ public class POF extends TestCase {
         SimplePofObject object = (SimplePofObject) cache.get("key");
 
         assertEquals("some data", object.getData());
-    }
-
-    protected void setUp() throws Exception {
-        super.setUp();
-    }
-
-    protected void tearDown() throws Exception {
-        super.tearDown();
     }
 
 }

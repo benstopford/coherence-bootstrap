@@ -3,7 +3,8 @@ package com.benstopford.coherence.bootstrap.structures.framework;
 import com.rbs.hpcg.util.StreamGobbler;
 import com.tangosol.net.*;
 import functional.fixtures.SizableObjectFactory;
-import junit.framework.TestCase;
+import org.junit.After;
+import org.junit.Before;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import java.util.HashSet;
  * I strongly suggest that, in your own code, you use the LittleGrid. See JK's post here:
  * http://thegridman.com/coherence/oracle-coherence-testing-with-oracle-tools/
  */
-public abstract class CoherenceClusteredTest extends TestCase {
+public abstract class CoherenceClusteredTest {
     private static final String SEPERATOR = System.getProperty("path.separator");
     protected static final ClassLoader CLASS_LOADER = CoherenceClusteredTest.class.getClassLoader();
     protected static final String MULTICAST_ADDRESS_1 = "239.255.12.30";
@@ -58,7 +59,7 @@ public abstract class CoherenceClusteredTest extends TestCase {
                 classPathAdditions + SEPERATOR + parse(System.getProperty("java.class.path")) + " " +
                 "com.tangosol.net.DefaultCacheServer";
 
-        System.out.println("Spawning Coherence Process: " + config);
+//        System.out.println("Spawning Coherence Process: " + config);
         Process process = Runtime.getRuntime().exec(command);
         startLogging(process);
         checkForSuccesfulStart(command, process);
@@ -95,26 +96,24 @@ public abstract class CoherenceClusteredTest extends TestCase {
         Thread.sleep(5000);
     }
 
-
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         removeCoherenceLogging();
-        super.setUp();
         deleteContentsOfLogDir();
         new PersistentPortTracker().incrementExtendPort();
         setDefaultProperties();
     }
 
     public static void removeCoherenceLogging() {
-        System.out.println();
-        System.out.println("********************  COHERENCE LOGGING HAS BEEN REMOVED  *******************");
-        System.out.println("**********(enable in "+CoherenceClusteredTest.class.getSimpleName()+".removeCoherenceLogging())********");
-        System.out.println();
-        System.setErr(new PrintStream(new OutputStream() {
-            @Override
-            public void write(int b) {
-                //ignore
-            }
-        }));
+            System.out.println();
+            System.out.println("********************  Running with Coherence logging removed from stdout - see ./log for remote node logs *******************");
+            System.out.println();
+            System.setErr(new PrintStream(new OutputStream() {
+                @Override
+                public void write(int b) {
+                    //ignore
+                }
+            }));
     }
 
     private void deleteContentsOfLogDir() {
@@ -126,15 +125,14 @@ public abstract class CoherenceClusteredTest extends TestCase {
         }
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
+    @After
+    public void tearDown() throws Exception {
         shutdownServices();
         releaseLocalCacheResources();
         CacheFactory.getCluster().shutdown();
         CacheFactory.shutdown();
         killOpenCoherenceProcesses();
         waitForAllKilledMembersToTimeOut();
-        System.out.println("log files for remote nodes are available in log directory");
     }
 
     private void waitForAllKilledMembersToTimeOut() throws InterruptedException {
@@ -147,7 +145,7 @@ public abstract class CoherenceClusteredTest extends TestCase {
 
     private void killOpenCoherenceProcesses() {
         for (Process process : runningProcesses) {
-            System.out.println("killing process " + process);
+//            System.out.println("killing process " + process);
             process.destroy();
             while (true) {
                 try {

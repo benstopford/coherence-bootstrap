@@ -8,7 +8,7 @@ import com.tangosol.io.pof.reflect.SimplePofPath;
 import com.tangosol.util.Binary;
 import com.tangosol.util.ExternalizableHelper;
 import com.tangosol.util.extractor.PofExtractor;
-import junit.framework.TestCase;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +24,16 @@ Class to look at performance of pof-extractors in comparison to deserilising the
      -Xmx8g -Xms8g
      (and tweaking these for fun) -XX:NewSize=5g -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps
  */
-public class IsPofAlwaysAGoodIdea  extends TestCase {
+public class IsPofAlwaysAGoodIdea {
     public static int objectCount;
     static byte[] padding = new byte[10];
-    enum Type {start, end, random};
 
-    public void testWherePofExtractionStopsBeingMoreEfficient() throws InterruptedException {
+    enum Type {start, end, random}
+
+    ;
+
+    @Test
+    public void whereDoPofExtractionStopsBeingMoreEfficient() throws InterruptedException {
 
         padding = new byte[64];
         objectCount = 10000; //Set to ~1,000,000 for accurate test
@@ -74,13 +78,14 @@ public class IsPofAlwaysAGoodIdea  extends TestCase {
         System.out.println("- for large objects of 100 fields the break even point is deserialising 7 fields with pof");
         System.out.println("- for large objects of 200 fields the break even point is deserialising 9 fields with pof");
         System.out.println("----Varying Field Size----");
-        System.out.println("- the size of the field (adjusted with fieldPadding) doesn't affect performance much");System.out.println("----Varying Field Size----");
+        System.out.println("- the size of the field (adjusted with fieldPadding) doesn't affect performance much");
+        System.out.println("----Varying Field Size----");
         System.out.println("----Conclusion----");
         System.out.println("Using pof extractors in filters and for indexing is a good idea but if you are doing complex operations in the cache that require access to a broad range of fields it may actually be more efficient to deserialise the whole object");
     }
 
 
-    public static void  testFullObjectDeserialiation(int numberOfFieldsOnObject) {
+    public static void testFullObjectDeserialiation(int numberOfFieldsOnObject) {
         SimplePofContext context = new SimplePofContext();
         List<Binary> data = new ArrayList<Binary>();
 
@@ -104,7 +109,6 @@ public class IsPofAlwaysAGoodIdea  extends TestCase {
         Double d = Double.valueOf(end.average(data.size(), ns));
         System.out.printf("On average full deserialisation of %s field object took %sns\n", numberOfFieldsOnObject, d);
     }
-
     public static void testPofExtractionOfNAttributes(int numberOfFieldsOnObject, int numberOfFieldsToExract, Type entryPoint) {
         SimplePofContext context = new SimplePofContext();
         List<Binary> data = new ArrayList<Binary>();
@@ -121,8 +125,8 @@ public class IsPofAlwaysAGoodIdea  extends TestCase {
 
         int[] randomPofIndexes = new int[numberOfFieldsToExract];
         Random random = new Random();
-        for(int i =0; i<randomPofIndexes.length; i++){
-            randomPofIndexes[i]=random.nextInt(numberOfFieldsOnObject);
+        for (int i = 0; i < randomPofIndexes.length; i++) {
+            randomPofIndexes[i] = random.nextInt(numberOfFieldsOnObject);
         }
 
 
@@ -130,17 +134,17 @@ public class IsPofAlwaysAGoodIdea  extends TestCase {
         start();
         for (Binary b : data) {
             for (int i = 0; i < numberOfFieldsToExract; i++) {
-                if (entryPoint==Type.end) {
+                if (entryPoint == Type.end) {
                     extract(context, b, numberOfFieldsOnObject - i);
-                } else if(entryPoint==Type.start) {
+                } else if (entryPoint == Type.start) {
                     extract(context, b, i);
-                }else if(entryPoint==Type.random){
+                } else if (entryPoint == Type.random) {
                     extract(context, b, randomPofIndexes[i]);
                 }
             }
         }
         Took took = end();
-        System.out.printf("On average pof extraction of %s %s fields of %s took %sns\n", entryPoint==Type.end ? "last" : entryPoint==Type.start?"start":"random", numberOfFieldsToExract, numberOfFieldsOnObject, took.average(data.size(), ns));
+        System.out.printf("On average pof extraction of %s %s fields of %s took %sns\n", entryPoint == Type.end ? "last" : entryPoint == Type.start ? "start" : "random", numberOfFieldsToExract, numberOfFieldsOnObject, took.average(data.size(), ns));
     }
 
     private static void extract(SimplePofContext context, Binary b, int index) {

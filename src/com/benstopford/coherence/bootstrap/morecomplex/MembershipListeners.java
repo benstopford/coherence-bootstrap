@@ -1,10 +1,18 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
 import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
-import com.tangosol.net.*;
+import com.tangosol.net.Cluster;
+import com.tangosol.net.MemberEvent;
+import com.tangosol.net.MemberListener;
+import com.tangosol.net.NamedCache;
 import com.tangosol.util.Base;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
+
+import static junit.framework.Assert.assertEquals;
 
 
 /**
@@ -14,7 +22,8 @@ public class MembershipListeners extends CoherenceClusteredTest {
     private Process otherMemberProcess;
     private static final String CONFIG_BASIC_CACHE_ON_DIFFERENT_CACHE_SERVICE_XML = "config/basic-cache-on-different-cache-service.xml";
 
-    public void testInspectNodesArrivingAndLeavingCluster() throws IOException, InterruptedException {
+    @Test
+    public void inspectNodesArrivingAndLeavingCluster() throws IOException, InterruptedException {
         TestMembershipListener listener = new TestMembershipListener();
 
         NamedCache cache = getCache(CONFIG_BASIC_CACHE_ON_DIFFERENT_CACHE_SERVICE_XML,"foobar2");
@@ -55,12 +64,12 @@ public class MembershipListeners extends CoherenceClusteredTest {
         }
     }
 
-    protected void setUp() throws Exception {
+    @Before public void setUp() throws Exception {
         super.setUp();
         setDefaultProperties();
     }
 
-    protected void tearDown() throws Exception {
+    @After public void tearDown() throws Exception {
         super.tearDown();
         if (otherMemberProcess != null && otherMemberProcess.exitValue() < 0) {
             otherMemberProcess.destroy();

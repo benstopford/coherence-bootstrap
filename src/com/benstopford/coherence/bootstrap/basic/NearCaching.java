@@ -3,6 +3,9 @@ package com.benstopford.coherence.bootstrap.basic;
 import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.tangosol.net.NamedCache;
 import functional.fixtures.SizableObjectFactory;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
 
@@ -11,7 +14,8 @@ import java.io.IOException;
  */
 public class NearCaching extends CoherenceClusteredTest {
 
-    public void testShouldBeAbleToNearCacheDataForInProcessReRetrieval() throws IOException, InterruptedException {
+    @Test
+    public void shouldBeAbleToNearCacheDataForInProcessReRetrieval() throws IOException, InterruptedException {
         startOutOfProcess("config/basic-extend-enabled-cache-32001.xml");
         Thread.sleep(5000);
 
@@ -41,11 +45,12 @@ public class NearCaching extends CoherenceClusteredTest {
         System.out.println("took " + (System.currentTimeMillis() - start) + " ms");
     }
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
     }
 
-    protected void tearDown() throws Exception {
+    @After public void tearDown() throws Exception {
         super.tearDown();
     }
 }

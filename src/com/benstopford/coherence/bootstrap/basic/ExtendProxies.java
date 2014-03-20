@@ -3,15 +3,21 @@ package com.benstopford.coherence.bootstrap.basic;
 import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.tangosol.net.DefaultConfigurableCacheFactory;
 import com.tangosol.net.NamedCache;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
+
+import static junit.framework.Assert.assertEquals;
 
 /**
  * BTS, 25-Jan-2008
  */
 public class ExtendProxies extends CoherenceClusteredTest {
 
-    public void testWithExtendNode() throws IOException, InterruptedException {
+    @Test
+    public void useExtendProxy() throws IOException, InterruptedException {
         //start data enabled node
         startOutOfProcess("config/basic-cache.xml", "", "");
 
@@ -30,11 +36,14 @@ public class ExtendProxies extends CoherenceClusteredTest {
 
     }
 
-    protected void setUp() throws Exception {
+
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
     }
 
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         super.tearDown();
     }
 }

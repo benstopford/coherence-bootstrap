@@ -4,13 +4,19 @@ import com.benstopford.coherence.bootstrap.structures.framework.CoherenceCluster
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.InvocableMap;
 import com.tangosol.util.processor.AbstractProcessor;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import static junit.framework.Assert.assertEquals;
 
 /**
  * BTS, 07-Dec-2007
  */
 public final class EntryProcessors extends CoherenceClusteredTest {
 
-    public void testDoSomethingAtomicallyWithAnEntryProcessor() {
+    @Test
+    public void doSomethingAtomicallyWithAnEntryProcessor() {
         NamedCache cache = getBasicCache("stuff");
 
         cache.put("Key", "Value");
@@ -33,11 +39,13 @@ public final class EntryProcessors extends CoherenceClusteredTest {
         }
     }
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
     }
 
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         super.tearDown();
     }
 }

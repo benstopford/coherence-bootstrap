@@ -1,15 +1,25 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
-import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.benstopford.coherence.bootstrap.structures.PutAllWithErrorReporting;
-import com.tangosol.net.*;
+import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
+import com.tangosol.net.DefaultConfigurableCacheFactory;
+import com.tangosol.net.DistributedCacheService;
+import com.tangosol.net.InvocationService;
+import com.tangosol.net.NamedCache;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.Map;
 import java.util.TreeMap;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertTrue;
+
 public class PutAllThatReportsIndividualExceptions extends CoherenceClusteredTest {
 
-    public void testShouldPut() throws InterruptedException {
+    @Test
+    public void shouldPut() throws InterruptedException {
         String cacheName = "regular-cache";
         String configPath = "config/basic-invocation-service-pof-1.xml";
         NamedCache cache = getCache(configPath, cacheName);
@@ -38,7 +48,8 @@ public class PutAllThatReportsIndividualExceptions extends CoherenceClusteredTes
         assertEquals(5, cache.get(4));
     }
 
-    public void testShouldReportFailures() {
+    @Test
+    public void shouldReportFailures() {
 
         String cacheName = "break-me";
         String configPath = "config/basic-invocation-service-pof-1.xml";
@@ -60,7 +71,6 @@ public class PutAllThatReportsIndividualExceptions extends CoherenceClusteredTes
 
         Map<Object, Throwable> keyToThrowableMap = invoker.putAll(entries);
 
-        System.out.println("test ran and return result is " + keyToThrowableMap);
         System.out.println("test ran and return result size is " + keyToThrowableMap.size());
 
         assertEquals(4, keyToThrowableMap.size());
@@ -71,14 +81,14 @@ public class PutAllThatReportsIndividualExceptions extends CoherenceClusteredTes
     }
 
 
-    protected void setUp() throws Exception {
+    @Before public void setUp() throws Exception {
         super.setUp();
         setDefaultProperties();
         startOutOfProcess("config/basic-invocation-service-pof-1.xml");
         startOutOfProcess("config/basic-invocation-service-pof-1.xml");
     }
 
-    protected void tearDown() throws Exception {
+    @After public void tearDown() throws Exception {
         super.tearDown();
     }
 }

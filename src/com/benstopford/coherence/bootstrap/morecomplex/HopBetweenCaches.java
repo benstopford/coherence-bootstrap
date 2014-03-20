@@ -4,19 +4,25 @@ import com.benstopford.coherence.bootstrap.structures.framework.CoherenceCluster
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.InvocableMap;
 import com.tangosol.util.processor.AbstractProcessor;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.Serializable;
+
+import static junit.framework.Assert.assertEquals;
 
 /**
  * BTS, 20-Feb-2008
  */
 public class HopBetweenCaches extends CoherenceClusteredTest implements Serializable {
 
-    public void testShouldBeAbleToAcceessDifferentCacheFromAnEntryProcessorIfTheyAreInDifferentCacheServices() {
+    @Test
+    public void shouldBeAbleToAcceessDifferentCacheFromAnEntryProcessorIfTheyAreInDifferentCacheServices() {
         //*****NB - this is only safe to do if the two caches are in different cache services*****
         //*****NB - note that it may work using a single cache service with multiple threads but there is the potential for deadlock*****
 
-        NamedCache cache1 = getCache("config/basic-cache-on-different-cache-service.xml","cache1");
+        NamedCache cache1 = getCache("config/basic-cache-on-different-cache-service.xml", "cache1");
         NamedCache cache2 = getBasicCache("cache2");
 
         cache1.invoke("Key", new PutInAnotherCacheEP());
@@ -34,11 +40,13 @@ public class HopBetweenCaches extends CoherenceClusteredTest implements Serializ
         }
     }
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
     }
 
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         super.tearDown();
     }
 }

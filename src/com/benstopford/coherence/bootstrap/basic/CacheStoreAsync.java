@@ -3,7 +3,11 @@ package com.benstopford.coherence.bootstrap.basic;
 import com.benstopford.coherence.bootstrap.structures.PsedoDatabaseCacheStore;
 import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.tangosol.net.NamedCache;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+
+import static junit.framework.Assert.assertTrue;
 
 /**
  * BTS, 07-Dec-2007
@@ -11,7 +15,7 @@ import org.junit.Test;
 public class CacheStoreAsync extends CoherenceClusteredTest {
 
     @Test
-    public void testDemoOfCacheStoreRetryCapabilityWithAsyncCacheStore() throws InterruptedException {
+    public void demoOfCacheStoreRetryCapabilityWithAsyncCacheStore() throws InterruptedException {
         NamedCache cache = getCache("config/async-cachestore.xml", "foo");
 
         cache.put("Key1", "Value1");
@@ -30,11 +34,13 @@ public class CacheStoreAsync extends CoherenceClusteredTest {
 
     }
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
     }
 
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         super.tearDown();
     }
 }

@@ -1,20 +1,26 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
-import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.benstopford.coherence.bootstrap.structures.SampleInvocable;
+import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.tangosol.net.DefaultConfigurableCacheFactory;
 import com.tangosol.net.InvocationService;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Map;
+
+import static junit.framework.Assert.assertEquals;
 
 /**
  * BTS, 03-Sep-2008
  */
 public class UsingServicesToIsolateWorkOnDifferentSetsOfMachines extends CoherenceClusteredTest {
 
-    
-    public void testSplitMachinesIntoTwoSetsWithServices() throws IOException, InterruptedException {
+
+    @Test
+    public void splitMachinesIntoTwoSetsWithServices() throws IOException, InterruptedException {
 
         // Five Coherence processes (including this one)
         startOutOfProcess("config/basic-invocation-service-1.xml", "", "");
@@ -47,11 +53,13 @@ public class UsingServicesToIsolateWorkOnDifferentSetsOfMachines extends Coheren
     }
 
 
-    protected void setUp() throws Exception {
+    @Before
+    public void setUp() throws Exception {
         super.setUp();
     }
 
-    protected void tearDown() throws Exception {
+    @After
+    public void tearDown() throws Exception {
         super.tearDown();
     }
 }
