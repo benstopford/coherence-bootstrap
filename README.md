@@ -45,4 +45,4 @@ Topics covered:
 
 **Outstanding Tasks**
 * Some tests are still running Junit3-style!
-* Async Cache Store test is not testing (or working) asynchronously
+* Async Cache Store test is not behaving correctly (and the test is actually deficient)
