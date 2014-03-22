@@ -62,7 +62,7 @@ public abstract class CoherenceClusteredTest {
 
             process = Runtime.getRuntime().exec(command);
 
-            new ProcessLogger(ProcessLogger.LogTo.fileOnly, process);
+            new ProcessLogger(process);
 
             checkForSuccesfulStart(command, process);
 
@@ -107,18 +107,12 @@ public abstract class CoherenceClusteredTest {
 
     public void pushCoherenceStdErrLoggingToFile() {
         System.out.println();
-        System.out.println("********************  Coherence logging removed from stderr. See ./log dir for all process logs *******************");
+        System.out.println("********************  Coherence logging removed from stderr. See ./log dir for all process logs. See ProcessLogger.LogTo *******************");
         System.out.println();
 
-        try {
-            PrintStream err = new PrintStream(new FileOutputStream("log/test-stderr.log"));
-            System.setErr(err);
-            System.err.println("This file contains the stderr, redirected from the test process");
-            err.flush();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        ProcessLogger.switchStdErrToFile();
     }
+
 
     private void deleteContentsOfLogDir() {
         File logDir = new File("log");

@@ -1,13 +1,16 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.PsedoDatabaseCacheStore;
+import com.benstopford.coherence.bootstrap.structures.FakeDatabaseCacheStore;
 import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
 import com.tangosol.net.NamedCache;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import static junit.framework.Assert.assertTrue;
+import java.util.Date;
+
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * BTS, 07-Dec-2007
@@ -25,13 +28,14 @@ public class CacheStoreAsync extends CoherenceClusteredTest {
         cache.put("Key5", "Value5");
         cache.put("Key6", "Value6");
 
-        //you should see attempts to retry based on PsedoDatabaseCacheStore.java
-        Thread.sleep(10 * 1000);
+        //CacheStore should not have fired yet as async (and has artificial delay - see FakeDatabaseCacheStore.java)
+        assertThat(FakeDatabaseCacheStore.keysCalled.size(),is(0));
 
-        System.out.println(PsedoDatabaseCacheStore.keysCalled);
-        assertTrue(PsedoDatabaseCacheStore.keysCalled.size() > 0);
-        assertTrue(PsedoDatabaseCacheStore.keysCalled.get("Key1") > 0);
+        System.out.println("Calls to add 6 items returned to client at " + new Date());
+        Thread.sleep(4 * 1000);
 
+        //CacheStore should have completed all async calls
+        assertThat(FakeDatabaseCacheStore.keysCalled.size(),is(6));
     }
 
     @Before

@@ -39,5 +39,4 @@ Topics covered:
 * run/refer to the ant script if you have any problems
 
 **Outstanding Tasks**
-* Async Cache Store test is not behaving correctly (and the test is actually deficient)
 * Port cluster framework to LittleGrid
