@@ -27,7 +27,11 @@ public abstract class CoherenceClusteredTest {
     protected static final String CLUSTER_PORT = "1234";
     protected static final String LOGGING_LEVEL = "9";
     protected static final String TTL = "0";
+
     private final ArrayList<Process> runningProcesses = new ArrayList<Process>();
+    private HashSet<CacheService> services = new HashSet<CacheService>();
+    private HashSet<NamedCache> caches = new HashSet<NamedCache>();
+
 
 
     protected static void setDefaultProperties() {
@@ -47,14 +51,10 @@ public abstract class CoherenceClusteredTest {
         Process process = null;
         try {
             String command = "java -Xms64m -Xmx128m -verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDetails " +
-                    "-Dtangosol.coherence.ttl=" + TTL + " " +
-                    "-Dtangosol.coherence.clusterport=" + CLUSTER_PORT + " " +
-                    "-Dtangosol.coherence.cluster=" + CLUSTER_NAME + " " +
-                    "-Dtangosol.coherence.clusteraddress=" + MULTICAST_ADDRESS_1 + " " +
-                    "-Dtangosol.coherence.log.level=" + LOGGING_LEVEL + " " +
                     "-Dtangosol.coherence.cacheconfig=" + config + " " +
                     "-Dcom.benstopford.extend.port=" + System.getProperty("com.benstopford.extend.port") + " " +
-                    "-Dcom.benstopford.extend.port2=" + System.getProperty("com.benstopford.extend.port2") + " " + getCoherenceJMXProperties() + " " +
+                    "-Dcom.benstopford.extend.port2=" + System.getProperty("com.benstopford.extend.port2") + " "
+                    + getCoherenceJMXProperties() + " " +
                     propertiesAdditions + " " +
                     "-cp classes" + SEPERATOR + "lib/coherence-utils.jar" + SEPERATOR + "config" +
                     classPathAdditions + SEPERATOR + parse(System.getProperty("java.class.path")) + " " +
@@ -210,8 +210,8 @@ public abstract class CoherenceClusteredTest {
                 "-Dcom.sun.management.jmxremote.port=" + jmx_port + " ";
     }
 
-    static int prefix = 0;
 
+    static int prefix = 0;
     protected void addData(NamedCache cache, int mbToAdd) {
         prefix++;
         for (int i = 0; i < mbToAdd; i++) {
@@ -243,9 +243,6 @@ public abstract class CoherenceClusteredTest {
         }
         startOutOfProcess(config, "", jmxProps);
     }
-
-    HashSet<CacheService> services = new HashSet<CacheService>();
-    HashSet<NamedCache> caches = new HashSet<NamedCache>();
 
     protected void addToShutdownList(NamedCache cache) {
         services.add(cache.getCacheService());
