@@ -5,7 +5,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ProcessLogger {
-    public static final LogTo loggingProfile = LogTo.fileAndConsole;
+    public static final LogTo loggingProfile = LogTo.fileOnly;
     public static final File file = new File("log/coherence-processes.log");
     private static BufferedWriter fileWriter;
     private static int processCounter;
