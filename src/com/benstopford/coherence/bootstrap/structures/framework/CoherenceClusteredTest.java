@@ -111,6 +111,10 @@ public abstract class CoherenceClusteredTest {
         System.out.println();
 
         try {
+            File logDir = new File("log");
+            if(!logDir.exists() && logDir.isDirectory()){
+                logDir.mkdir();
+            }
             PrintStream err = new PrintStream(new FileOutputStream("log/test-stderr.log"));
             System.setErr(err);
             System.err.println("This file contains the stderr, redirected from the test process");
