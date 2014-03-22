@@ -1,6 +1,5 @@
 package com.benstopford.coherence.bootstrap.structures.framework;
 
-import com.rbs.hpcg.util.StreamGobbler;
 import com.tangosol.net.*;
 import functional.fixtures.SizableObjectFactory;
 import org.junit.After;
@@ -40,29 +39,36 @@ public abstract class CoherenceClusteredTest {
         System.setProperty("tangosol.coherence.ttl", TTL);
     }
 
-    protected Process startOutOfProcess(String config) throws IOException, InterruptedException {
+    protected Process startOutOfProcess(String config) {
         return startOutOfProcess(config, "", "");
     }
 
-    protected Process startOutOfProcess(String config, String classPathAdditions, String propertiesAdditions) throws IOException, InterruptedException {
-        String command = "java -Xms64m -Xmx128m -verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDetails " +
-                "-Dtangosol.coherence.ttl=" + TTL + " " +
-                "-Dtangosol.coherence.clusterport=" + CLUSTER_PORT + " " +
-                "-Dtangosol.coherence.cluster=" + CLUSTER_NAME + " " +
-                "-Dtangosol.coherence.clusteraddress=" + MULTICAST_ADDRESS_1 + " " +
-                "-Dtangosol.coherence.log.level=" + LOGGING_LEVEL + " " +
-                "-Dtangosol.coherence.cacheconfig=" + config + " " +
-                "-Dcom.benstopford.extend.port=" + System.getProperty("com.benstopford.extend.port") + " " +
-                "-Dcom.benstopford.extend.port2=" + System.getProperty("com.benstopford.extend.port2") + " " + getCoherenceJMXProperties() + " " +
-                propertiesAdditions + " " +
-                "-cp classes" + SEPERATOR + "lib/coherence-utils.jar" + SEPERATOR + "config" +
-                classPathAdditions + SEPERATOR + parse(System.getProperty("java.class.path")) + " " +
-                "com.tangosol.net.DefaultCacheServer";
+    protected Process startOutOfProcess(String config, String classPathAdditions, String propertiesAdditions) {
+        Process process = null;
+        try {
+            String command = "java -Xms64m -Xmx128m -verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDetails " +
+                    "-Dtangosol.coherence.ttl=" + TTL + " " +
+                    "-Dtangosol.coherence.clusterport=" + CLUSTER_PORT + " " +
+                    "-Dtangosol.coherence.cluster=" + CLUSTER_NAME + " " +
+                    "-Dtangosol.coherence.clusteraddress=" + MULTICAST_ADDRESS_1 + " " +
+                    "-Dtangosol.coherence.log.level=" + LOGGING_LEVEL + " " +
+                    "-Dtangosol.coherence.cacheconfig=" + config + " " +
+                    "-Dcom.benstopford.extend.port=" + System.getProperty("com.benstopford.extend.port") + " " +
+                    "-Dcom.benstopford.extend.port2=" + System.getProperty("com.benstopford.extend.port2") + " " + getCoherenceJMXProperties() + " " +
+                    propertiesAdditions + " " +
+                    "-cp classes" + SEPERATOR + "lib/coherence-utils.jar" + SEPERATOR + "config" +
+                    classPathAdditions + SEPERATOR + parse(System.getProperty("java.class.path")) + " " +
+                    "com.tangosol.net.DefaultCacheServer";
 
-//        System.out.println("Spawning Coherence Process: " + config);
-        Process process = Runtime.getRuntime().exec(command);
-        startLogging(process);
-        checkForSuccesfulStart(command, process);
+            process = Runtime.getRuntime().exec(command);
+
+            new ProcessLogger(ProcessLogger.LogTo.fileOnly, process);
+
+            checkForSuccesfulStart(command, process);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         return process;
     }
@@ -71,19 +77,13 @@ public abstract class CoherenceClusteredTest {
         //intelij adds crap onto the classpath :(
         String[] split = property.split(" ");
         String found = "";
-        for(String s:split){
-            if(s.contains("coherence")){ //hack to identify the actual entry for the classpath
+        for (String s : split) {
+            if (s.contains("coherence")) { //hack to identify the actual entry for the classpath
                 found = s;
             }
         }
 
         return found;
-    }
-
-    private void startLogging(Process process) throws FileNotFoundException {
-        String name = getClass().getSimpleName() + String.valueOf(System.currentTimeMillis());
-        new StreamGobbler(process, process.getErrorStream(), new File("log"), "err." + name).gobble();
-        new StreamGobbler(process, process.getInputStream(), new File("log"), "out." + name).gobble();
     }
 
     private void checkForSuccesfulStart(String command, Process process) throws InterruptedException {
@@ -96,24 +96,28 @@ public abstract class CoherenceClusteredTest {
         Thread.sleep(5000);
     }
 
+
     @Before
     public void setUp() throws Exception {
-        removeCoherenceLogging();
         deleteContentsOfLogDir();
+        pushCoherenceStdErrLoggingToFile();
         new PersistentPortTracker().incrementExtendPort();
         setDefaultProperties();
     }
 
-    public static void removeCoherenceLogging() {
-            System.out.println();
-            System.out.println("********************  Running with Coherence logging removed from stdout - see ./log for remote node logs *******************");
-            System.out.println();
-            System.setErr(new PrintStream(new OutputStream() {
-                @Override
-                public void write(int b) {
-                    //ignore
-                }
-            }));
+    public void pushCoherenceStdErrLoggingToFile() {
+        System.out.println();
+        System.out.println("********************  Coherence logging removed from stderr. See ./log dir for all process logs *******************");
+        System.out.println();
+
+        try {
+            PrintStream err = new PrintStream(new FileOutputStream("log/test-stderr.log"));
+            System.setErr(err);
+            System.err.println("This file contains the stderr, redirected from the test process");
+            err.flush();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     private void deleteContentsOfLogDir() {
@@ -145,13 +149,17 @@ public abstract class CoherenceClusteredTest {
 
     private void killOpenCoherenceProcesses() {
         for (Process process : runningProcesses) {
-//            System.out.println("killing process " + process);
             process.destroy();
             while (true) {
                 try {
                     process.exitValue();
                     break;
                 } catch (IllegalThreadStateException mustStillBeRunning) {
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
@@ -175,7 +183,7 @@ public abstract class CoherenceClusteredTest {
         return getCache(BASIC_CACHE_XML, name);
     }
 
-    protected void startOutOfProcessWithJMX(String config) throws IOException, InterruptedException {
+    protected void startOutOfProcessWithJMX(String config) {
         startOutOfProcess(config, "", getJMXProperties(3000));
     }
 
