@@ -2,7 +2,7 @@ package com.benstopford.coherence.bootstrap.basic;
 
 import com.benstopford.coherence.bootstrap.structures.ParallelSumAggregator;
 import com.benstopford.coherence.bootstrap.structures.SumAggregator;
-import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
+import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.filter.EqualsFilter;
 import com.tangosol.util.filter.NotFilter;
@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 /**
  * BTS, 07-Dec-2007
  */
-public class Aggregators extends CoherenceClusteredTest implements Serializable
+public class Aggregators extends ClusterRunner implements Serializable
 {
 
     @Test

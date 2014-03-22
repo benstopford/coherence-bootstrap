@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
+import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.InvocableMap;
 import com.tangosol.util.processor.AbstractProcessor;
@@ -13,7 +13,7 @@ import static junit.framework.Assert.assertEquals;
 /**
  * BTS, 07-Dec-2007
  */
-public final class EntryProcessors extends CoherenceClusteredTest {
+public final class EntryProcessors extends ClusterRunner {
 
     @Test
     public void doSomethingAtomicallyWithAnEntryProcessor() {

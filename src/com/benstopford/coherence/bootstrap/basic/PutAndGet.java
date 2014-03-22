@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
+import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.net.NamedCache;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,7 +10,7 @@ import static junit.framework.Assert.assertEquals;
 /**
  * BTS, 07-Dec-2007
  */
-public class PutAndGet extends CoherenceClusteredTest {
+public class PutAndGet extends ClusterRunner {
 
     @Test
     public void putAndGetFromCache() {

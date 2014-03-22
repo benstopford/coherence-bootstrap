@@ -18,9 +18,9 @@ import java.util.HashSet;
  * I strongly suggest that, in your own code, you use the LittleGrid. See JK's post here:
  * http://thegridman.com/coherence/oracle-coherence-testing-with-oracle-tools/
  */
-public abstract class CoherenceClusteredTest {
+public abstract class ClusterRunner {
     private static final String SEPERATOR = System.getProperty("path.separator");
-    protected static final ClassLoader CLASS_LOADER = CoherenceClusteredTest.class.getClassLoader();
+    protected static final ClassLoader CLASS_LOADER = ClusterRunner.class.getClassLoader();
     protected static final String MULTICAST_ADDRESS_1 = "239.255.12.30";
     protected static final String CLUSTER_NAME = "com.rbs.hpc.gettingstarted";
     protected static final String BASIC_CACHE_XML = "config/basic-cache.xml";
@@ -106,10 +106,6 @@ public abstract class CoherenceClusteredTest {
     }
 
     public void pushCoherenceStdErrLoggingToFile() {
-        System.out.println();
-        System.out.println("********************  Coherence logging removed from stderr. See ./log dir for all process logs. See ProcessLogger.LogTo *******************");
-        System.out.println();
-
         ProcessLogger.switchStdErrToFile();
     }
 

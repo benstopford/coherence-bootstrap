@@ -1,7 +1,7 @@
 package com.benstopford.coherence.bootstrap.basic;
 
 import com.benstopford.coherence.bootstrap.structures.TestCacheStore;
-import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
+import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.net.NamedCache;
 import org.junit.After;
 import org.junit.Before;
@@ -12,7 +12,7 @@ import static junit.framework.Assert.assertTrue;
 /**
  * BTS, 07-Dec-2007
  */
-public class CacheStoreSynchronous extends CoherenceClusteredTest {
+public class CacheStoreSynchronous extends ClusterRunner {
 
     @Test
     public void cacheStore() {

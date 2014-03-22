@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
-import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
+import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.net.NamedCache;
 import org.junit.After;
 import org.junit.Before;
@@ -11,7 +11,7 @@ import java.io.IOException;
 import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertNotNull;
 
-public final class UsingAnOverflowCacheToExpireEntriesToDiskExample extends CoherenceClusteredTest {
+public final class UsingAnOverflowCacheToExpireEntriesToDiskExample extends ClusterRunner {
     private static final String OVERFLOW_CONFIG_XML = "config/overflow-config.xml";
     private boolean firstEntryWasExpired = false;
     private int i = 0;

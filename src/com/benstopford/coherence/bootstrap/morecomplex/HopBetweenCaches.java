@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
-import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
+import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.InvocableMap;
 import com.tangosol.util.processor.AbstractProcessor;
@@ -15,7 +15,7 @@ import static junit.framework.Assert.assertEquals;
 /**
  * BTS, 20-Feb-2008
  */
-public class HopBetweenCaches extends CoherenceClusteredTest implements Serializable {
+public class HopBetweenCaches extends ClusterRunner implements Serializable {
 
     @Test
     public void shouldBeAbleToAcceessDifferentCacheFromAnEntryProcessorIfTheyAreInDifferentCacheServices() {

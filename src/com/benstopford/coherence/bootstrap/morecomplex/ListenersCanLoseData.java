@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
-import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
+import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.benstopford.coherence.bootstrap.structures.framework.PersistentPortTracker;
 import com.tangosol.net.NamedCache;
 import com.tangosol.net.messaging.ConnectionException;
@@ -24,7 +24,7 @@ import static org.junit.Assert.assertFalse;
  * and make it ordered (as you will be doing a range query)
  * BTS, 25-Jan-2008
  */
-public final class ListenersCanLoseData extends CoherenceClusteredTest {
+public final class ListenersCanLoseData extends ClusterRunner {
     private final List<Object> valuesSentToClient1 = new ArrayList<Object>();
     private final List<Object> valuesSentToClient2 = new ArrayList<Object>();
 

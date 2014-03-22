@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
+import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.AbstractMapListener;
 import org.junit.After;
@@ -15,7 +15,7 @@ import static junit.framework.Assert.assertEquals;
  * Also see intermediate.SimulatingLostUpdatesInClientListenersExample
  * BTS, 25-Jan-2008
  */
-public class MapListeners extends CoherenceClusteredTest {
+public class MapListeners extends ClusterRunner {
     int notificationCount = 0;
 
     @Test

@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
+import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
 import org.junit.Before;
@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import static junit.framework.Assert.fail;
 
-public class Triggers extends CoherenceClusteredTest {
+public class Triggers extends ClusterRunner {
 
     @Test
     public void shouldPut() throws InterruptedException {

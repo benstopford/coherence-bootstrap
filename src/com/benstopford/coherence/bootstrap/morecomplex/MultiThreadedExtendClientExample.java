@@ -1,7 +1,7 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
 import com.benstopford.coherence.bootstrap.structures.SleepingProcessor;
-import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
+import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.processor.AbstractProcessor;
 import org.junit.After;
@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  * BTS, 01-May-2009
  * - change the thread counts in the config files to make the multithreaded invocation fast or slow
  */
-public class MultiThreadedExtendClientExample extends CoherenceClusteredTest {
+public class MultiThreadedExtendClientExample extends ClusterRunner {
 
     @Test
     public void shouldBeFasterMultithreaded() throws IOException, InterruptedException {

@@ -1,7 +1,7 @@
 package com.benstopford.coherence.bootstrap.basic;
 
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PoJo;
-import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
+import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.extractor.ReflectionExtractor;
 import com.tangosol.util.filter.EqualsFilter;
@@ -17,7 +17,7 @@ import java.util.List;
  * This test shows how to use indexes and how they are much faster.
  * BTS, 25-Jan-2008
  */
-public final class IndexesAreFast extends CoherenceClusteredTest {
+public final class IndexesAreFast extends ClusterRunner {
     private final List<Object> valuesSentToClient1 = new ArrayList<Object>();
     private final List<Object> valuesSentToClient2 = new ArrayList<Object>();
 

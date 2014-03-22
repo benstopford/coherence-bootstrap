@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
+import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.net.DefaultConfigurableCacheFactory;
 import com.tangosol.net.NamedCache;
 import org.junit.After;
@@ -14,7 +14,7 @@ import static junit.framework.Assert.assertEquals;
 /**
  * BTS, 25-Jan-2008
  */
-public class ExtendProxies extends CoherenceClusteredTest {
+public class ExtendProxies extends ClusterRunner {
 
     @Test
     public void useExtendProxy() throws IOException, InterruptedException {

@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
+import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.net.NamedCache;
 import functional.fixtures.SizableObjectFactory;
 import org.junit.After;
@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * BTS, 25-Jan-2008
  */
-public class NearCaching extends CoherenceClusteredTest {
+public class NearCaching extends ClusterRunner {
 
     @Test
     public void shouldBeAbleToNearCacheDataForInProcessReRetrieval() throws IOException, InterruptedException {

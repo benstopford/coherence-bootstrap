@@ -1,7 +1,7 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
 import com.benstopford.coherence.bootstrap.structures.PutAllWithErrorReporting;
-import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
+import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.net.DefaultConfigurableCacheFactory;
 import com.tangosol.net.DistributedCacheService;
 import com.tangosol.net.InvocationService;
@@ -16,7 +16,7 @@ import java.util.TreeMap;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
-public class PutAllThatReportsIndividualExceptions extends CoherenceClusteredTest {
+public class PutAllThatReportsIndividualExceptions extends ClusterRunner {
 
     @Test
     public void shouldPut() throws InterruptedException {

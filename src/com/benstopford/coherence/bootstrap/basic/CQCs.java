@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
+import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.net.NamedCache;
 import com.tangosol.net.cache.ContinuousQueryCache;
 import com.tangosol.util.Filter;
@@ -18,7 +18,7 @@ import static junit.framework.Assert.assertEquals;
 /**
  * BTS, 16-Jan-2008
  */
-public class CQCs extends CoherenceClusteredTest {
+public class CQCs extends ClusterRunner {
 
     @Test
     public void cqcShouldLoadSubsetToLocalProcess() throws IOException, InterruptedException {

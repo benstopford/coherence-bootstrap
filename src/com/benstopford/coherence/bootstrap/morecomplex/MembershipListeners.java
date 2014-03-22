@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
-import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
+import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.net.Cluster;
 import com.tangosol.net.MemberEvent;
 import com.tangosol.net.MemberListener;
@@ -18,7 +18,7 @@ import static junit.framework.Assert.assertEquals;
 /**
  * BTS, 12-May-2008
  */
-public class MembershipListeners extends CoherenceClusteredTest {
+public class MembershipListeners extends ClusterRunner {
     private Process otherMemberProcess;
     private static final String CONFIG_BASIC_CACHE_ON_DIFFERENT_CACHE_SERVICE_XML = "config/basic-cache-on-different-cache-service.xml";
 

@@ -1,7 +1,7 @@
 package com.benstopford.coherence.bootstrap.basic;
 
 import com.benstopford.coherence.bootstrap.structures.FakeDatabaseCacheStore;
-import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
+import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.net.NamedCache;
 import org.junit.After;
 import org.junit.Before;
@@ -15,7 +15,7 @@ import static org.junit.Assert.assertThat;
 /**
  * BTS, 07-Dec-2007
  */
-public class CacheStoreAsync extends CoherenceClusteredTest {
+public class CacheStoreAsync extends ClusterRunner {
 
     @Test
     public void demoOfCacheStoreRetryCapabilityWithAsyncCacheStore() throws InterruptedException {
@@ -35,7 +35,7 @@ public class CacheStoreAsync extends CoherenceClusteredTest {
         Thread.sleep(4 * 1000);
 
         //CacheStore should have completed all async calls
-        assertThat(FakeDatabaseCacheStore.keysCalled.size(),is(6));
+        assertThat(FakeDatabaseCacheStore.keysCalled.size(), is(6));
     }
 
     @Before

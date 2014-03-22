@@ -1,7 +1,7 @@
 package com.benstopford.coherence.bootstrap.basic;
 
 import com.benstopford.coherence.bootstrap.structures.dataobjects.SimplePofObject;
-import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
+import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.io.pof.reflect.SimplePofPath;
 import com.tangosol.net.DefaultConfigurableCacheFactory;
 import com.tangosol.net.NamedCache;
@@ -18,7 +18,7 @@ import java.util.Set;
 
 import static junit.framework.Assert.assertEquals;
 
-public class Filters extends CoherenceClusteredTest {
+public class Filters extends ClusterRunner {
 
     private DefaultConfigurableCacheFactory factory;
     private NamedCache cache;

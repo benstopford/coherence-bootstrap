@@ -1,7 +1,7 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
 import com.benstopford.coherence.bootstrap.structures.SampleInvocable;
-import com.benstopford.coherence.bootstrap.structures.framework.CoherenceClusteredTest;
+import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.net.DefaultConfigurableCacheFactory;
 import com.tangosol.net.InvocationService;
 import org.junit.After;
@@ -16,7 +16,7 @@ import static junit.framework.Assert.assertEquals;
 /**
  * BTS, 03-Sep-2008
  */
-public class UsingServicesToIsolateWorkOnDifferentSetsOfMachines extends CoherenceClusteredTest {
+public class UsingServicesToIsolateWorkOnDifferentSetsOfMachines extends ClusterRunner {
 
 
     @Test
