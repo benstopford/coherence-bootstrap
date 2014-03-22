@@ -32,18 +32,12 @@ Topics covered:
 * Overflow caches
 * Using services to isolate work onto groups of hardware
 
-
-*(I'll move it over at some point)
-
-
 **Getting started is simple:**
 * Download the zip or clone this repository
 * Create a project in your IDE of choice
 * Add the lib directory and "." to your classpath
 * run/refer to the ant script if you have any problems
 
-
 **Outstanding Tasks**
-* Remove repetative logging when running suite
 * Async Cache Store test is not behaving correctly (and the test is actually deficient)
 * Port cluster framework to LittleGrid
