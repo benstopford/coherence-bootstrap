@@ -1,8 +1,8 @@
 package com.benstopford.coherence.bootstrap.basic;
 
+import com.benstopford.coherence.bootstrap.structures.dataobjects.SizableObjectFactory;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.net.NamedCache;
-import functional.fixtures.SizableObjectFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

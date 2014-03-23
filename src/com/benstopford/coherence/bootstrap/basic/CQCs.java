@@ -1,12 +1,12 @@
 package com.benstopford.coherence.bootstrap.basic;
 
+import com.benstopford.coherence.bootstrap.structures.dataobjects.SizableObjectFactory;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.net.NamedCache;
 import com.tangosol.net.cache.ContinuousQueryCache;
 import com.tangosol.util.Filter;
 import com.tangosol.util.extractor.KeyExtractor;
 import com.tangosol.util.filter.LikeFilter;
-import functional.fixtures.SizableObjectFactory;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

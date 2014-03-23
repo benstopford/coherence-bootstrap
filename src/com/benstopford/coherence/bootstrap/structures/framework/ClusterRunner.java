@@ -1,8 +1,8 @@
 package com.benstopford.coherence.bootstrap.structures.framework;
 
+import com.benstopford.coherence.bootstrap.structures.dataobjects.SizableObject;
+import com.benstopford.coherence.bootstrap.structures.dataobjects.SizableObjectFactory;
 import com.tangosol.net.*;
-import functional.fixtures.SizableObject;
-import functional.fixtures.SizableObjectFactory;
 import org.junit.After;
 import org.junit.Before;
 
