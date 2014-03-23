@@ -24,20 +24,24 @@ public final class IndexesAreFast extends ClusterRunner {
     @Test
     public void isUsingAnEntrySetWithAnIndexFasterAndDoesItScaleBetterAsTheClusterSizeIncreases() throws IOException, InterruptedException {
 
-        startOutOfProcess("config/basic-cache.xml", "", "");
-        startOutOfProcess("config/basic-cache.xml", "", "");
-        startOutOfProcess("config/basic-cache.xml", "", "");
-        startOutOfProcess("config/basic-cache.xml", "", "");
-        startOutOfProcess("config/basic-cache.xml", "", "");
+        startCoherenceProcess("config/basic-cache.xml");
+        startCoherenceProcess("config/basic-cache.xml");
+        startCoherenceProcess("config/basic-cache.xml");
+        startCoherenceProcess("config/basic-cache.xml");
+        startCoherenceProcess("config/basic-cache.xml");
 
         System.out.println("\n\n******* Timings without index *******");
         NamedCache cache = getBasicCache("foo");
+
         addValuesToCache(cache, 10);
         getFromCacheAndPrintTimings(cache, 100);
+
         addValuesToCache(cache, 100);
         getFromCacheAndPrintTimings(cache, 100);
+
         addValuesToCache(cache, 1000);
         getFromCacheAndPrintTimings(cache, 100);
+
         addValuesToCache(cache, 10000);
         getFromCacheAndPrintTimings(cache, 100);
 
@@ -47,10 +51,13 @@ public final class IndexesAreFast extends ClusterRunner {
         System.out.println("\n\n******* Timings with index *******");
         addValuesToCache(cache, 10);
         getFromCacheAndPrintTimings(cache, 100);
+
         addValuesToCache(cache, 100);
         getFromCacheAndPrintTimings(cache, 100);
+
         addValuesToCache(cache, 1000);
         getFromCacheAndPrintTimings(cache, 100);
+
         addValuesToCache(cache, 10000);
         getFromCacheAndPrintTimings(cache, 100);
 
@@ -58,8 +65,6 @@ public final class IndexesAreFast extends ClusterRunner {
     }
 
     private static void getFromCacheAndPrintTimings(NamedCache cache, int number) {
-        int total = 0;
-
         long start = System.nanoTime();
         for (int i = 0; i < number; i++) {
             cache.entrySet(new EqualsFilter("getValue", i));
@@ -80,7 +85,6 @@ public final class IndexesAreFast extends ClusterRunner {
 
     @Before
     public void setUp() throws Exception {
-        System.setProperty("tangosol.coherence.distributed.localstorage", "false");
         valuesSentToClient1.clear();
         valuesSentToClient2.clear();
         super.setUp();
@@ -88,7 +92,6 @@ public final class IndexesAreFast extends ClusterRunner {
 
     @After
     public void tearDown() throws Exception {
-        System.clearProperty("tangosol.coherence.distributed.localstorage");
         super.tearDown();
     }
 }

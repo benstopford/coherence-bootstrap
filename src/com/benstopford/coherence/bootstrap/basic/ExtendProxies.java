@@ -19,10 +19,10 @@ public class ExtendProxies extends ClusterRunner {
     @Test
     public void useExtendProxy() throws IOException, InterruptedException {
         //start data enabled node
-        startOutOfProcess("config/basic-cache.xml", "", "");
+        startCoherenceProcess("config/basic-cache.xml");
 
         //start data disabled node as extend proxy
-        startOutOfProcess("config/basic-extend-enabled-cache-32001.xml", "", "-Dtangosol.coherence.distributed.localstorage=false");
+        startCoherenceProcess("config/basic-extend-enabled-cache-32001.xml", LOCAL_STORAGE_FALSE);
 
         //use extend config for this client
         NamedCache cache = new DefaultConfigurableCacheFactory("config/extend-client-32001.xml")

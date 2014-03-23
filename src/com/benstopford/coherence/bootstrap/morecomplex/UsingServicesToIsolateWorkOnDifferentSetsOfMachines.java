@@ -23,10 +23,10 @@ public class UsingServicesToIsolateWorkOnDifferentSetsOfMachines extends Cluster
     public void splitMachinesIntoTwoSetsWithServices() throws IOException, InterruptedException {
 
         // Five Coherence processes (including this one)
-        startOutOfProcess("config/basic-invocation-service-1.xml", "", "");
-        startOutOfProcess("config/basic-invocation-service-1.xml", "", "");
-        startOutOfProcess("config/basic-invocation-service-2.xml", "", "");
-        startOutOfProcess("config/basic-invocation-service-2.xml", "", "");
+        startCoherenceProcess("config/basic-invocation-service-1.xml");
+        startCoherenceProcess("config/basic-invocation-service-1.xml");
+        startCoherenceProcess("config/basic-invocation-service-2.xml");
+        startCoherenceProcess("config/basic-invocation-service-2.xml");
 
         SampleInvocable getMemberIdInvocable = new SampleInvocable();
 

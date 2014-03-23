@@ -3,6 +3,7 @@ package com.benstopford.coherence.bootstrap.basic;
 import com.benstopford.coherence.bootstrap.structures.ParallelSumAggregator;
 import com.benstopford.coherence.bootstrap.structures.SumAggregator;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
+import com.benstopford.coherence.bootstrap.structures.framework.PerformanceTimer;
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.filter.EqualsFilter;
 import com.tangosol.util.filter.NotFilter;
@@ -12,14 +13,15 @@ import org.junit.Test;
 
 import java.io.Serializable;
 
+import static com.benstopford.coherence.bootstrap.structures.framework.PerformanceTimer.end;
+import static com.benstopford.coherence.bootstrap.structures.framework.PerformanceTimer.start;
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 
 /**
  * BTS, 07-Dec-2007
  */
-public class Aggregators extends ClusterRunner implements Serializable
-{
+public class Aggregators extends ClusterRunner implements Serializable {
 
     @Test
     public void simpleAggregation() throws InterruptedException {
@@ -27,34 +29,30 @@ public class Aggregators extends ClusterRunner implements Serializable
         NamedCache cache = getBasicCache("foo");
 
         //add simple data
-        for(int i = 0;i<1000; i++){
-            cache.put("key:"+i, 10);
+        for (int i = 0; i < 1000; i++) {
+            cache.put("key:" + i, 10);
         }
 
         //create a simple (non-parallel) aggregator
-        startTimer();
+        start();
         Integer value = (Integer) cache.aggregate(grabEverything, new SumAggregator());
-        long entryAggregator = took();
+        PerformanceTimer.Took regular = end().printMs("EntryAggregator took %");
 
 
         //run again with a parallel aggregator
-        startTimer();
+        start();
         Integer value2 = (Integer) cache.aggregate(grabEverything, new ParallelSumAggregator(new SumAggregator()));
-        long parallelAggregator = took();
-
-        System.out.printf("EntryAggregator found sum of %s in %sms\n", value, entryAggregator);
-        System.out.printf("ParallelAggregator found sum of %s in %sms\n", value2, parallelAggregator);
+        PerformanceTimer.Took parallel = end().printMs("ParallelAggregator took %");
 
         assertEquals(value.intValue(), 10000);
         assertEquals(value2.intValue(), 10000);
-        assertTrue("parallel aggregator should be faster", parallelAggregator<entryAggregator);
+        assertTrue("parallel aggregator should be faster", parallel.ns() < regular.ns());
     }
 
 
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        setDefaultProperties();
         startBasicCacheProcess();
         startBasicCacheProcess();
     }

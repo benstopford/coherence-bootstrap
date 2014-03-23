@@ -1,0 +1,68 @@
+<!DOCTYPE cache-config SYSTEM "cache-config.dtd">
+
+<cache-config>
+    <caching-scheme-mapping>
+        <cache-mapping>
+            <cache-name>*</cache-name>
+            <scheme-name>foo</scheme-name>
+        </cache-mapping>
+    </caching-scheme-mapping>
+
+    <caching-schemes>
+        <!--
+        distributed cache scheme
+        -->
+        <distributed-scheme>
+            <scheme-name>foo</scheme-name>
+            <service-name>dist-default</service-name>
+            <backing-map-scheme>
+                <read-write-backing-map-scheme>
+                    <internal-cache-scheme>
+                        <local-scheme>
+                            <unit-calculator>BINARY</unit-calculator>
+                        </local-scheme>
+                    </internal-cache-scheme>
+                </read-write-backing-map-scheme>
+            </backing-map-scheme>
+            <autostart>true</autostart>
+            <serializer>
+                <class-name>com.tangosol.io.pof.ConfigurablePofContext</class-name>
+                <init-params>
+                    <init-param>
+                        <param-type>string</param-type>
+                        <param-value>config/my-pof-config.xml</param-value>
+                    </init-param>
+                </init-params>
+            </serializer>
+        </distributed-scheme>
+
+        <!--
+        proxy service scheme that allows the master site to replicate cached
+        data to this site
+        -->
+        <proxy-scheme>
+            <service-name>Region1ExtendViewerService</service-name>
+            <acceptor-config>
+                <tcp-acceptor>
+                    <local-address>
+                        <address>localhost</address>
+                        <port system-property="com.benstopford.extend.port">32001</port>
+                    </local-address>
+                </tcp-acceptor>
+                <serializer>
+                    <class-name>com.tangosol.io.pof.ConfigurablePofContext</class-name>
+                    <init-params>
+                        <init-param>
+                            <param-type>string</param-type>
+                            <param-value>config/my-pof-config.xml</param-value>
+                        </init-param>
+                    </init-params>
+                </serializer>
+            </acceptor-config>
+            <thread-count>4</thread-count>
+            <autostart>true</autostart>
+        </proxy-scheme>
+
+
+    </caching-schemes>
+</cache-config>

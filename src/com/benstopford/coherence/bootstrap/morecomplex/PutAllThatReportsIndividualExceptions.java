@@ -83,9 +83,8 @@ public class PutAllThatReportsIndividualExceptions extends ClusterRunner {
 
     @Before public void setUp() throws Exception {
         super.setUp();
-        setDefaultProperties();
-        startOutOfProcess("config/basic-invocation-service-pof-1.xml");
-        startOutOfProcess("config/basic-invocation-service-pof-1.xml");
+        startCoherenceProcess("config/basic-invocation-service-pof-1.xml");
+        startCoherenceProcess("config/basic-invocation-service-pof-1.xml");
     }
 
     @After public void tearDown() throws Exception {

@@ -27,8 +27,8 @@ public class MultiThreadedExtendClientExample extends ClusterRunner {
     public void shouldBeFasterMultithreaded() throws IOException, InterruptedException {
 
         //Start two nodes, one data enabled the other the extend proxy
-        startOutOfProcess("config/basic-cache-threaded.xml");
-        startOutOfProcess("config/basic-extend-enabled-threaded-cache.xml", "", "-Dtangosol.coherence.distributed.localstorage=false ");
+        startCoherenceProcess("config/basic-cache-threaded.xml");
+        startCoherenceProcess("config/basic-extend-enabled-threaded-cache.xml", "-Dtangosol.coherence.distributed.localstorage=false ") ;
         Thread.sleep(1000);
 
         NamedCache cache = getCache("config/extend-client-32001.xml", "foo");
@@ -43,7 +43,6 @@ public class MultiThreadedExtendClientExample extends ClusterRunner {
 
         runMultiThreaded(cache, 10);
     }
-
 
     private void runSingleThreaded(NamedCache cache, int numberToAdd) {
         AbstractProcessor ep = new SleepingProcessor();

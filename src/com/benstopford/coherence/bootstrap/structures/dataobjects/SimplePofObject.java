@@ -7,7 +7,7 @@ import com.tangosol.io.pof.PortableObject;
 import java.io.IOException;
 
 
-public class SimplePofObject implements PortableObject {
+public class SimplePofObject implements PortableObject, ObjFactory {
     private Object data;
     private boolean logSerialisation;
 
@@ -43,5 +43,10 @@ public class SimplePofObject implements PortableObject {
         pofWriter.writeObject(1, data);
         pofWriter.writeBoolean(2, logSerialisation);
         log("serialising");
+    }
+
+    @Override
+    public Object createNext() {
+        return new SimplePofObject(new byte[1024], false);
     }
 }

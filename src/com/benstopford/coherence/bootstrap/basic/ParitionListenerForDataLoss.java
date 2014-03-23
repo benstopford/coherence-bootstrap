@@ -26,16 +26,18 @@ public class ParitionListenerForDataLoss extends ClusterRunner {
      */
     @Test
     public void dataLossShouldTriggerPartitionListenerActivation() throws IOException, InterruptedException {
-        //create 2 external data enabled processes
-        Process nodeToBeKilled = startOutOfProcess("config/basic-cache-with-a-partition-listener-local-storage-true.xml");
-        Process nodeToBeKilled2 = startOutOfProcess("config/basic-cache-with-a-partition-listener-local-storage-true.xml");
-        startOutOfProcess("config/basic-cache-with-a-partition-listener-local-storage-true.xml");
+        String dataEnabledConfig = "config/basic-cache-with-a-partition-listener-local-storage-true.xml";
 
-        //create local data disabled process
+        //create 3 external data enabled processes
+        Process nodeToBeKilled = startCoherenceProcess(dataEnabledConfig);
+        Process nodeToBeKilled2 = startCoherenceProcess(dataEnabledConfig);
+        startCoherenceProcess(dataEnabledConfig);
+
+        //Ensure this VM is data disabled for this cache service
         NamedCache cache = getCache("config/basic-cache-with-local-storage-false.xml","foo");
         Thread.sleep(2000);
 
-        //make sure we have clustered all 3 nodes
+        //make sure we have clustered all 4 nodes
         assertEquals(4, cache.getCacheService().getCluster().getMemberSet().size());
 
         //add some data

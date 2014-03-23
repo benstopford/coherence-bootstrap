@@ -16,10 +16,10 @@ public class NearCaching extends ClusterRunner {
 
     @Test
     public void shouldBeAbleToNearCacheDataForInProcessReRetrieval() throws IOException, InterruptedException {
-        startOutOfProcess("config/basic-extend-enabled-cache-32001.xml");
+        startCoherenceProcess("config/basic-extend-enabled-cache-32001.xml");
         Thread.sleep(5000);
 
-        NamedCache cacheWithNoNearScheme = connectOverExtend();
+        NamedCache cacheWithNoNearScheme = cacheViaExtend();
 
         cacheWithNoNearScheme.put("x", new SizableObjectFactory().buildObject(1000));
 

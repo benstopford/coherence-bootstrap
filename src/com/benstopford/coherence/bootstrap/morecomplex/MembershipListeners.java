@@ -32,7 +32,7 @@ public class MembershipListeners extends ClusterRunner {
 
         assertEquals(1, cluster.getMemberSet().size());
 
-        otherMemberProcess = startOutOfProcess(CONFIG_BASIC_CACHE_ON_DIFFERENT_CACHE_SERVICE_XML);
+        otherMemberProcess = startCoherenceProcess(CONFIG_BASIC_CACHE_ON_DIFFERENT_CACHE_SERVICE_XML);
 
         //ensure there are two members
         assertEquals("Oops - expected 2 members but found " + cluster.getMemberSet().size(), 2, cluster.getMemberSet().size());
@@ -66,7 +66,6 @@ public class MembershipListeners extends ClusterRunner {
 
     @Before public void setUp() throws Exception {
         super.setUp();
-        setDefaultProperties();
     }
 
     @After public void tearDown() throws Exception {

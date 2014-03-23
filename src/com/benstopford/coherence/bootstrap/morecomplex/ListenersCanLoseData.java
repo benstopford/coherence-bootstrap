@@ -34,10 +34,10 @@ public final class ListenersCanLoseData extends ClusterRunner {
 
         new PersistentPortTracker().incrementExtendPort("com.benstopford.extend.port2");
 
-        //start three nodes. Two of which are extend proxies listening on different ports
-        startOutOfProcess("config/basic-cache.xml", "", "");
-        Process extendProxy1 = startOutOfProcess("config/basic-extend-enabled-cache-32001.xml", "", "-Dtangosol.coherence.distributed.localstorage=false ");
-        startOutOfProcess("config/basic-extend-enabled-cache-32002.xml", "", "-Dtangosol.coherence.distributed.localstorage=false ");
+        //start one data node and two data-disabled proxies listening on different ports
+        startCoherenceProcess("config/basic-cache.xml");
+        Process extendProxy1 = startCoherenceProcess("config/basic-extend-enabled-cache-32001.xml", LOCAL_STORAGE_FALSE);
+        startCoherenceProcess("config/basic-extend-enabled-cache-32002.xml", LOCAL_STORAGE_FALSE);
 
 
         //connect to each of the extend proxies
@@ -91,7 +91,7 @@ public final class ListenersCanLoseData extends ClusterRunner {
         Thread.sleep(1000);
 
         //restart dead extend proxy
-        extendProxy1 = startOutOfProcess("config/basic-extend-enabled-cache-32001.xml", "", "-Dtangosol.coherence.distributed.localstorage=false ");
+        extendProxy1 = startCoherenceProcess("config/basic-extend-enabled-cache-32001.xml", "-Dtangosol.coherence.distributed.localstorage=false ");
         Thread.sleep(1000);
 
         //add value via restarted extend proxy
@@ -114,7 +114,7 @@ public final class ListenersCanLoseData extends ClusterRunner {
 
 
     private NamedCache getCacheConnection1() {
-        return connectOverExtend();
+        return cacheViaExtend();
     }
 
     private NamedCache getCacheConnection2() {

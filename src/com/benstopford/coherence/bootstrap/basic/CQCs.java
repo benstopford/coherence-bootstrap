@@ -22,7 +22,7 @@ public class CQCs extends ClusterRunner {
 
     @Test
     public void cqcShouldLoadSubsetToLocalProcess() throws IOException, InterruptedException {
-        startOutOfProcess("config/basic-extend-enabled-cache-32001.xml");
+        startCoherenceProcess("config/basic-extend-enabled-cache-32001.xml");
 
         NamedCache backingCache = getCache("config/extend-client-32001.xml", "foo");
 

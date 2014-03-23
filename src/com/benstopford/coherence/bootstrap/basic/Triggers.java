@@ -27,9 +27,8 @@ public class Triggers extends ClusterRunner {
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        setDefaultProperties();
-        startOutOfProcess("config/basic-invocation-service-pof-1.xml");
-        startOutOfProcess("config/basic-invocation-service-pof-1.xml");
+        startCoherenceProcess("config/basic-invocation-service-pof-1.xml");
+        startCoherenceProcess("config/basic-invocation-service-pof-1.xml");
         System.out.println(CacheFactory.ensureCluster().getMemberSet());
     }
 
