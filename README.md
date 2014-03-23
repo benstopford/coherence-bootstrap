@@ -31,6 +31,7 @@ Topics covered:
 * PutAll that reports individual errors
 * Overflow caches
 * Using services to isolate work onto groups of hardware
+* Exploring POF internal encodings
 
 **Getting started is simple:**
 * Download the zip or clone this repository

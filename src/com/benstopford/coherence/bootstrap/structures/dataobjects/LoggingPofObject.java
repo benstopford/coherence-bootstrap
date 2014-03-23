@@ -7,46 +7,41 @@ import com.tangosol.io.pof.PortableObject;
 import java.io.IOException;
 
 
-public class SimplePofObject implements PortableObject, ObjFactory {
-    private Object data;
+public class LoggingPofObject extends PofObject implements PortableObject, ObjFactory {
     private boolean logSerialisation;
 
-    public SimplePofObject() {
+    public LoggingPofObject() {
     }//serialization
 
-    public SimplePofObject(Object data) {
+    public LoggingPofObject(Object data) {
         this(data, true);
     }
 
-    public SimplePofObject(Object data, boolean logSerialisation) {
-        this.data = data;
+    public LoggingPofObject(Object data, boolean logSerialisation) {
+        super(data);
         this.logSerialisation = logSerialisation;
     }
 
-    public Object getData() {
-        return data;
-    }
-
     public void readExternal(PofReader pofReader) throws IOException {
-        data = pofReader.readObject(1);
+        super.readExternal(pofReader);
         logSerialisation = pofReader.readBoolean(2);
         log("deserialising");
     }
 
     private void log(String type) {
         if (logSerialisation) {
-            System.out.println("pof is "+ type);
+            System.out.println("pof is " + type);
         }
     }
 
     public void writeExternal(PofWriter pofWriter) throws IOException {
-        pofWriter.writeObject(1, data);
+        super.writeExternal(pofWriter);
         pofWriter.writeBoolean(2, logSerialisation);
         log("serialising");
     }
 
     @Override
     public Object createNext() {
-        return new SimplePofObject(new byte[1024], false);
+        return new LoggingPofObject(new byte[1024]);
     }
 }

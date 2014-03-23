@@ -18,14 +18,18 @@ descriptor: pof-config.dtd.
 
         <user-type>
             <type-id>1000</type-id>
-            <class-name>com.benstopford.coherence.bootstrap.structures.dataobjects.SimplePofObject</class-name>
+            <class-name>com.benstopford.coherence.bootstrap.structures.dataobjects.PofObject</class-name>
         </user-type>
         <user-type>
             <type-id>1001</type-id>
-            <class-name>com.benstopford.coherence.bootstrap.structures.PutAllInvocable</class-name>
+            <class-name>com.benstopford.coherence.bootstrap.structures.dataobjects.LoggingPofObject</class-name>
         </user-type>
         <user-type>
             <type-id>1002</type-id>
+            <class-name>com.benstopford.coherence.bootstrap.structures.PutAllInvocable</class-name>
+        </user-type>
+        <user-type>
+            <type-id>1003</type-id>
             <class-name>com.benstopford.coherence.bootstrap.structures.SelfDestructingTrigger</class-name>
         </user-type>
     </user-type-list>

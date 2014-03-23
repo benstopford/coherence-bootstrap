@@ -1,9 +1,9 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
 import com.benstopford.coherence.bootstrap.structures.IndexSizer;
+import com.benstopford.coherence.bootstrap.structures.dataobjects.LoggingPofObject;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.ObjFactory;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PoJo;
-import com.benstopford.coherence.bootstrap.structures.dataobjects.SimplePofObject;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.extractor.PofExtractor;
@@ -57,8 +57,8 @@ public class CountIndexSizesOverMultipleCachesViaJmx extends ClusterRunner {
         NamedCache bar = getRemotePofCache("bar");
 
         //add some data
-        addValuesToCache(foo, 10*1000, new SimplePofObject(null));
-        addValuesToCache(bar, 10*1000, new SimplePofObject(null));
+        addValuesToCache(foo, 10*1000, new LoggingPofObject(null));
+        addValuesToCache(bar, 10*1000, new LoggingPofObject(null));
 
         //add regular reflection indexes
         foo.addIndex(new PofExtractor(null, 1), false, null);
