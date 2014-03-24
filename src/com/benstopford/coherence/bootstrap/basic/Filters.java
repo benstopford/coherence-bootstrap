@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.dataobjects.LoggingPofObject;
+import com.benstopford.coherence.bootstrap.structures.dataobjects.PofObject;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.io.pof.reflect.SimplePofPath;
 import com.tangosol.net.DefaultConfigurableCacheFactory;
@@ -44,7 +44,7 @@ public class Filters extends ClusterRunner {
         cache = this.factory.ensureCache("stuff", getClass().getClassLoader());
 
         for (int i = 1; i <= 100; i++) {
-            cache.put("Key" + i, new LoggingPofObject("Value" + i, false));
+            cache.put("Key" + i, new PofObject("Value" + i));
         }
 
         ValueExtractor pofExtractor = new PofExtractor(null, new SimplePofPath(1));
@@ -60,8 +60,8 @@ public class Filters extends ClusterRunner {
         cache = factory.ensureCache("stuff", getClass().getClassLoader());
 
         for (int i = 1; i <= 100; i++) {
-            LoggingPofObject child = new LoggingPofObject("Value" + i, false);
-            LoggingPofObject parent = new LoggingPofObject(child, false);
+            PofObject child = new PofObject("Value" + i);
+            PofObject parent = new PofObject(child);
             cache.put("Key" + i, parent);
         }
 
