@@ -42,6 +42,6 @@ public class LoggingPofObject extends PofObject implements PortableObject, ObjFa
 
     @Override
     public Object createNext() {
-        return new LoggingPofObject(new byte[1024]);
+        return new LoggingPofObject(new byte[1024], false);
     }
 }
