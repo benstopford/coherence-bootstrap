@@ -10,50 +10,113 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+
 public class PofInternals {
     ConfigurablePofContext pofContext = new ConfigurablePofContext("config/my-pof-config.xml");
 
     @Test
     public void shouldNavigateSingleObject() throws IOException {
+
         PofObject object = new PofObject("benjamin");
+
+        //get the binary stream
+        Binary binary = ExternalizableHelper.toBinary(object, pofContext);
+        ReadBuffer.BufferInput stream = binary.getBufferInput();
+
+        //****OBJECT HEADER****
+
+        //Take off the header - we don't need this
+        int headerByte = stream.readPackedInt();
+        assertThat(headerByte, is(21));
+
+        //The next two bytes are the classId
+        int pofClassId = stream.readPackedInt();
+        assertThat(pofClassId, is(1000));
+
+        //Then the version (for evolvability purposes)
+        int pofClassVersion = stream.readPackedInt();
+        assertThat(pofClassVersion, is(0));
+
+        //****FIELD HEADER****
+
+        //The next byte is the pof id of the first field, 1
+        int pofId = stream.readPackedInt();
+        assertThat(pofId, is(1));
+
+        //The next byte the field type, in this case it's String (-15)
+        int datatype = stream.readPackedInt();
+        assertThat(datatype, is(-15));
+
+        //Then a byte for the field length. It's the string 'benjamin' so we expect 8 bytes
+        int fieldLength = stream.readPackedInt();
+        assertThat(fieldLength, is(8));
+
+        ////****FIELD VALUE****
+
+        char[] field = new char[fieldLength];
+        for (int i = 0; i < fieldLength; i++) {
+            field[i] = PofHelper.readChar(stream);
+        }
+        assertThat(String.valueOf(field), is("benjamin"));
+
+        //Closing marker - there are no more fields in this object.
+        assertThat(stream.readPackedInt(), is(-1));
+
+        //And we're at the end
+        assertThat(stream.getOffset(), is(binary.length()));
+
+        System.out.printf("Header btye: %s\n" +
+                        "ClassType is: %s\n" +
+                        "ClassVersion is: %s\n" +
+                        "FieldPofId is: %s\n" +
+                        "Field data type is: %s\n" +
+                        "Field length is: %s\n" +
+                        "Field Value is: %s\n" +
+                        "No more fields marker is: %s",
+                binary.toBinary(0, 1).getBufferInput().readPackedInt(),
+                binary.toBinary(1, 2).getBufferInput().readPackedInt(),
+                binary.toBinary(3, 1).getBufferInput().readPackedInt(),
+                binary.toBinary(4, 1).getBufferInput().readPackedInt(),
+                binary.toBinary(5, 1).getBufferInput().readPackedInt(),
+                binary.toBinary(6, 1).getBufferInput().readPackedInt(),
+                binary.toBinary(6, 9).getBufferInput().readSafeUTF(), //readSafeUTF needs the length so start from 6
+                binary.toBinary(15, 1).getBufferInput().readPackedInt()
+        );
+    }
+
+    @Test
+    public void shouldNavigateNestedObject() throws IOException {
+
+        //this time create an tiered object
+        PofObject object = new PofObject(new PofObject("wrapped-value"));
 
         //get the binary stream
         Binary bob = ExternalizableHelper.toBinary(object, pofContext);
         ReadBuffer.BufferInput stream = bob.getBufferInput();
 
-        //Take off the header - we don't need this
-        int headerByte = stream.readPackedInt();
-        System.out.printf("Header byte is %s\n", headerByte);
+        System.out.println("Header byte is: "+ stream.readPackedInt());
+        System.out.println("Class type is: "+ stream.readPackedInt());
+        System.out.println("Class version is: "+ stream.readPackedInt());
+        System.out.println("Field Pof Id is: "+ stream.readPackedInt());
+        System.out.println("Field data type is: " + stream.readPackedInt()); //1000 as it's the nested PofObject
+        System.out.println("Version (of nested object) is: "+ stream.readPackedInt());
+        System.out.println("Field Pof Id (of nested object) is: "+ stream.readPackedInt());
+        System.out.println("Datatype (of nested object) is: "+ stream.readPackedInt());
 
-        //The next two are the pof type and its version
-        int pofClassId = stream.readPackedInt();
-        int pofClassVersion = stream.readPackedInt();
-        System.out.printf("Class type-id is %s and version is %s\n", pofClassId, pofClassVersion);
+        int length = stream.readPackedInt();
+        System.out.println("Length (of nested object) is: " + length);
 
-        //next comes the pofId in the stream
-        int pofId = stream.readPackedInt();
-        System.out.printf("This field has a pofId of %s\n", pofId);
-
-        //next is encoding information
-        int encoding = stream.readPackedInt();
-        System.out.printf("Field is encoded with type %s\n", encoding);
-
-        //The length of the field is encoded next
-        int fieldLength = stream.readPackedInt();
-        System.out.printf("Field is of length %s\n", fieldLength);
-
-        //Next is the data
-        char[] field = new char[fieldLength];
-        for (int i = 0; i < fieldLength; i++) {
+        char[] field = new char[length];
+        for (int i = 0; i < length; i++) {
             field[i] = PofHelper.readChar(stream);
         }
-        System.out.printf("Field is '%s'\n", String.valueOf(field));
+        System.out.printf("Value is '%s'\n", String.valueOf(field));
+        System.out.println("Closing marker for the inner stream: " + stream.readPackedInt());
+        System.out.println("Closing marker for the outer stream: " + stream.readPackedInt());
 
-        //Closing marker
-        System.out.println("Finally there is a closing int: "+stream.readPackedInt());
-
-        //And we're at the end
-        System.out.printf("Now at position %s of stream of original length %s\n", stream.getOffset(), bob.length());
+        assertThat(stream.getOffset(), is(bob.length()));
     }
 
 }
