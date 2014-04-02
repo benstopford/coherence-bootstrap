@@ -28,9 +28,7 @@ public class IsPofAlwaysAGoodIdea {
     public static int objectCount;
     static byte[] padding = new byte[10];
 
-    enum Type {start, end, random}
-
-    ;
+    enum Type {start, end, random};
 
     @Test
     public void whereDoPofExtractionStopsBeingMoreEfficient() throws InterruptedException {
@@ -109,6 +107,7 @@ public class IsPofAlwaysAGoodIdea {
         Double d = Double.valueOf(end.average(data.size(), ns));
         System.out.printf("On average full deserialisation of %s field object took %sns\n", numberOfFieldsOnObject, d);
     }
+
     public static void testPofExtractionOfNAttributes(int numberOfFieldsOnObject, int numberOfFieldsToExract, Type entryPoint) {
         SimplePofContext context = new SimplePofContext();
         List<Binary> data = new ArrayList<Binary>();

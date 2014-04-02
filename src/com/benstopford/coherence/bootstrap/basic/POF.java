@@ -19,6 +19,7 @@ public class POF {
     public void putAndGetPofEncodedObject() throws IOException {
 
         DefaultConfigurableCacheFactory factory = new DefaultConfigurableCacheFactory("config/basic-cache-with-pof.xml");
+
         NamedCache cache = factory.ensureCache("stuff", getClass().getClassLoader());
 
         cache.put("key", new LoggingPofObject("some data"));

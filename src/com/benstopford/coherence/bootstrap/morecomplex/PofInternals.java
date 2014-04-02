@@ -2,8 +2,8 @@ package com.benstopford.coherence.bootstrap.morecomplex;
 
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PofObject;
 import com.tangosol.io.ReadBuffer;
-import com.tangosol.io.pof.ConfigurablePofContext;
 import com.tangosol.io.pof.PofHelper;
+import com.tangosol.io.pof.SimplePofContext;
 import com.tangosol.util.Binary;
 import com.tangosol.util.ExternalizableHelper;
 import org.junit.Test;
@@ -14,15 +14,16 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 public class PofInternals {
-    ConfigurablePofContext pofContext = new ConfigurablePofContext("config/my-pof-config.xml");
 
     @Test
     public void shouldNavigateSingleObject() throws IOException {
+        SimplePofContext context = new SimplePofContext();
+        context.registerUserType(1000, PofObject.class, PofObject.serialiser);
 
         PofObject object = new PofObject("benjamin");
 
         //get the binary stream
-        Binary binary = ExternalizableHelper.toBinary(object, pofContext);
+        Binary binary = ExternalizableHelper.toBinary(object, context);
         ReadBuffer.BufferInput stream = binary.getBufferInput();
 
         //****OBJECT HEADER****
@@ -61,9 +62,6 @@ public class PofInternals {
         }
         assertThat(String.valueOf(field), is("benjamin"));
 
-        //Closing marker - there are no more fields in this object.
-        assertThat(stream.readPackedInt(), is(-1));
-
         //And we're at the end
         assertThat(stream.getOffset(), is(binary.length()));
 
@@ -73,37 +71,37 @@ public class PofInternals {
                         "FieldPofId is: %s\n" +
                         "Field data type is: %s\n" +
                         "Field length is: %s\n" +
-                        "Field Value is: %s\n" +
-                        "No more fields marker is: %s",
-                binary.toBinary(0, 1).getBufferInput().readPackedInt(),
+                        "Field Value is: %s\n" ,
+                        binary.toBinary(0, 1).getBufferInput().readPackedInt(),
                 binary.toBinary(1, 2).getBufferInput().readPackedInt(),
                 binary.toBinary(3, 1).getBufferInput().readPackedInt(),
                 binary.toBinary(4, 1).getBufferInput().readPackedInt(),
                 binary.toBinary(5, 1).getBufferInput().readPackedInt(),
                 binary.toBinary(6, 1).getBufferInput().readPackedInt(),
-                binary.toBinary(6, 9).getBufferInput().readSafeUTF(), //readSafeUTF needs the length so start from 6
-                binary.toBinary(15, 1).getBufferInput().readPackedInt()
+                binary.toBinary(6, 9).getBufferInput().readSafeUTF()
         );
     }
 
     @Test
     public void shouldNavigateNestedObject() throws IOException {
+        SimplePofContext context = new SimplePofContext();
+        context.registerUserType(1000, PofObject.class, PofObject.serialiser);
 
         //this time create an tiered object
         PofObject object = new PofObject(new PofObject("wrapped-value"));
 
         //get the binary stream
-        Binary bob = ExternalizableHelper.toBinary(object, pofContext);
+        Binary bob = ExternalizableHelper.toBinary(object, context);
         ReadBuffer.BufferInput stream = bob.getBufferInput();
 
-        System.out.println("Header byte is: "+ stream.readPackedInt());
-        System.out.println("Class type is: "+ stream.readPackedInt());
-        System.out.println("Class version is: "+ stream.readPackedInt());
-        System.out.println("Field Pof Id is: "+ stream.readPackedInt());
+        System.out.println("Header byte is: " + stream.readPackedInt());
+        System.out.println("Class type is: " + stream.readPackedInt());
+        System.out.println("Class version is: " + stream.readPackedInt());
+        System.out.println("Field Pof Id is: " + stream.readPackedInt());
         System.out.println("Field data type is: " + stream.readPackedInt()); //1000 as it's the nested PofObject
-        System.out.println("Version (of nested object) is: "+ stream.readPackedInt());
-        System.out.println("Field Pof Id (of nested object) is: "+ stream.readPackedInt());
-        System.out.println("Datatype (of nested object) is: "+ stream.readPackedInt());
+        System.out.println("Version (of nested object) is: " + stream.readPackedInt());
+        System.out.println("Field Pof Id (of nested object) is: " + stream.readPackedInt());
+        System.out.println("Datatype (of nested object) is: " + stream.readPackedInt());
 
         int length = stream.readPackedInt();
         System.out.println("Length (of nested object) is: " + length);
@@ -113,8 +111,6 @@ public class PofInternals {
             field[i] = PofHelper.readChar(stream);
         }
         System.out.printf("Value is '%s'\n", String.valueOf(field));
-        System.out.println("Closing marker for the inner stream: " + stream.readPackedInt());
-        System.out.println("Closing marker for the outer stream: " + stream.readPackedInt());
 
         assertThat(stream.getOffset(), is(bob.length()));
     }
