@@ -2,7 +2,7 @@ package com.benstopford.coherence.bootstrap.morecomplex;
 
 import com.benstopford.coherence.bootstrap.structures.SampleInvocable;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
-import com.tangosol.net.DefaultConfigurableCacheFactory;
+import com.tangosol.net.CacheFactory;
 import com.tangosol.net.InvocationService;
 import org.junit.After;
 import org.junit.Before;
@@ -49,7 +49,9 @@ public class UsingServicesToIsolateWorkOnDifferentSetsOfMachines extends Cluster
     }
 
     private InvocationService getService(String name) {
-        return (InvocationService) new DefaultConfigurableCacheFactory("config/basic-invocation-service-1-and-2.xml").ensureService(name);
+        return (InvocationService) CacheFactory.getCacheFactoryBuilder()
+                .getConfigurableCacheFactory("config/basic-invocation-service-1-and-2.xml", classLoader)
+                .ensureService(name);
     }
 
 

@@ -26,7 +26,7 @@ public class FakeDatabaseCacheStore extends AbstractCacheStore {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("Cachestore running with key "+key + "at time "+new Date());
+        System.out.println("Cachestore running with key "+key + " at time "+new Date());
 
         recordCall(key);
 

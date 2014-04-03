@@ -3,8 +3,7 @@ package com.benstopford.coherence.bootstrap.basic;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PofObject;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.io.pof.reflect.SimplePofPath;
-import com.tangosol.net.DefaultConfigurableCacheFactory;
-import com.tangosol.net.NamedCache;
+import com.tangosol.net.*;
 import com.tangosol.util.Filter;
 import com.tangosol.util.ValueExtractor;
 import com.tangosol.util.extractor.KeyExtractor;
@@ -20,13 +19,13 @@ import static junit.framework.Assert.assertEquals;
 
 public class Filters extends ClusterRunner {
 
-    private DefaultConfigurableCacheFactory factory;
-    private NamedCache cache;
 
     @Test
     public void shouldFilterResults() {
-        factory = new DefaultConfigurableCacheFactory("config/basic-cache.xml");
-        cache = factory.ensureCache("stuff", getClass().getClassLoader());
+
+        NamedCache cache = CacheFactory.getCacheFactoryBuilder()
+                .getConfigurableCacheFactory("config/basic-cache.xml", classLoader)
+                .ensureCache("stuff", classLoader);
 
         for (int i = 1; i <= 100; i++) {
             cache.put("Key" + i, "Value" + i);
@@ -40,8 +39,10 @@ public class Filters extends ClusterRunner {
 
     @Test
     public void shouldFilterResultsUsingPofExtractor() {
-        factory = new DefaultConfigurableCacheFactory("config/basic-cache-with-pof.xml");
-        cache = this.factory.ensureCache("stuff", getClass().getClassLoader());
+
+        NamedCache cache = CacheFactory.getCacheFactoryBuilder()
+                .getConfigurableCacheFactory("config/basic-cache-with-pof.xml", classLoader)
+                .ensureCache("stuff", classLoader);
 
         for (int i = 1; i <= 100; i++) {
             cache.put("Key" + i, new PofObject("Value" + i));
@@ -56,8 +57,10 @@ public class Filters extends ClusterRunner {
 
     @Test
     public void shouldFilterResultsUsingTwoLevelPofExtractor() {
-        factory = new DefaultConfigurableCacheFactory("config/basic-cache-with-pof.xml");
-        cache = factory.ensureCache("stuff", getClass().getClassLoader());
+
+        NamedCache cache = CacheFactory.getCacheFactoryBuilder()
+                .getConfigurableCacheFactory("config/basic-cache-with-pof.xml", classLoader)
+                .ensureCache("stuff", classLoader);
 
         for (int i = 1; i <= 100; i++) {
             PofObject child = new PofObject("Value" + i);
@@ -79,8 +82,6 @@ public class Filters extends ClusterRunner {
 
     @After
     public void tearDown() throws Exception {
-        cache.clear();
-        cache.getCacheService().shutdown();
         super.tearDown();
     }
 

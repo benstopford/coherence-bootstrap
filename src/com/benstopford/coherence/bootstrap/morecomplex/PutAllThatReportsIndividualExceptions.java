@@ -2,10 +2,7 @@ package com.benstopford.coherence.bootstrap.morecomplex;
 
 import com.benstopford.coherence.bootstrap.structures.PutAllWithErrorReporting;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
-import com.tangosol.net.DefaultConfigurableCacheFactory;
-import com.tangosol.net.DistributedCacheService;
-import com.tangosol.net.InvocationService;
-import com.tangosol.net.NamedCache;
+import com.tangosol.net.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -20,11 +17,17 @@ public class PutAllThatReportsIndividualExceptions extends ClusterRunner {
 
     @Test
     public void shouldPut() throws InterruptedException {
+        startCoherenceProcess("config/basic-invocation-service-pof-1.xml");
+        startCoherenceProcess("config/basic-invocation-service-pof-1.xml");
+
         String cacheName = "regular-cache";
         String configPath = "config/basic-invocation-service-pof-1.xml";
+
         NamedCache cache = getCache(configPath, cacheName);
 
-        InvocationService service = (InvocationService) new DefaultConfigurableCacheFactory(configPath).ensureService("MyInvocationService1");
+        InvocationService service = (InvocationService) CacheFactory.getCacheFactoryBuilder()
+                .getConfigurableCacheFactory(configPath, classLoader)
+                .ensureService("MyInvocationService1");
 
         TreeMap hashMap = new TreeMap();
         hashMap.put(1, 2);
@@ -50,10 +53,14 @@ public class PutAllThatReportsIndividualExceptions extends ClusterRunner {
 
     @Test
     public void shouldReportFailures() {
+        startCoherenceProcess("config/basic-invocation-service-pof-1.xml");
+        startCoherenceProcess("config/basic-invocation-service-pof-1.xml");
 
         String cacheName = "break-me";
         String configPath = "config/basic-invocation-service-pof-1.xml";
-        NamedCache cache = new DefaultConfigurableCacheFactory(configPath).ensureCache(cacheName, getClass().getClassLoader());
+        NamedCache cache = CacheFactory.getCacheFactoryBuilder()
+                .getConfigurableCacheFactory(configPath, classLoader)
+                .ensureCache(cacheName, classLoader);
 
         InvocationService service = (InvocationService) new DefaultConfigurableCacheFactory(configPath).ensureService("MyInvocationService1");
         Map entries = new TreeMap();
@@ -71,7 +78,7 @@ public class PutAllThatReportsIndividualExceptions extends ClusterRunner {
 
         Map<Object, Throwable> keyToThrowableMap = invoker.putAll(entries);
 
-        System.out.println("test ran and return result size is " + keyToThrowableMap.size());
+        System.out.println("test ran and return-result size is " + keyToThrowableMap.size());
 
         assertEquals(4, keyToThrowableMap.size());
         assertTrue(keyToThrowableMap.get(1).getMessage().contains("Forced Error"));
@@ -83,8 +90,6 @@ public class PutAllThatReportsIndividualExceptions extends ClusterRunner {
 
     @Before public void setUp() throws Exception {
         super.setUp();
-        startCoherenceProcess("config/basic-invocation-service-pof-1.xml");
-        startCoherenceProcess("config/basic-invocation-service-pof-1.xml");
     }
 
     @After public void tearDown() throws Exception {

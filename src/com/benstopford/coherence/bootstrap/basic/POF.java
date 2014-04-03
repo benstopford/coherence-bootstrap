@@ -1,7 +1,7 @@
 package com.benstopford.coherence.bootstrap.basic;
 
 import com.benstopford.coherence.bootstrap.structures.dataobjects.LoggingPofObject;
-import com.tangosol.net.DefaultConfigurableCacheFactory;
+import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
 import org.junit.Test;
 
@@ -11,6 +11,7 @@ import static junit.framework.Assert.assertEquals;
 
 
 public class POF {
+    ClassLoader classLoader = getClass().getClassLoader();
 
     /**
      * see config/my-pof-config
@@ -18,9 +19,9 @@ public class POF {
     @Test
     public void putAndGetPofEncodedObject() throws IOException {
 
-        DefaultConfigurableCacheFactory factory = new DefaultConfigurableCacheFactory("config/basic-cache-with-pof.xml");
-
-        NamedCache cache = factory.ensureCache("stuff", getClass().getClassLoader());
+        NamedCache cache = CacheFactory.getCacheFactoryBuilder()
+                .getConfigurableCacheFactory("config/basic-cache-with-pof.xml", classLoader)
+                .ensureCache("stuff", classLoader);
 
         cache.put("key", new LoggingPofObject("some data"));
 

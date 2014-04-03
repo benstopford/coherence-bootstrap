@@ -1,7 +1,8 @@
 package com.benstopford.coherence.bootstrap.basic;
 
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
-import com.tangosol.net.DefaultConfigurableCacheFactory;
+import com.tangosol.net.CacheFactory;
+import com.tangosol.net.ConfigurableCacheFactory;
 import com.tangosol.net.NamedCache;
 import org.junit.After;
 import org.junit.Before;
@@ -25,15 +26,14 @@ public class ExtendProxies extends ClusterRunner {
         startCoherenceProcess("config/basic-extend-enabled-cache-32001.xml", LOCAL_STORAGE_FALSE);
 
         //use extend config for this client
-        NamedCache cache = new DefaultConfigurableCacheFactory("config/extend-client-32001.xml")
-                .ensureCache("stuff", getClass().getClassLoader());
+        ConfigurableCacheFactory factory = CacheFactory.getCacheFactoryBuilder().getConfigurableCacheFactory("config/extend-client-32001.xml", getClass().getClassLoader());
+        NamedCache cache = factory.ensureCache("stuff", getClass().getClassLoader());
 
         //write
         cache.put("Foo", "Bar");
 
         //read
         assertEquals("Bar", cache.get("Foo"));
-
     }
 
 

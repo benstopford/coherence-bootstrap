@@ -21,6 +21,7 @@ import java.util.Properties;
  * http://thegridman.com/coherence/oracle-coherence-testing-with-oracle-tools/
  */
 public abstract class ClusterRunner {
+    protected ClassLoader classLoader = getClass().getClassLoader();
     public static final String LOCAL_STORAGE_FALSE = "-Dtangosol.coherence.distributed.localstorage=false";
 
     private ProcessExecutor executor = new ProcessExecutor(defaultProperties());
@@ -132,7 +133,9 @@ public abstract class ClusterRunner {
     }
 
     protected NamedCache getRemoteCache(String name) {
-        return new DefaultConfigurableCacheFactory("config/extend-client-32001.xml").ensureCache(name, getClass().getClassLoader());
+        return CacheFactory.getCacheFactoryBuilder()
+                .getConfigurableCacheFactory("config/extend-client-32001.xml", classLoader)
+                .ensureCache(name, classLoader);
     }
 
     protected void startBasicCacheProcess() throws IOException, InterruptedException {
@@ -173,8 +176,9 @@ public abstract class ClusterRunner {
     }
 
     protected NamedCache getCache(String configLocation, String cacheName) {
-        ConfigurableCacheFactory factory = CacheFactory.getCacheFactoryBuilder().getConfigurableCacheFactory(configLocation, getClass().getClassLoader());
-        NamedCache cache = factory.ensureCache(cacheName, getClass().getClassLoader());
+        NamedCache cache = CacheFactory.getCacheFactoryBuilder()
+                .getConfigurableCacheFactory(configLocation, classLoader)
+                .ensureCache(cacheName, classLoader);
         addToShutdownList(cache);
         cache.size();//initialise it
         return cache;
@@ -186,6 +190,8 @@ public abstract class ClusterRunner {
     }
 
     protected NamedCache getRemotePofCache(String name) {
-        return new DefaultConfigurableCacheFactory("config/extend-client-32001-pof.xml").ensureCache(name, getClass().getClassLoader());
+        return CacheFactory.getCacheFactoryBuilder()
+                .getConfigurableCacheFactory("config/extend-client-32001-pof.xml", classLoader)
+                .ensureCache(name, classLoader);
     }
 }
