@@ -31,7 +31,7 @@ public class IsPofAlwaysAGoodIdea {
     enum Type {start, end, random};
 
     @Test
-    public void whereDoPofExtractionStopsBeingMoreEfficient() throws InterruptedException {
+    public void whenDoesPofExtractionStopsBeingMoreEfficient() throws InterruptedException {
 
         padding = new byte[64];
         objectCount = 10000; //Set to ~1,000,000 for accurate test
