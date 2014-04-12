@@ -23,17 +23,17 @@ public class LoggingPofObject extends PofObject implements PortableObject, ObjFa
     }
 
     public void readExternal(PofReader pofReader) throws IOException {
-        super.data =  pofReader.readObject(1);
+        super.readExternal(pofReader);
         logSerialisation = pofReader.readBoolean(2);
 
-        log("deserialising:"+getData());
+        log("deserialising:" + getData());
     }
 
     public void writeExternal(PofWriter pofWriter) throws IOException {
-        pofWriter.writeObject(1, super.data);
+        super.writeExternal(pofWriter);
         pofWriter.writeBoolean(2, logSerialisation);
 
-        log("serialising:"+getData());
+        log("serialising:" + getData());
     }
 
     private void log(String type) {

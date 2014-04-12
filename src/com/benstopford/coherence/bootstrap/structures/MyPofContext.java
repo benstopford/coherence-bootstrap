@@ -20,4 +20,6 @@ public class MyPofContext extends ConfigurablePofContext {
     public Object deserialize(ReadBuffer.BufferInput in) throws IOException {
         return in;    //To change body of overridden methods use File | Settings | File Templates.
     }
+
+
 }
