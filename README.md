@@ -33,7 +33,7 @@ Topics covered:
 * [Using services to isolate work onto groups of hardware](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/UsingServicesToIsolateWorkOnDifferentSetsOfMachines.java)
 * [Sizing the index size in your Coherence Cache](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/CountIndexSizesOverMultipleCachesViaJmx.java)
 * [Exploring POF internal encodings](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/PofInternals.java)
-
+* [Understanding POF performance, when it is faster and when it is not](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/PofEfficiency.java)
 **Getting started is simple:**
 * Download the zip or clone this repository
 * Create a project in your IDE of choice
