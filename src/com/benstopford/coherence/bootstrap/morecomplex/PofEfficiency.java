@@ -52,7 +52,6 @@ public class PofEfficiency {
 
         testPofExtractionOfNAttributes(fieldCount, 5, Type.random);
 
-
         System.out.println("----Break Even Points (on my machine) for objects with different numbers of fields----");
         System.out.println("- for objects of 5 fields the break even point is deserialising 2 fields with pof");
         System.out.println("- for objects of 20 fields the break even point is deserialising 4 fields with pof");
