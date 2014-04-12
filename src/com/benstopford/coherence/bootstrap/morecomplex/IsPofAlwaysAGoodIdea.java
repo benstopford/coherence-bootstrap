@@ -14,22 +14,65 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static com.benstopford.coherence.bootstrap.structures.framework.PerformanceTimer.TimeFormat.ns;
 import static com.benstopford.coherence.bootstrap.structures.framework.PerformanceTimer.*;
+import static com.benstopford.coherence.bootstrap.structures.framework.PerformanceTimer.TimeFormat.ns;
 
 
-/*
-Class to look at performance of pof-extractors in comparison to deserilising the whole object
-  It is best to use the below memory settings and a larger objectCount to get reliable results:
-     -Xmx8g -Xms8g
-     (and tweaking these for fun) -XX:NewSize=5g -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps
- */
 public class IsPofAlwaysAGoodIdea {
     public static int objectCount;
     static byte[] padding = new byte[10];
 
-    enum Type {start, end, random};
+    enum Type {start, end, random}
 
+    ;
+
+    /**
+     * Ignore GC via -Xms8g -Xmx8g -XX:NewSize=4g -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps
+     */
+    @Test
+    public void howMuchSlowerIsPullingDataFromTheEndOfTheStreamRatherThanTheStart() throws InterruptedException {
+
+        List<Integer> fields = new ArrayList<Integer>();
+        for (int i = 0; i < 1024; i++) {
+            fields.add(Integer.MAX_VALUE);
+        }
+
+        ComplexPofObject o = new ComplexPofObject(fields);
+
+        for (int pofFieldPosition = 1; pofFieldPosition <= 1024; pofFieldPosition = pofFieldPosition * 2) {
+            serialisationTime(new SimplePofPath(pofFieldPosition), o);
+            gc();
+        }
+    }
+
+    private void gc() throws InterruptedException {
+        System.gc();
+        Thread.sleep(1000);
+    }
+
+    private void serialisationTime(SimplePofPath navigator, ComplexPofObject o) {
+        int total = 1 * 1000 * 1000, count = total; //10 million is best, reduced to keep test times down
+
+        SimplePofContext context = new SimplePofContext();
+        context.registerUserType(2001, ComplexPofObject.class, ComplexPofObject.serializer);
+        PofExtractor pofExtractor = new PofExtractor(ComplexPofObject.class, navigator);
+
+        Binary b = ExternalizableHelper.toBinary(o, context);
+
+        start();
+        while (count-- > 0) {
+            PofValue value = PofValueParser.parse(b, context);
+            pofExtractor.getNavigator().navigate(value).getValue();
+        }
+        end().printAverage(total, TimeFormat.ns, "Average extraction time for navigator " + navigator.toString() + " is ");
+    }
+
+    /**
+     * Look at performance of pof-extractors in comparison to deserilising the whole object
+     * It is best to use the below memory settings and a larger objectCount to get reliable results:
+     * -Xmx8g -Xms8g
+     * (and tweaking these for fun) -XX:NewSize=5g -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps
+     */
     @Test
     public void whenDoesPofExtractionStopsBeingMoreEfficient() throws InterruptedException {
 
