@@ -188,9 +188,6 @@ public class PofEfficiency {
         }
         end().printAverage(total, TimeFormat.ns, "Average extraction time for navigator " + navigator.toString() + " is ");
     }
-
-
-
 }
 
 
