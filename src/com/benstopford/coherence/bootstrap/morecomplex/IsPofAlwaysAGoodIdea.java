@@ -77,47 +77,31 @@ public class IsPofAlwaysAGoodIdea {
     public void whenDoesPofExtractionStopsBeingMoreEfficient() throws InterruptedException {
 
         padding = new byte[64];
-        objectCount = 10000; //Set to ~1,000,000 for accurate test
+        objectCount = 1000000; //TODO: Set to ~1,000,000 for accurate test
         int fieldCount = 50;
 
-        testFullObjectDeserialiation(fieldCount);
-        testFullObjectDeserialiation(fieldCount);
-        testFullObjectDeserialiation(fieldCount);
+        //warm up JVM
+        testFullObjectDeserialiation(fieldCount, false);
+        gc();
 
-        System.gc();
-        Thread.sleep(1000);
+        testFullObjectDeserialiation(fieldCount, true);
+        gc();
 
         testPofExtractionOfNAttributes(fieldCount, 5, Type.start);
-        testPofExtractionOfNAttributes(fieldCount, 5, Type.start);
-        testPofExtractionOfNAttributes(fieldCount, 5, Type.start);
-
-        System.gc();
-        Thread.sleep(1000);
+        gc();
 
         testPofExtractionOfNAttributes(fieldCount, 5, Type.end);
-        testPofExtractionOfNAttributes(fieldCount, 5, Type.end);
-        testPofExtractionOfNAttributes(fieldCount, 5, Type.end);
-
-        System.gc();
-        Thread.sleep(1000);
+        gc();
 
         testPofExtractionOfNAttributes(fieldCount, 5, Type.random);
-        testPofExtractionOfNAttributes(fieldCount, 5, Type.random);
-        testPofExtractionOfNAttributes(fieldCount, 5, Type.random);
 
-        System.gc();
-        Thread.sleep(1000); //sanity check same as first results
-
-        testFullObjectDeserialiation(fieldCount);
-        testFullObjectDeserialiation(fieldCount);
-        testFullObjectDeserialiation(fieldCount);
 
         System.out.println("----Break Even Points (on my machine) for objects with different numbers of fields----");
-        System.out.println("- for large objects of 5 fields the break even point is deserialising 2 fields with pof");
-        System.out.println("- for large objects of 20 fields the break even point is deserialising 4 fields with pof");
-        System.out.println("- for large objects of 50 fields the break even point is deserialising 5 fields with pof");
-        System.out.println("- for large objects of 100 fields the break even point is deserialising 7 fields with pof");
-        System.out.println("- for large objects of 200 fields the break even point is deserialising 9 fields with pof");
+        System.out.println("- for objects of 5 fields the break even point is deserialising 2 fields with pof");
+        System.out.println("- for objects of 20 fields the break even point is deserialising 4 fields with pof");
+        System.out.println("- for objects of 50 fields the break even point is deserialising 5 fields with pof");
+        System.out.println("- for objects of 100 fields the break even point is deserialising 7 fields with pof");
+        System.out.println("- for objects of 200 fields the break even point is deserialising 9 fields with pof");
         System.out.println("----Varying Field Size----");
         System.out.println("- the size of the field (adjusted with fieldPadding) doesn't affect performance much");
         System.out.println("----Varying Field Size----");
@@ -126,7 +110,7 @@ public class IsPofAlwaysAGoodIdea {
     }
 
 
-    public static void testFullObjectDeserialiation(int numberOfFieldsOnObject) {
+    public static void testFullObjectDeserialiation(int numberOfFieldsOnObject, boolean print) {
         SimplePofContext context = new SimplePofContext();
         List<Binary> data = new ArrayList<Binary>();
 
@@ -148,7 +132,9 @@ public class IsPofAlwaysAGoodIdea {
         Took end = end();
 
         Double d = Double.valueOf(end.average(data.size(), ns));
-        System.out.printf("On average full deserialisation of %s field object took %sns\n", numberOfFieldsOnObject, d);
+
+        if (print)
+            System.out.printf("On average full deserialisation of a %s field object took %sns\n", numberOfFieldsOnObject, d);
     }
 
     public static void testPofExtractionOfNAttributes(int numberOfFieldsOnObject, int numberOfFieldsToExract, Type entryPoint) {
@@ -186,7 +172,9 @@ public class IsPofAlwaysAGoodIdea {
             }
         }
         Took took = end();
-        System.out.printf("On average pof extraction of %s %s fields of %s took %sns\n", entryPoint == Type.end ? "last" : entryPoint == Type.start ? "start" : "random", numberOfFieldsToExract, numberOfFieldsOnObject, took.average(data.size(), ns));
+        System.out.printf("On average pof extraction of %s %s fields of %s took %sns\n",
+                entryPoint == Type.end ? "last" : entryPoint == Type.start ? "first" : "random",
+                numberOfFieldsToExract, numberOfFieldsOnObject, took.average(data.size(), ns));
     }
 
     private static void extract(SimplePofContext context, Binary b, int index) {
