@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Properties;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * BTS, 07-Dec-2007
  * <p/>
@@ -193,5 +195,12 @@ public abstract class ClusterRunner {
         return CacheFactory.getCacheFactoryBuilder()
                 .getConfigurableCacheFactory("config/extend-client-32001-pof.xml", classLoader)
                 .ensureCache(name, classLoader);
+    }
+
+
+    protected void assertWithinTolerance(long expected, long actual, double toleranceFraction) {
+        System.out.printf("Expected:%,d, Actual: %,d, %s \n", expected, actual, toleranceFraction);
+        assertTrue(expected + (toleranceFraction * expected) > actual);
+        assertTrue(expected - (toleranceFraction * expected) < actual);
     }
 }

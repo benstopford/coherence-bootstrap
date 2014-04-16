@@ -6,10 +6,15 @@ import java.io.Serializable;
  * BTS, 16-Oct-2008
  */
 public class PoJo implements Serializable, ObjFactory {
+    private byte[] data = null;
     private Integer o;
 
     public PoJo(int o) {
         this.o = o;
+    }
+
+    public PoJo(byte[] data) {
+        this.data = data;
     }
 
     public PoJo() {
@@ -18,6 +23,9 @@ public class PoJo implements Serializable, ObjFactory {
 
     public Object getValue() {
         return o;
+    }
+    public Object getData() {
+        return data;
     }
 
 

@@ -34,7 +34,7 @@ public class PofEfficiency {
     public void whenDoesPofExtractionStopsBeingMoreEfficient() throws InterruptedException {
 
         padding = new byte[64];
-        objectCount = 1000000; //TODO: Set to ~1,000,000 for accurate test
+        objectCount = 100000; //TODO: Set to ~1,000,000 for accurate test - just set low memory reasons
         int fieldCount = 50;
 
         //warm up JVM

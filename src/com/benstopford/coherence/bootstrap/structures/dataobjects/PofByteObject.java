@@ -6,33 +6,30 @@ import com.tangosol.io.pof.PortableObject;
 
 import java.io.IOException;
 
-public class PofObject implements ObjFactory, PortableObject {
-    protected Object data;
+public class PofByteObject implements  PortableObject {
+    protected byte[] data;
 
-    public PofObject() {
+    public PofByteObject() {
     }//serialization
 
 
-    public PofObject(Object data) {
+
+    public PofByteObject(byte[] data) {
         this.data = data;
     }
 
-    public Object getData() {
+    public byte[] getData() {
         return data;
     }
 
-    @Override
-    public Object createNext() {
-        return new PofObject(new byte[1024]);
-    }
 
     @Override
     public void readExternal(PofReader pofReader) throws IOException {
-        data = pofReader.readObject(1);
+        data = pofReader.readByteArray(1);
     }
 
     @Override
     public void writeExternal(PofWriter pofWriter) throws IOException {
-        pofWriter.writeObject(1, data);
+        pofWriter.writeByteArray(1, data);
     }
 }

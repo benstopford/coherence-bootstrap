@@ -10,11 +10,17 @@ import java.util.*;
 
 /**
  * Work out the total index size across all caches in a Coherence cluster
+ * <p/>
+ * Warning: this mechanism is not always acurate. In fact it's pretty lousy. I leave
+ * the example here only for reference.
+ * <p/>
+ * See CoherenceIndexSizeMbeanIsInaccurate which demonstrates the issue in detail.
  */
 public class IndexSizer {
     private static final String jmxHost = "localhost";
     private static final String jmxUser = "jmxadmin";
     private static final String jmxPassword = "password";
+    private boolean log;
 
     public static void main(String[] args) throws Exception {
         new IndexSizer().sizeAllIndexes(40001);
@@ -24,18 +30,22 @@ public class IndexSizer {
      * Returns the total bytes of all indexes in Coherence
      */
     public long sizeAllIndexes(int jmxPort) throws Exception {
+        return sizeAllIndexes(jmxPort, true);
+    }
+
+    public long sizeAllIndexes(int jmxPort, boolean print) throws Exception {
+        this.log = print;
         return doIndexQuery(jmx(jmxHost, String.valueOf(jmxPort), jmxUser, jmxPassword));
     }
 
     private long doIndexQuery(MBeanServerConnection server) throws Exception {
         Map<String, Double> sizesByCache = new HashMap<String, Double>();
+        String searchString = "Coherence:type=StorageManager,service=*,cache=*,*";
 
-        Set<ObjectInstance> results = server.queryMBeans(
-                new ObjectName("Coherence:type=StorageManager,service=*,cache=*,*")
-                , null
-        );
+        Set<ObjectInstance> results = server.queryMBeans(new ObjectName(searchString), null);
+
         int total = results.size();
-        System.err.println("Found " + total + " MBeans");
+        check(total);
 
         for (ObjectInstance result : results) {
             String cacheName = result.getObjectName().getKeyPropertyList().get("cache");
@@ -52,27 +62,46 @@ public class IndexSizer {
 
             sizesByCache.put(cacheName, cacheIndexSize);
 
-            log(total--);
+            logEvery(1000, total--);
         }
 
-        return Math.round(printResults(sizesByCache));
+        double totalSize = sum(sizesByCache);
+        logf("All indexes come in at %sMB\n", totalSize / 1024 / 1024);
+        return Math.round(totalSize);
     }
 
-    private double printResults(Map<String, Double> sizesByCache) {
+    private void check(int total) {
+        if (total == 0) {
+            throw new RuntimeException("Could not find any mbeans. Probably a connection problem or Coherence MBeans are not enabled");
+        }
+        log("Found " + total + " MBeans");
+    }
+
+    private double sum(Map<String, Double> sizesByCache) {
         double totalSize = 0;
         for (String s : sizesByCache.keySet()) {
             Double cacheSize = sizesByCache.get(s);
             totalSize += cacheSize;
-            System.out.printf("%s:%sKB\n", s, cacheSize / 1024);
+            logf("%s:%sKB\n", s, cacheSize / 1024);
         }
-        System.out.printf("All indexes come in at %sMB\n", totalSize / 1024 / 1024);
+
         return totalSize;
     }
 
-    private void log(int total) {
-        if (total % 1000 == 0) {
-            System.out.println(total + " to go");
+    private void logEvery(int n, int total) {
+        if (total % n == 0) {
+            log(total + " to go");
         }
+    }
+
+    private void log(String s) {
+        if (log)
+            System.out.println(s);
+    }
+
+    private void logf(String s, Object... args) {
+        if (log)
+            System.out.printf(s, args);
     }
 
     private double extractSize(String indexInfo) {
@@ -96,12 +125,14 @@ public class IndexSizer {
     }
 
     private MBeanServerConnection jmx(String jmxHost, String jmxPort, String jmxUser, String jmxPassword) throws Exception {
-        String urlPath = "/jndi/rmi://" + jmxHost + ":" + jmxPort + "/jmxrmi";
-        System.out.println("Connecting to " + urlPath);
-        JMXServiceURL jmxUrl = new JMXServiceURL("rmi", "", 0, urlPath);
         Map<String, String[]> env = new HashMap<String, String[]>();
+
+        String urlPath = "/jndi/rmi://" + jmxHost + ":" + jmxPort + "/jmxrmi";
+        log("Connecting to " + urlPath);
+
+        JMXServiceURL jmxUrl = new JMXServiceURL("rmi", "", 0, urlPath);
         env.put(JMXConnector.CREDENTIALS, new String[]{jmxUser, jmxPassword});
-        JMXConnector jmxConnector = JMXConnectorFactory.connect(jmxUrl, env);
-        return jmxConnector.getMBeanServerConnection();
+
+        return JMXConnectorFactory.connect(jmxUrl, env).getMBeanServerConnection();
     }
 }

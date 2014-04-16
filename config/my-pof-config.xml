@@ -32,6 +32,10 @@ descriptor: pof-config.dtd.
             <type-id>1003</type-id>
             <class-name>com.benstopford.coherence.bootstrap.structures.SelfDestructingTrigger</class-name>
         </user-type>
+        <user-type>
+            <type-id>1004</type-id>
+            <class-name>com.benstopford.coherence.bootstrap.structures.dataobjects.PofByteObject</class-name>
+        </user-type>
     </user-type-list>
 
     <allow-interfaces>false</allow-interfaces>

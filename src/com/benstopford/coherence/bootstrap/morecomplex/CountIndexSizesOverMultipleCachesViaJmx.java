@@ -1,9 +1,8 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
 import com.benstopford.coherence.bootstrap.structures.IndexSizer;
-import com.benstopford.coherence.bootstrap.structures.dataobjects.LoggingPofObject;
-import com.benstopford.coherence.bootstrap.structures.dataobjects.ObjFactory;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PoJo;
+import com.benstopford.coherence.bootstrap.structures.dataobjects.PofObject;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.extractor.PofExtractor;
@@ -13,16 +12,17 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-
 public class CountIndexSizesOverMultipleCachesViaJmx extends ClusterRunner {
+    public static final int MB = 1024 * 1024;
+    public static final int KB = 1024;
+    private static byte[] data1K = new byte[1024];
 
     @Test
-    public void shouldGetIndexSizeRightOverTwoDifferentCaches() throws Exception {
+    public void shouldMeasureIndexSizeOverTwoJavaSerialisedCaches() throws Exception {
+        int port = 40001;
 
         //create cluster with a JMX port open
-        startBasicCacheProcessWithJMX(40001);
+        startBasicCacheProcessWithJMX(port);
         startBasicCacheProcess();
         startDataDisabledExtendProxy();
 
@@ -31,21 +31,21 @@ public class CountIndexSizesOverMultipleCachesViaJmx extends ClusterRunner {
         NamedCache bar = getRemoteCache("bar");
 
         //add some data
-        addValuesToCache(foo, 10*1000, new PoJo());
-        addValuesToCache(bar, 10*1000, new PoJo());
+        addValuesToCache(foo, 10 * 1024, new PoJo(data1K)); //10MB
+        addValuesToCache(bar, 10 * 1024, new PoJo(data1K)); //10MB
 
         //add regular reflection indexes
-        foo.addIndex(new ReflectionExtractor("getValue"), false, null);
-        bar.addIndex(new ReflectionExtractor("getValue"), false, null);
+        foo.addIndex(new ReflectionExtractor("getData"), false, null);
+        bar.addIndex(new ReflectionExtractor("getData"), false, null);
 
         //count the total index size
-        long size = new IndexSizer().sizeAllIndexes(40001);
+        long size = new IndexSizer().sizeAllIndexes(port);
 
-        assertThat(size, is(319693L));
+        assertWithinTolerance(size, 21286093L, 0.01);//21,286,093 for input of 20MB
     }
 
     @Test
-    public void shouldGetIndexSizeRightOverTwoDifferentPofCaches() throws Exception {
+    public void shouldMeasureIndexSizeOverTwoPofCaches() throws Exception {
 
         //create a pof enabled cluster with a JMX port open
         startBasicCacheProcessWithJMX("config/basic-cache-with-pof.xml", 40001);
@@ -57,24 +57,22 @@ public class CountIndexSizesOverMultipleCachesViaJmx extends ClusterRunner {
         NamedCache bar = getRemotePofCache("bar");
 
         //add some data
-        addValuesToCache(foo, 10*1000, new LoggingPofObject(null));
-        addValuesToCache(bar, 10*1000, new LoggingPofObject(null));
+        addValuesToCache(foo, 10 * 1024, new PofObject(data1K));//10MB
+        addValuesToCache(bar, 10 * 1024, new PofObject(data1K));//10MB
 
-        //add regular reflection indexes
         foo.addIndex(new PofExtractor(null, 1), false, null);
         bar.addIndex(new PofExtractor(null, 1), false, null);
 
         //count the total index size
         long size = new IndexSizer().sizeAllIndexes(40001);
 
-        //total of 10k x 1KB fields is 10,240,000B but the real index size is 20,782,776 - about double
-        assertThat(size, is(20782776L));
+        assertWithinTolerance(size, 21181235L, 0.01);//20MB of data creates index of 21,181,235B
     }
 
-    private void addValuesToCache(NamedCache cache, int numberToAdd, ObjFactory factory) {
+    private void addValuesToCache(NamedCache cache, int numberToAdd, Object o) {
         Map all = new HashMap();
         for (int i = 0; i < numberToAdd; i++) {
-            all.put("Key" + i, factory.createNext());
+            all.put("Key" + i, o);
         }
         cache.putAll(all);
     }
