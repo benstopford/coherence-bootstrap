@@ -5,6 +5,8 @@ import com.tangosol.io.pof.PofWriter;
 import com.tangosol.io.pof.PortableObject;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 public class PofByteObject implements  PortableObject {
     protected byte[] data;
@@ -25,11 +27,26 @@ public class PofByteObject implements  PortableObject {
 
     @Override
     public void readExternal(PofReader pofReader) throws IOException {
-        data = pofReader.readByteArray(1);
+        ByteArrayWrapper wrapper = (ByteArrayWrapper) pofReader.readObject(1);
+        data = wrapper.getBytes();
     }
 
     @Override
     public void writeExternal(PofWriter pofWriter) throws IOException {
-        pofWriter.writeByteArray(1, data);
+        pofWriter.writeObject(1, new ByteArrayWrapper(data));
+    }
+
+
+    @Override
+    public String toString() {
+        return "PofObject{" +
+                "data=" + getInt(data) +
+                '}';
+    }
+
+    public static int getInt(byte[] bytes) {
+        ByteBuffer bb = ByteBuffer.wrap(bytes);
+        bb.order(ByteOrder.LITTLE_ENDIAN);
+        return bb.getInt();
     }
 }

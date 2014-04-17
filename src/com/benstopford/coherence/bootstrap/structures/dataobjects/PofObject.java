@@ -35,4 +35,5 @@ public class PofObject implements ObjFactory, PortableObject {
     public void writeExternal(PofWriter pofWriter) throws IOException {
         pofWriter.writeObject(1, data);
     }
+
 }
