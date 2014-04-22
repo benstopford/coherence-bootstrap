@@ -1,0 +1,30 @@
+<?xml version='1.0'?>
+
+<!--
+This operational configuration override file is set up for use with Coherence in
+a development mode.
+-->
+<coherence xmlns="http://xmlns.oracle.com/coherence/coherence-operational-config" >
+    <cluster-config>
+        <multicast-listener>
+            <time-to-live system-property="tangosol.coherence.ttl">0</time-to-live>
+            <join-timeout-milliseconds>3000</join-timeout-milliseconds>
+        </multicast-listener>
+
+        <journaling-config>
+            <flashjournal-manager>
+                <maximum-value-size>64K</maximum-value-size>
+                <maximum-file-size>8M</maximum-file-size>
+                <block-size>512K</block-size>
+                <maximum-pool-size>32M</maximum-pool-size>
+                <directory>/tmp/coh-data</directory>
+                <async-limit>32M</async-limit>
+            </flashjournal-manager>
+        </journaling-config>
+    </cluster-config>
+
+    <logging-config>
+        <severity-level system-property="tangosol.coherence.log.level">5</severity-level>
+        <character-limit system-property="tangosol.coherence.log.limit">0</character-limit>
+    </logging-config>
+</coherence>

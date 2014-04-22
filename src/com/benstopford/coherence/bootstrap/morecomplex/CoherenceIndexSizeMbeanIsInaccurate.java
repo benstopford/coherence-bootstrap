@@ -10,7 +10,6 @@ import com.tangosol.util.extractor.PofExtractor;
 import com.tangosol.util.filter.EqualsFilter;
 import junit.framework.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import javax.management.remote.JMXConnectorServerFactory;
@@ -22,7 +21,16 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.util.*;
 
+import static com.benstopford.coherence.bootstrap.structures.uitl.HeapUtils.memoryUsedNow;
 
+
+/**
+ * For predictable results it's best to add these settings to this test
+ *
+ * -Xmx256m -XX:+UseParallelOldGC
+ *
+ * In particular the concurrent collector has less predictable behaviour
+ */
 public class CoherenceIndexSizeMbeanIsInaccurate extends ClusterRunner {
     public static final int MB = 1024 * 1024;
     public static final int KB = 1024;
@@ -68,18 +76,20 @@ public class CoherenceIndexSizeMbeanIsInaccurate extends ClusterRunner {
         run(new byte[4], totalBytes / 4, cardinality);
     }
 
-    @Test @Ignore
+    @Test
     public void methodUsedHereForMeasuringMemoryAllocationIsAccurate() throws InterruptedException {
-        List allBytes = new ArrayList();
-        int block = 5;
+        List all = new ArrayList();
+
+        int block = 5 * MB;
 
         long initialMemory = memoryUsedNow();
+        System.out.println("Initial memory is " + initialMemory);
 
-        while (allBytes.size() * block <= 60) {
-            allBytes.add(new byte[block * MB]);
-            System.out.println("***************done****************");
+        while (all.size() * block <= 60 * MB) {
+            all.add(new byte[block]);
             long now = memoryUsedNow();
-            assertWithinTolerance(allBytes.size() * block * MB, (now - initialMemory), 0.1);
+            System.out.println("Measured memory as " + now);
+            assertWithinTolerance(all.size() * block, (now - initialMemory), 0.10);
         }
     }
 
@@ -146,15 +156,6 @@ public class CoherenceIndexSizeMbeanIsInaccurate extends ClusterRunner {
                 .getConfigurableCacheFactory("config/basic-cache-with-pof.xml", this.getClass().getClassLoader())
                 .ensureCache(name, this.getClass().getClassLoader());
         return cache;
-    }
-
-    private long memoryUsedNow() throws InterruptedException {
-        Runtime java = Runtime.getRuntime();
-        System.gc();
-        Thread.sleep(200l);
-        System.gc();
-        Thread.sleep(200l); //Second GC is sometimes needed. In honesty I don't know why
-        return (java.totalMemory() - java.freeMemory());
     }
 
     private void addValuesToCache(NamedCache cache, int numberToAdd, byte[] bytes, int cardinality) {

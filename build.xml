@@ -42,7 +42,8 @@
     </target>
 
     <target name="junit" depends="jar" >
-        <junit printsummary="withOutAndErr" fork="yes" showoutput="true" haltonfailure="true" logfailedtests="on">
+        <junit printsummary="withOutAndErr" fork="yes" showoutput="true" haltonfailure="true" logfailedtests="on" maxmemory="256m">
+            <jvmarg value="-XX:+UseParallelOldGC"/>
             <formatter type="plain" usefile="true"/>
             <classpath>
                 <path refid="classpath"/>
