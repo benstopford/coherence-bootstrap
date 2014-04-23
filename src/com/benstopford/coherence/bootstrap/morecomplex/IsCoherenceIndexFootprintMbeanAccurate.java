@@ -31,7 +31,7 @@ import static com.benstopford.coherence.bootstrap.structures.uitl.HeapUtils.memo
  *
  * In particular the concurrent collector has less predictable behaviour
  */
-public class CoherenceIndexSizeMbeanIsInaccurate extends ClusterRunner {
+public class IsCoherenceIndexFootprintMbeanAccurate extends ClusterRunner {
     public static final int MB = 1024 * 1024;
     public static final int KB = 1024;
     private PofExtractor extractor;
