@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
-import com.benstopford.coherence.bootstrap.structures.uitl.IndexSizer;
+import com.benstopford.coherence.bootstrap.structures.uitl.IndexInfoCounter;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.ByteArrayWrapper;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PofByteObject;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
@@ -178,7 +178,7 @@ public class CoherenceIndexSizeMbeanIsInaccurate extends ClusterRunner {
 
         //then
         boolean showLogging = false;
-        long coherenceSize = new IndexSizer().sumIndexInfoFootprintMbean(40001, showLogging);
+        long coherenceSize = new IndexInfoCounter().sumIndexInfoFootprintMbean(40001, showLogging);
 
         System.out.printf("Ran: %,d x %sB fields [%,dKB indexable data], Cardinality of %s [%s entries in index, " +
                         "each containing %s values], Coherence MBean measured: %,dB. " +

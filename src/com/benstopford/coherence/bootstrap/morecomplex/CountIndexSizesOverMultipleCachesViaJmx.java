@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
-import com.benstopford.coherence.bootstrap.structures.uitl.IndexSizer;
+import com.benstopford.coherence.bootstrap.structures.uitl.IndexInfoCounter;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PoJo;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PofObject;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
@@ -43,7 +43,7 @@ public class CountIndexFootprintOverMultipleCachesViaJmx extends ClusterRunner {
         bar.addIndex(new ReflectionExtractor("getData"), false, null);
 
         //count the total index size
-        long size = new IndexSizer().sumIndexInfoFootprintMbean(port);
+        long size = new IndexInfoCounter().sumIndexInfoFootprintMbean(port);
 
         assertWithinTolerance(size, 21286093L, 0.01);//21,286,093 for input of 20MB
     }
@@ -68,7 +68,7 @@ public class CountIndexFootprintOverMultipleCachesViaJmx extends ClusterRunner {
         bar.addIndex(new PofExtractor(null, 1), false, null);
 
         //count the total index size
-        long size = new IndexSizer().sumIndexInfoFootprintMbean(40001);
+        long size = new IndexInfoCounter().sumIndexInfoFootprintMbean(40001);
 
         assertWithinTolerance(size, 21181235L, 0.01);//20MB of data creates index of 21,181,235B
     }

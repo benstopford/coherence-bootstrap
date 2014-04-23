@@ -16,12 +16,12 @@ import java.util.*;
  * <p/>
  * See CoherenceIndexSizeMbeanIsInaccurate which demonstrates the issue in detail.
  */
-public class IndexSizer {
+public class IndexInfoCounter {
     private static final String jmxHost = "localhost";
     private boolean log;
 
     public static void main(String[] args) throws Exception {
-        new IndexSizer().sumIndexInfoFootprintMbean(40001);
+        new IndexInfoCounter().sumIndexInfoFootprintMbean(40001);
     }
 
     /**
