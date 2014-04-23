@@ -26,11 +26,11 @@ descriptor: pof-config.dtd.
         </user-type>
         <user-type>
             <type-id>1002</type-id>
-            <class-name>com.benstopford.coherence.bootstrap.structures.PutAllInvocable</class-name>
+            <class-name>com.benstopford.coherence.bootstrap.structures.tools.PutAllInvocable</class-name>
         </user-type>
         <user-type>
             <type-id>1003</type-id>
-            <class-name>com.benstopford.coherence.bootstrap.structures.SelfDestructingTrigger</class-name>
+            <class-name>com.benstopford.coherence.bootstrap.structures.tools.SelfDestructingTrigger</class-name>
         </user-type>
         <user-type>
             <type-id>1004</type-id>

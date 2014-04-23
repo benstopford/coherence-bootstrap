@@ -22,7 +22,7 @@ import static org.junit.Assert.assertTrue;
  * I strongly suggest that, in your own code, you use the LittleGrid. See JK's post here:
  * http://thegridman.com/coherence/oracle-coherence-testing-with-oracle-tools/
  */
-public abstract class ClusterRunner {
+public abstract class ClusterRunner extends TestUtils{
     protected ClassLoader classLoader = getClass().getClassLoader();
     public static final String LOCAL_STORAGE_FALSE = "-Dtangosol.coherence.distributed.localstorage=false";
 

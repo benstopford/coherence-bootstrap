@@ -1,9 +1,9 @@
-package com.benstopford.coherence.bootstrap.morecomplex;
+package com.benstopford.coherence.bootstrap.morecomplex.sizing;
 
-import com.benstopford.coherence.bootstrap.structures.uitl.IndexInfoCounter;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.ByteArrayWrapper;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PofByteObject;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
+import com.benstopford.coherence.bootstrap.structures.tools.counters.IndexInfoCounter;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.extractor.PofExtractor;
@@ -12,13 +12,7 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.management.remote.JMXConnectorServerFactory;
-import javax.management.remote.JMXServiceURL;
-import java.io.IOException;
-import java.lang.management.ManagementFactory;
 import java.nio.ByteBuffer;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
 import java.util.*;
 
 import static com.benstopford.coherence.bootstrap.structures.uitl.HeapUtils.memoryUsedNow;
@@ -160,6 +154,7 @@ public class IsCoherenceIndexFootprintMbeanAccurate extends ClusterRunner {
     }
 
     private void run(byte[] data, int numberToAdd, int cardinality) throws Exception {
+        boolean showLogging = false;
         extractor = new PofExtractor(ByteArrayWrapper.class, 1);
 
         //given
@@ -177,7 +172,6 @@ public class IsCoherenceIndexFootprintMbeanAccurate extends ClusterRunner {
         long after = memoryUsedNow();
 
         //then
-        boolean showLogging = false;
         long coherenceSize = new IndexInfoCounter().sumIndexInfoFootprintMbean(40001, showLogging);
 
         System.out.printf("Ran: %,d x %sB fields [%,dKB indexable data], Cardinality of %s [%s entries in index, " +
@@ -193,28 +187,6 @@ public class IsCoherenceIndexFootprintMbeanAccurate extends ClusterRunner {
                 (after - before),
                 Math.abs((100 - Math.round((double) (after - before) / coherenceSize * 100)))
         );
-    }
-
-    private void startLocalJMXServer(int port) throws IOException {
-        if (serverRunning(port)) {
-            return;
-        }
-
-        String url = "service:jmx:rmi:///jndi/rmi://localhost:" + port + "/jmxrmi";
-        JMXConnectorServerFactory.newJMXConnectorServer(
-                new JMXServiceURL(url),
-                null,
-                ManagementFactory.getPlatformMBeanServer()
-        ).start();
-    }
-
-    private boolean serverRunning(int port) {
-        try {
-            LocateRegistry.createRegistry(port);
-        } catch (RemoteException justMeansItWasCreatedAlready) {
-            return true;
-        }
-        return false;
     }
 
     private NamedCache initCache(String name) {

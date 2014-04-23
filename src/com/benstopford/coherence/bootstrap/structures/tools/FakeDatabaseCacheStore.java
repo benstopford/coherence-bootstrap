@@ -1,4 +1,4 @@
-package com.benstopford.coherence.bootstrap.structures.helpers;
+package com.benstopford.coherence.bootstrap.structures.tools;
 
 import com.tangosol.net.cache.AbstractCacheStore;
 
@@ -32,7 +32,7 @@ public class FakeDatabaseCacheStore extends AbstractCacheStore {
 
     }
 
-    private void recordCall(Object key) {
+    private synchronized void recordCall(Object key) {
         int lastCall = keysCalled.get(key) == null ? 0 : keysCalled.get(key);
         keysCalled.put(key, ++lastCall);
     }

@@ -20,7 +20,7 @@
                     <cachestore-scheme>
                         <class-scheme>
                             <class-name>
-                                com.benstopford.coherence.bootstrap.structures.FakeDatabaseCacheStore
+                                com.benstopford.coherence.bootstrap.structures.tools.FakeDatabaseCacheStore
                             </class-name>
                         </class-scheme>
                     </cachestore-scheme>

@@ -19,7 +19,7 @@
                     </internal-cache-scheme>
                     <cachestore-scheme>
                         <class-scheme>
-                            <class-name>com.benstopford.coherence.bootstrap.structures.TestCacheStore</class-name>
+                            <class-name>com.benstopford.coherence.bootstrap.structures.tools.TestCacheStore</class-name>
                         </class-scheme>
                     </cachestore-scheme>
                 </read-write-backing-map-scheme>

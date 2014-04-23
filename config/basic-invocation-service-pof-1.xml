@@ -46,7 +46,7 @@
             <autostart>true</autostart>
             <listener>
                 <class-scheme>
-                    <class-factory-name>com.benstopford.coherence.bootstrap.structures.TriggerFactory</class-factory-name>
+                    <class-factory-name>com.benstopford.coherence.bootstrap.structures.tools.TriggerFactory</class-factory-name>
                     <method-name>createTriggerListener</method-name>
                     <init-params>
                         <init-param>

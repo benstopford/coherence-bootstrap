@@ -1,4 +1,4 @@
-package com.benstopford.coherence.bootstrap.structures.helpers;
+package com.benstopford.coherence.bootstrap.structures.tools;
 
 import com.tangosol.io.ReadBuffer;
 import com.tangosol.io.WriteBuffer;

@@ -1,4 +1,4 @@
-package com.benstopford.coherence.bootstrap.structures.uitl;
+package com.benstopford.coherence.bootstrap.structures.tools.counters;
 
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectInstance;
@@ -15,6 +15,8 @@ import java.util.*;
  * the example here only for reference. See CoherenceIndexSizeMbeanIsInaccurate for details
  * <p/>
  * See CoherenceIndexSizeMbeanIsInaccurate which demonstrates the issue in detail.
+ *
+ * (Designed as a stand-alone class it's so easy to copy and paste as a util)
  */
 public class IndexInfoCounter {
     private static final String jmxHost = "localhost";

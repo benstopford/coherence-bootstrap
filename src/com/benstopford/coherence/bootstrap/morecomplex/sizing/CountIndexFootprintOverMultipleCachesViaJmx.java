@@ -1,6 +1,6 @@
-package com.benstopford.coherence.bootstrap.morecomplex;
+package com.benstopford.coherence.bootstrap.morecomplex.sizing;
 
-import com.benstopford.coherence.bootstrap.structures.uitl.IndexInfoCounter;
+import com.benstopford.coherence.bootstrap.structures.tools.counters.IndexInfoCounter;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PoJo;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PofObject;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
@@ -17,8 +17,7 @@ import java.util.Map;
  * underlying footprint mbean being a guestimate of the index size.
  */
 public class CountIndexFootprintOverMultipleCachesViaJmx extends ClusterRunner {
-    public static final int MB = 1024 * 1024;
-    public static final int KB = 1024;
+
     private static byte[] data1K = new byte[1024];
 
     @Test

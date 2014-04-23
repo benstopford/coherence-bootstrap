@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
-import com.benstopford.coherence.bootstrap.structures.helpers.SleepingProcessor;
+import com.benstopford.coherence.bootstrap.structures.tools.SleepingProcessor;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.processor.AbstractProcessor;

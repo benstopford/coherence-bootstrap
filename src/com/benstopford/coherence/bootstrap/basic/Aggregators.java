@@ -1,7 +1,7 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.helpers.ParallelSumAggregator;
-import com.benstopford.coherence.bootstrap.structures.helpers.SumAggregator;
+import com.benstopford.coherence.bootstrap.structures.tools.ParallelSumAggregator;
+import com.benstopford.coherence.bootstrap.structures.tools.SumAggregator;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.benstopford.coherence.bootstrap.structures.framework.PerformanceTimer;
 import com.tangosol.net.NamedCache;

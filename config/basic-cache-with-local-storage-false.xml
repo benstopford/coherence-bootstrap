@@ -22,7 +22,7 @@
             <autostart>true</autostart>
 
             <partition-listener>
-                <class-name>com.benstopford.coherence.bootstrap.structures.MyPartitionListener</class-name>
+                <class-name>com.benstopford.coherence.bootstrap.structures.tools.MyPartitionListener</class-name>
             </partition-listener>
 
             <!--NB-->
