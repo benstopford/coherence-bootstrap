@@ -28,10 +28,10 @@ public class IndexSizer {
      * Returns the total bytes of all indexes in Coherence
      */
     public long sumIndexInfoFootprintMbean(int jmxPort) throws Exception {
-        return sizeAllIndexes(jmxPort, true);
+        return sumIndexInfoFootprintMbean(jmxPort, true);
     }
 
-    public long sizeAllIndexes(int jmxPort, boolean print) throws Exception {
+    public long sumIndexInfoFootprintMbean(int jmxPort, boolean print) throws Exception {
         this.log = print;
         return doIndexQuery(jmx(jmxHost, String.valueOf(jmxPort), "'", ""));
     }

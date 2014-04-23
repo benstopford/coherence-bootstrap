@@ -178,7 +178,7 @@ public class CoherenceIndexSizeMbeanIsInaccurate extends ClusterRunner {
 
         //then
         boolean showLogging = false;
-        long coherenceSize = new IndexSizer().sizeAllIndexes(40001, showLogging);
+        long coherenceSize = new IndexSizer().sumIndexInfoFootprintMbean(40001, showLogging);
 
         System.out.printf("Ran: %,d x %sB fields [%,dKB indexable data], Cardinality of %s [%s entries in index, " +
                         "each containing %s values], Coherence MBean measured: %,dB. " +
