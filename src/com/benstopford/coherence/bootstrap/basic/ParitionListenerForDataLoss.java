@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.MyPartitionListener;
+import com.benstopford.coherence.bootstrap.structures.helpers.MyPartitionListener;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.net.NamedCache;
 import org.junit.After;

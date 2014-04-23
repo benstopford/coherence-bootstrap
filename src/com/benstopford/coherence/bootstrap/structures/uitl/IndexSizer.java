@@ -1,4 +1,4 @@
-package com.benstopford.coherence.bootstrap.structures;
+package com.benstopford.coherence.bootstrap.structures.uitl;
 
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectInstance;

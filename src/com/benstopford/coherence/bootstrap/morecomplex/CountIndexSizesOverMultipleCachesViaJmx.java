@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
-import com.benstopford.coherence.bootstrap.structures.IndexSizer;
+import com.benstopford.coherence.bootstrap.structures.uitl.IndexSizer;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PoJo;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PofObject;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;

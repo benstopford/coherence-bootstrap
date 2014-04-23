@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.FakeDatabaseCacheStore;
+import com.benstopford.coherence.bootstrap.structures.helpers.FakeDatabaseCacheStore;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.net.NamedCache;
 import org.junit.After;

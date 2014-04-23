@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
-import com.benstopford.coherence.bootstrap.structures.PutAllWithErrorReporting;
+import com.benstopford.coherence.bootstrap.structures.helpers.PutAllWithErrorReporting;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.tangosol.net.*;
 import org.junit.After;

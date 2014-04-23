@@ -1,4 +1,4 @@
-package com.benstopford.coherence.bootstrap.structures;
+package com.benstopford.coherence.bootstrap.structures.helpers;
 
 import com.tangosol.io.pof.PofReader;
 import com.tangosol.io.pof.PofWriter;
