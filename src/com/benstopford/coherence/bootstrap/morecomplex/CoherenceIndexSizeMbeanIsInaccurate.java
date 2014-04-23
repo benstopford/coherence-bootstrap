@@ -40,7 +40,6 @@ public class CoherenceIndexSizeMbeanIsInaccurate extends ClusterRunner {
     /**
      * Sample Output
      *
-
      ************ Running with cardinality = 1024 (unique) ***********
      Ran: 1,024 x 1024B fields [1,024KB indexable data], Cardinality of 1024 [1024 entries in index, each containing 1 values], Coherence MBean measured: 1,111,491B. JVM increase: 1,194,120B. Difference: 7%
      Ran: 2,048 x 512B fields [1,024KB indexable data], Cardinality of 1024 [1024 entries in index, each containing 2 values], Coherence MBean measured: 589,824B. JVM increase: 1,036,512B. Difference: 76%
@@ -95,7 +94,6 @@ public class CoherenceIndexSizeMbeanIsInaccurate extends ClusterRunner {
      Ran: 65,536 x 16B fields [1,024KB indexable data], Cardinality of 1 [1 entries in index, each containing 65536 values], Coherence MBean measured: 80B. JVM increase: 4,893,936B. Difference: 6117320%
      Ran: 131,072 x 8B fields [1,024KB indexable data], Cardinality of 1 [1 entries in index, each containing 131072 values], Coherence MBean measured: 80B. JVM increase: 11,620,696B. Difference: 14525770%
      Ran: 262,144 x 4B fields [1,024KB indexable data], Cardinality of 1 [1 entries in index, each containing 262144 values], Coherence MBean measured: 64B. JVM increase: 19,847,904B. Difference: 31012250%
-
      *
      */
 
