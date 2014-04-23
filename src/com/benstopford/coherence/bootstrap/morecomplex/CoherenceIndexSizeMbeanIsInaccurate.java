@@ -37,6 +37,74 @@ public class CoherenceIndexSizeMbeanIsInaccurate extends ClusterRunner {
     private PofExtractor extractor;
     byte[] fieldSavedForLater = null;
 
+    /**
+     * Sample Output
+     *
+
+     ************ Running with cardinality = 1024 (unique) ***********
+     Ran: 1,024 x 1024B fields [1,024KB indexable data], Cardinality of 1024 [1024 entries in index, each containing 1 values], Coherence MBean measured: 1,111,491B. JVM increase: 1,194,120B. Difference: 7%
+     Ran: 2,048 x 512B fields [1,024KB indexable data], Cardinality of 1024 [1024 entries in index, each containing 2 values], Coherence MBean measured: 589,824B. JVM increase: 1,036,512B. Difference: 76%
+     Ran: 4,096 x 256B fields [1,024KB indexable data], Cardinality of 1024 [1024 entries in index, each containing 4 values], Coherence MBean measured: 327,680B. JVM increase: 990,928B. Difference: 202%
+     Ran: 8,192 x 128B fields [1,024KB indexable data], Cardinality of 1024 [1024 entries in index, each containing 8 values], Coherence MBean measured: 196,608B. JVM increase: 1,006,832B. Difference: 412%
+     Ran: 16,384 x 64B fields [1,024KB indexable data], Cardinality of 1024 [1024 entries in index, each containing 16 values], Coherence MBean measured: 131,072B. JVM increase: 1,499,512B. Difference: 1044%
+     Ran: 32,768 x 32B fields [1,024KB indexable data], Cardinality of 1024 [1024 entries in index, each containing 32 values], Coherence MBean measured: 98,304B. JVM increase: 2,943,848B. Difference: 2895%
+     Ran: 65,536 x 16B fields [1,024KB indexable data], Cardinality of 1024 [1024 entries in index, each containing 64 values], Coherence MBean measured: 81,920B. JVM increase: 5,224,656B. Difference: 6278%
+     Ran: 131,072 x 8B fields [1,024KB indexable data], Cardinality of 1024 [1024 entries in index, each containing 128 values], Coherence MBean measured: 81,920B. JVM increase: 11,464,032B. Difference: 13894%
+     Ran: 262,144 x 4B fields [1,024KB indexable data], Cardinality of 1024 [1024 entries in index, each containing 256 values], Coherence MBean measured: 65,536B. JVM increase: 19,811,552B. Difference: 30130%
+
+     ************ Running with cardinality = 512 ***********
+     Ran: 1,024 x 1024B fields [1,024KB indexable data], Cardinality of 512 [512 entries in index, each containing 2 values], Coherence MBean measured: 557,056B. JVM increase: 1,275,872B. Difference: 129%
+     Ran: 2,048 x 512B fields [1,024KB indexable data], Cardinality of 512 [512 entries in index, each containing 4 values], Coherence MBean measured: 294,912B. JVM increase: 558,928B. Difference: 90%
+     Ran: 4,096 x 256B fields [1,024KB indexable data], Cardinality of 512 [512 entries in index, each containing 8 values], Coherence MBean measured: 163,840B. JVM increase: 1,228,736B. Difference: 650%
+     Ran: 8,192 x 128B fields [1,024KB indexable data], Cardinality of 512 [512 entries in index, each containing 16 values], Coherence MBean measured: 98,304B. JVM increase: 817,696B. Difference: 732%
+     Ran: 16,384 x 64B fields [1,024KB indexable data], Cardinality of 512 [512 entries in index, each containing 32 values], Coherence MBean measured: 65,536B. JVM increase: 883,000B. Difference: 1247%
+     Ran: 32,768 x 32B fields [1,024KB indexable data], Cardinality of 512 [512 entries in index, each containing 64 values], Coherence MBean measured: 49,152B. JVM increase: 3,162,544B. Difference: 6334%
+     Ran: 65,536 x 16B fields [1,024KB indexable data], Cardinality of 512 [512 entries in index, each containing 128 values], Coherence MBean measured: 40,960B. JVM increase: 5,095,888B. Difference: 12341%
+     Ran: 131,072 x 8B fields [1,024KB indexable data], Cardinality of 512 [512 entries in index, each containing 256 values], Coherence MBean measured: 40,960B. JVM increase: 10,196,616B. Difference: 24794%
+     Ran: 262,144 x 4B fields [1,024KB indexable data], Cardinality of 512 [512 entries in index, each containing 512 values], Coherence MBean measured: 32,768B. JVM increase: 21,426,392B. Difference: 65288%
+
+     ************ Running with cardinality = 256 ***********
+     Ran: 1,024 x 1024B fields [1,024KB indexable data], Cardinality of 256 [256 entries in index, each containing 4 values], Coherence MBean measured: 278,528B. JVM increase: 1,126,040B. Difference: 304%
+     Ran: 2,048 x 512B fields [1,024KB indexable data], Cardinality of 256 [256 entries in index, each containing 8 values], Coherence MBean measured: 147,456B. JVM increase: 356,176B. Difference: 142%
+     Ran: 4,096 x 256B fields [1,024KB indexable data], Cardinality of 256 [256 entries in index, each containing 16 values], Coherence MBean measured: 81,920B. JVM increase: 848,800B. Difference: 936%
+     Ran: 8,192 x 128B fields [1,024KB indexable data], Cardinality of 256 [256 entries in index, each containing 32 values], Coherence MBean measured: 49,152B. JVM increase: 776,896B. Difference: 1481%
+     Ran: 16,384 x 64B fields [1,024KB indexable data], Cardinality of 256 [256 entries in index, each containing 64 values], Coherence MBean measured: 32,768B. JVM increase: 857,672B. Difference: 2517%
+     Ran: 32,768 x 32B fields [1,024KB indexable data], Cardinality of 256 [256 entries in index, each containing 128 values], Coherence MBean measured: 24,576B. JVM increase: 2,843,808B. Difference: 11471%
+     Ran: 65,536 x 16B fields [1,024KB indexable data], Cardinality of 256 [256 entries in index, each containing 256 values], Coherence MBean measured: 20,480B. JVM increase: 4,734,568B. Difference: 23018%
+     Ran: 131,072 x 8B fields [1,024KB indexable data], Cardinality of 256 [256 entries in index, each containing 512 values], Coherence MBean measured: 20,480B. JVM increase: 11,227,408B. Difference: 54721%
+     Ran: 262,144 x 4B fields [1,024KB indexable data], Cardinality of 256 [256 entries in index, each containing 1024 values], Coherence MBean measured: 16,384B. JVM increase: 19,893,600B. Difference: 121321%
+
+     ************ Running with cardinality = 128 ***********
+     Ran: 1,024 x 1024B fields [1,024KB indexable data], Cardinality of 128 [128 entries in index, each containing 8 values], Coherence MBean measured: 139,264B. JVM increase: 423,096B. Difference: 204%
+     Ran: 2,048 x 512B fields [1,024KB indexable data], Cardinality of 128 [128 entries in index, each containing 16 values], Coherence MBean measured: 73,728B. JVM increase: 344,064B. Difference: 367%
+     Ran: 4,096 x 256B fields [1,024KB indexable data], Cardinality of 128 [128 entries in index, each containing 32 values], Coherence MBean measured: 40,960B. JVM increase: 502,232B. Difference: 1126%
+     Ran: 8,192 x 128B fields [1,024KB indexable data], Cardinality of 128 [128 entries in index, each containing 64 values], Coherence MBean measured: 24,576B. JVM increase: 693,296B. Difference: 2721%
+     Ran: 16,384 x 64B fields [1,024KB indexable data], Cardinality of 128 [128 entries in index, each containing 128 values], Coherence MBean measured: 16,384B. JVM increase: 1,245,056B. Difference: 7499%
+     Ran: 32,768 x 32B fields [1,024KB indexable data], Cardinality of 128 [128 entries in index, each containing 256 values], Coherence MBean measured: 12,288B. JVM increase: 2,529,064B. Difference: 20482%
+     Ran: 65,536 x 16B fields [1,024KB indexable data], Cardinality of 128 [128 entries in index, each containing 512 values], Coherence MBean measured: 10,240B. JVM increase: 5,224,896B. Difference: 50924%
+     Ran: 131,072 x 8B fields [1,024KB indexable data], Cardinality of 128 [128 entries in index, each containing 1024 values], Coherence MBean measured: 10,240B. JVM increase: 10,527,264B. Difference: 102705%
+     Ran: 262,144 x 4B fields [1,024KB indexable data], Cardinality of 128 [128 entries in index, each containing 2048 values], Coherence MBean measured: 8,192B. JVM increase: 21,150,776B. Difference: 258088%
+
+     ************ Running with cardinality = 1 ***********
+     Ran: 1,024 x 1024B fields [1,024KB indexable data], Cardinality of 1 [1 entries in index, each containing 1024 values], Coherence MBean measured: 1,085B. JVM increase: 809,088B. Difference: 74470%
+     Ran: 2,048 x 512B fields [1,024KB indexable data], Cardinality of 1 [1 entries in index, each containing 2048 values], Coherence MBean measured: 576B. JVM increase: 185,592B. Difference: 32121%
+     Ran: 4,096 x 256B fields [1,024KB indexable data], Cardinality of 1 [1 entries in index, each containing 4096 values], Coherence MBean measured: 320B. JVM increase: 624,992B. Difference: 195210%
+     Ran: 8,192 x 128B fields [1,024KB indexable data], Cardinality of 1 [1 entries in index, each containing 8192 values], Coherence MBean measured: 192B. JVM increase: 1,162,096B. Difference: 605158%
+     Ran: 16,384 x 64B fields [1,024KB indexable data], Cardinality of 1 [1 entries in index, each containing 16384 values], Coherence MBean measured: 128B. JVM increase: 1,093,784B. Difference: 854419%
+     Ran: 32,768 x 32B fields [1,024KB indexable data], Cardinality of 1 [1 entries in index, each containing 32768 values], Coherence MBean measured: 96B. JVM increase: 2,909,912B. Difference: 3031058%
+     Ran: 65,536 x 16B fields [1,024KB indexable data], Cardinality of 1 [1 entries in index, each containing 65536 values], Coherence MBean measured: 80B. JVM increase: 4,893,936B. Difference: 6117320%
+     Ran: 131,072 x 8B fields [1,024KB indexable data], Cardinality of 1 [1 entries in index, each containing 131072 values], Coherence MBean measured: 80B. JVM increase: 11,620,696B. Difference: 14525770%
+     Ran: 262,144 x 4B fields [1,024KB indexable data], Cardinality of 1 [1 entries in index, each containing 262144 values], Coherence MBean measured: 64B. JVM increase: 19,847,904B. Difference: 31012250%
+
+     *
+     */
+
+
+    @Test
+    public void compareCoherenceIndexSizeToHeapDeltasUnique() throws Exception {
+        runAll(1024); //field will be completely unique
+    }
+
     @Test
     public void compareCoherenceIndexSizeToHeapDeltasIdentical() throws Exception {
         runAll(1); //1 means all entries will have the same field value
@@ -58,7 +126,7 @@ public class CoherenceIndexSizeMbeanIsInaccurate extends ClusterRunner {
     }
 
     @Test
-    public void compareCoherenceIndexSizeToHeapDeltasUnique() throws Exception {
+    public void compareCoherenceIndexSizeToHeapDeltasUniqueAgain() throws Exception {
         runAll(1024); //field will be completely unique
     }
 
@@ -116,7 +184,7 @@ public class CoherenceIndexSizeMbeanIsInaccurate extends ClusterRunner {
 
         System.out.printf("Ran: %,d x %sB fields [%,dKB indexable data], Cardinality of %s [%s entries in index, " +
                         "each containing %s values], Coherence MBean measured: %,dB. " +
-                        "JVM increase: %,dKB. Difference: %s%%\n",
+                        "JVM increase: %,dB. Difference: %s%%\n",
                 cache.size(),
                 data.length,
                 cache.size() * data.length / KB,
@@ -124,7 +192,7 @@ public class CoherenceIndexSizeMbeanIsInaccurate extends ClusterRunner {
                 cardinality,
                 measuredCardinality(cache),
                 coherenceSize,
-                (after - before) / KB,
+                (after - before),
                 Math.abs((100 - Math.round((double) (after - before) / coherenceSize * 100)))
         );
     }
