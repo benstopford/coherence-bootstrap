@@ -12,7 +12,11 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CountIndexSizesOverMultipleCachesViaJmx extends ClusterRunner {
+/**
+ * Warning - this mechanism for measuring index sizes is not accurate due to the
+ * underlying footprint mbean being a guestimate of the index size.
+ */
+public class CountIndexFootprintOverMultipleCachesViaJmx extends ClusterRunner {
     public static final int MB = 1024 * 1024;
     public static final int KB = 1024;
     private static byte[] data1K = new byte[1024];
@@ -39,7 +43,7 @@ public class CountIndexSizesOverMultipleCachesViaJmx extends ClusterRunner {
         bar.addIndex(new ReflectionExtractor("getData"), false, null);
 
         //count the total index size
-        long size = new IndexSizer().sizeAllIndexes(port);
+        long size = new IndexSizer().sumIndexInfoFootprintMbean(port);
 
         assertWithinTolerance(size, 21286093L, 0.01);//21,286,093 for input of 20MB
     }
@@ -64,7 +68,7 @@ public class CountIndexSizesOverMultipleCachesViaJmx extends ClusterRunner {
         bar.addIndex(new PofExtractor(null, 1), false, null);
 
         //count the total index size
-        long size = new IndexSizer().sizeAllIndexes(40001);
+        long size = new IndexSizer().sumIndexInfoFootprintMbean(40001);
 
         assertWithinTolerance(size, 21181235L, 0.01);//20MB of data creates index of 21,181,235B
     }

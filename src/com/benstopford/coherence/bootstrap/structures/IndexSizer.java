@@ -11,31 +11,29 @@ import java.util.*;
 /**
  * Work out the total index size across all caches in a Coherence cluster
  * <p/>
- * Warning: this mechanism is not always acurate. In fact it's pretty lousy. I leave
- * the example here only for reference.
+ * Warning: this mechanism is not particularly accurate. In fact it's pretty lousy. I leave
+ * the example here only for reference. See CoherenceIndexSizeMbeanIsInaccurate for details
  * <p/>
  * See CoherenceIndexSizeMbeanIsInaccurate which demonstrates the issue in detail.
  */
 public class IndexSizer {
     private static final String jmxHost = "localhost";
-    private static final String jmxUser = "jmxadmin";
-    private static final String jmxPassword = "password";
     private boolean log;
 
     public static void main(String[] args) throws Exception {
-        new IndexSizer().sizeAllIndexes(40001);
+        new IndexSizer().sumIndexInfoFootprintMbean(40001);
     }
 
     /**
      * Returns the total bytes of all indexes in Coherence
      */
-    public long sizeAllIndexes(int jmxPort) throws Exception {
+    public long sumIndexInfoFootprintMbean(int jmxPort) throws Exception {
         return sizeAllIndexes(jmxPort, true);
     }
 
     public long sizeAllIndexes(int jmxPort, boolean print) throws Exception {
         this.log = print;
-        return doIndexQuery(jmx(jmxHost, String.valueOf(jmxPort), jmxUser, jmxPassword));
+        return doIndexQuery(jmx(jmxHost, String.valueOf(jmxPort), "'", ""));
     }
 
     private long doIndexQuery(MBeanServerConnection server) throws Exception {
