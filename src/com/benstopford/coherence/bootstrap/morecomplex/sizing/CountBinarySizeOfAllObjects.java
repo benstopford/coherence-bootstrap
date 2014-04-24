@@ -21,48 +21,49 @@ public class CountBinarySizeOfAllObjects extends ClusterRunner {
     public void shouldCountSizeOfBinaryCachesAccuratelyInProcess() throws Exception {
         int jmxPort = 10001;
 
+        //Given two caches, clustered in this jvm
         startLocalJMXServer(jmxPort);
-
-        //two caches
         NamedCache foo = getCache("foo");
         NamedCache bar = getCache("bar");
         assertThat(CacheFactory.getCluster().getMemberSet().size(), is(1));
 
         HeapUtils.start();
 
-        //add one array per cache
+        //When we add 10MB to each cache
         addValuesToCache(foo, 1024, new PofObject(new byte[10 * 1024]));//10MB
         addValuesToCache(bar, 1024, new PofObject(new byte[10 * 1024]));//10MB
 
-        long used = HeapUtils.printMemoryUsed();
+        long heapIncrease = HeapUtils.printMemoryUsed();
 
-        //count the total cache size
-        long size = new BinaryCacheSizeCounter().sumClusterStorageSize(jmxPort);
+        //call the utility
+        long measured = new BinaryCacheSizeCounter().sumClusterStorageSize(jmxPort);
 
-        assertWithinTolerance(20 * MB, size, 0.05);
-        assertWithinTolerance(used, size, 0.10);
+        //Then the JMX Units Sizer utility should be within 5%. Should be within 10% of memory consumption
+        assertWithinTolerance(20 * MB, measured, 0.05);
+        assertWithinTolerance(heapIncrease, measured, 0.10);
     }
 
     @Test
     public void shouldCountSizeOfBinaryCachesAccuratelyAcrossMultipleProcesses() throws Exception {
         int port = 40001;
 
-        //create cluster with a JMX port open
+        //Given a cluster in three JVMs
         startBasicCacheProcessWithJMX(port);
         startBasicCacheProcess();
         startDataDisabledExtendProxy();
 
-        //two caches
+        //with two caches
         NamedCache foo = getRemoteCache("foo");
         NamedCache bar = getRemoteCache("bar");
 
-        //add some data
+        //When we add 20MB of data
         addValuesToCache(foo, 10 * 1024, new PoJo(new byte[1024])); //10MB
         addValuesToCache(bar, 10 * 1024, new PoJo(new byte[1024])); //10MB
 
-        //count the total index size
+        //call the utility
         long size = new BinaryCacheSizeCounter().sumClusterStorageSize(port);
 
+        //Then our sizing utility should get the size within 10%
         double fudgeFactorForObjectWrappers = 1.3;
         assertWithinTolerance((long)(20 * MB * fudgeFactorForObjectWrappers), size, 0.10);
     }
