@@ -18,6 +18,7 @@ import java.util.Set;
  */
 public class BinaryCacheSizeCounter {
     private static final String jmxHost = "localhost";
+    public static final String search = "Coherence:type=Cache,service=*,name=*,nodeId=*,tier=back";
 
     public static void main(String[] args) throws Exception {
         new BinaryCacheSizeCounter().sumClusterStorageSize(40001);
@@ -27,43 +28,42 @@ public class BinaryCacheSizeCounter {
     public long sumClusterStorageSize(int jmxPort) throws Exception {
         MBeanServerConnection server = jmx(jmxHost, String.valueOf(jmxPort), "'", "");
         Map<String, Double> sizesByCache = new HashMap<String, Double>();
-        String searchString = "Coherence:type=Cache,service=*,name=*,nodeId=*,tier=back";//service=unlimited-partitioned
 
-        Set<ObjectInstance> results = server.queryMBeans(new ObjectName(searchString), null);
+        Set<ObjectInstance> results = server.queryMBeans(new ObjectName(search), null);
+        check(results.size());
 
-        int total = results.size();
-        check(total);
-
+        //For each node's JMX Bean
         for (ObjectInstance result : results) {
-            ObjectName objectName = result.getObjectName();
-            String cacheName = objectName.getKeyProperty("name");
-            int units = (Integer) server.getAttribute(objectName, "Units");
 
+            //find unit count (cache size count)
+            String cacheName = result.getObjectName().getKeyProperty("name");
+            int units = (Integer) server.getAttribute(result.getObjectName(), "Units");
 
+            //get stored total
             Double unitTotal = sizesByCache.get(cacheName);
             if (unitTotal == null) {
                 unitTotal = 0d;
             }
+
+            //add to total
             unitTotal += units;
 
+            //store total again
             sizesByCache.put(cacheName, unitTotal);
-
-            logEvery(1000, total--);
         }
 
-        double totalSize = sum(sizesByCache);
+        double totalSize = sumAndPrint(sizesByCache);
         return Math.round(totalSize);
     }
 
-
     private void check(int total) {
         if (total == 0) {
-            throw new RuntimeException("Could not find any mbeans. Probably a connection problem or Coherence MBeans are not enabled");
+            throw new RuntimeException("Could not find any Mbeans. Probably a connection problem or Coherence MBeans are not enabled");
         }
         System.out.println("Found " + total + " MBeans");
     }
 
-    private double sum(Map<String, Double> sizesByCache) {
+    private double sumAndPrint(Map<String, Double> sizesByCache) {
         double totalSize = 0;
         for (String s : sizesByCache.keySet()) {
             Double cacheSize = sizesByCache.get(s);
@@ -72,12 +72,6 @@ public class BinaryCacheSizeCounter {
         }
         System.out.printf("Total of all caches: %sKB\n", totalSize / 1024);
         return totalSize;
-    }
-
-    private void logEvery(int n, int total) {
-        if (total % n == 0) {
-            System.out.println(total + " to go");
-        }
     }
 
     private MBeanServerConnection jmx(String jmxHost, String jmxPort, String jmxUser, String jmxPassword) throws Exception {
