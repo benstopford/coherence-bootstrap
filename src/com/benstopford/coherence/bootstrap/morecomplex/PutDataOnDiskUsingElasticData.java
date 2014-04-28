@@ -25,9 +25,9 @@ public class PutDataOnDiskUsingElasticData extends ClusterRunner {
         long start = memoryUsedNow();
 
         long bytesToAdd = 512 * MB;
-        long block = 32 * KB;
-        for (int i = 0; i < bytesToAdd / (block); i++) {
-            cache.put(i, new byte[(byte)block]);
+        int block = 32 * KB;
+        for (int i = 0; i < bytesToAdd / block; i++) {
+            cache.put(i, new byte[block]);
         }
 
         long memoryUsed = memoryUsedNow() - start;
