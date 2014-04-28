@@ -47,7 +47,6 @@ public class PutBackupsOnDiskUsingElasticData extends ClusterRunner {
 
         //When backing up to disk should use about half the memory in this process
         assertWithinTolerance(memoryBaselineUsingRam / 2, memoryUsingDisk, 0.2);
-
     }
 
     private NamedCache startThisAndOneOtherNode(String config) {
