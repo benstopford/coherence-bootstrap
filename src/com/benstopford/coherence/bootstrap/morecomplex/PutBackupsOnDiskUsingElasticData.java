@@ -32,10 +32,8 @@ public class PutBackupsOnDiskUsingElasticData extends ClusterRunner {
         }
         long memoryBaselineUsingRam = memoryUsedNow() - start;
 
-
         super.tearDown();
         super.setUp();
-
 
         //Next try with backups in elastic data
         cache = startThisAndOneOtherNode("config/basic-cache-backup-elastic-data.xml");
@@ -45,9 +43,7 @@ public class PutBackupsOnDiskUsingElasticData extends ClusterRunner {
             cache.put(i, new byte[block]);
         }
         long memoryUsingDisk = memoryUsedNow() - start;
-
         System.out.printf("With backups in RAM we used %,d MB. With backups on disk we used %,dMB.\n", memoryBaselineUsingRam / MB, memoryUsingDisk / MB);
-
 
         //When backing up to disk should use about half the memory in this process
         assertWithinTolerance(memoryBaselineUsingRam / 2, memoryUsingDisk, 0.2);
