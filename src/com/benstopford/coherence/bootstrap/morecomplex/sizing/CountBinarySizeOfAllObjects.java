@@ -3,7 +3,7 @@ package com.benstopford.coherence.bootstrap.morecomplex.sizing;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PoJo;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PofObject;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
-import com.benstopford.coherence.bootstrap.structures.tools.counters.BinaryCacheSizeCounter;
+import com.benstopford.coherence.bootstrap.structures.tools.jmx.BinaryCacheSizeCounter;
 import com.benstopford.coherence.bootstrap.structures.uitl.HeapUtils;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;

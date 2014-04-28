@@ -50,6 +50,11 @@ public class GcInformation {
         initGCMBean();
         try {
             GcInfo gci = gcMBean.getLastGcInfo();
+            while(gci==null){
+                gci =  getGCMBean().getLastGcInfo();
+                Thread.sleep(1000);
+                System.out.println("Waiting for bean "+getGCMBean());
+            }
             long id = gci.getId();
             long startTime = gci.getStartTime();
             long endTime = gci.getEndTime();

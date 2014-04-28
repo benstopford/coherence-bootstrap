@@ -3,7 +3,7 @@ package com.benstopford.coherence.bootstrap.morecomplex.sizing;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.ByteArrayWrapper;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PofByteObject;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
-import com.benstopford.coherence.bootstrap.structures.tools.counters.IndexInfoCounter;
+import com.benstopford.coherence.bootstrap.structures.tools.jmx.IndexInfoCounter;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.extractor.PofExtractor;

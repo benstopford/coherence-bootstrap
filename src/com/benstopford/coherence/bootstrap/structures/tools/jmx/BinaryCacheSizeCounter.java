@@ -1,4 +1,4 @@
-package com.benstopford.coherence.bootstrap.structures.tools.counters;
+package com.benstopford.coherence.bootstrap.structures.tools.jmx;
 
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectInstance;
@@ -14,7 +14,7 @@ import java.util.Set;
  * Counts the binary size of data in a Coherence cluster
  * (assumes that you are using POF so that units are in Binary)
  *
- * (Designed as a stand-alone class it's so easy to copy and paste as a util)
+ * (Designed as a stand-alone class, so easy to copy and paste as a util)
  */
 public class BinaryCacheSizeCounter {
     private static final String jmxHost = "localhost";

@@ -1,4 +1,4 @@
-package com.benstopford.coherence.bootstrap.structures.tools.counters;
+package com.benstopford.coherence.bootstrap.structures.tools.jmx;
 
 import javax.management.MBeanServerConnection;
 import javax.management.ObjectInstance;
