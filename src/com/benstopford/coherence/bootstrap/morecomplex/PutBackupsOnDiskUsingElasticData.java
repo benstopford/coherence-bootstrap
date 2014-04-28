@@ -18,7 +18,6 @@ import static org.junit.Assert.assertThat;
  */
 public class PutBackupsOnDiskUsingElasticData extends ClusterRunner {
 
-
     @Test
     public void puttingBackupsOnDiskShouldHalveTheMemoryUsed() throws Exception {
         long bytesToAdd = 50 * MB;
@@ -61,6 +60,4 @@ public class PutBackupsOnDiskUsingElasticData extends ClusterRunner {
         assertThat(CacheFactory.getCluster().getMemberSet().size(), is(2));
         return cache;
     }
-
-
 }
