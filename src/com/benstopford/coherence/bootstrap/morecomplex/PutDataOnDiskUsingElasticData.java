@@ -12,15 +12,12 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-public class PutBackupsOnDisk extends ClusterRunner {
-
-    public static final int KB = 1024;
-    public static final int MB = KB * KB;
+public class PutDataOnDiskUsingElasticData extends ClusterRunner {
 
     @Test
-    public void shouldPutBackDataOnDisk() throws IOException, InterruptedException {
+    public void shouldPutDataOnDisk() throws IOException, InterruptedException {
 
-        String flash = "config/basic-cache-disk-backup.xml";
+        String flash = "config/basic-cache-elastic-data.xml";
         startCoherenceProcess(flash);
         NamedCache cache = getCache(flash, "Foo");
         assertThat(CacheFactory.getCluster().getMemberSet().size(), is(2));
@@ -35,9 +32,9 @@ public class PutBackupsOnDisk extends ClusterRunner {
 
         long memoryUsed = memoryUsedNow() - start;
 
-        assertTrue(memoryUsed < 10 * MB);
+        assertTrue(memoryUsed < 10 * MB); //
 
-        System.out.println("Memory used writing " + memoryUsed);
+        System.out.printf("Adding %,d KB to the cache resulted in a memory useage of %,d.\n", bytesToAdd/KB, memoryUsed/KB);
     }
 
 }

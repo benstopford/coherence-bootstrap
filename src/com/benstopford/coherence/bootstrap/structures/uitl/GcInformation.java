@@ -44,6 +44,10 @@ public class GcInformation {
             throw new RuntimeException(exp);
         }
     }
+    public GarbageCollectorMXBean gcBean(){
+        initGCMBean();
+        return gcMBean;
+    }
 
     public static boolean printGCInfo() {
         // initialize GC MBean
