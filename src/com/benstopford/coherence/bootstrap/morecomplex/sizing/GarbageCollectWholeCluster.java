@@ -31,7 +31,7 @@ public class GarbageCollectWholeCluster extends ClusterRunner {
     }
 
     @Test
-    public void shouldCollectRemoteJvmViaJmx() throws Exception {
+    public void shouldCollectMultipleRemoteJvmsViaJmx() throws Exception {
         startBasicCacheProcessWithJMX(10002);
         startBasicCacheProcessWithJMX(10003);
         startDataDisabledExtendProxy();
