@@ -39,7 +39,7 @@ Topics covered:
 
 
 **Utilities**
-* GC Whole Cluster [Test](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/sizing/GarbageCollectWholeCluster.java) [code](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/structures/tools/jmx/ClusterGC.java)
+* GC Whole Cluster ([Test](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/sizing/GarbageCollectWholeCluster.java) [code](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/structures/tools/jmx/ClusterGC.java))
 
 
 **Getting started is simple:**
