@@ -33,14 +33,14 @@ Topics covered:
 * [Using services to isolate work onto groups of hardware](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/UsingServicesToIsolateWorkOnDifferentSetsOfMachines.java)
 * [Sizing the index size in your Coherence Cache](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/CountIndexSizesOverMultipleCachesViaJmx.java)
 * [Exploring POF internal encodings](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/PofInternals.java)
-* [Understanding POF performance, when it is faster and when it is not](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/PofEfficiency.java)
+* [Understanding POF performance, when it is faster and when it is not?](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/PofEfficiency.java)
 * [Put backups on disk with elastic data](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/PutBackupsOnDiskUsingElasticData.java)
 * [Put all data on disk with elastic data](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/PutDataOnDiskUsingElasticData.java)
 
 
 **Utilities**
-* GC Whole Cluster [[Test](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/sizing/GarbageCollectWholeCluster.java)] [[code](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/structures/tools/jmx/ClusterGC.java)]
-
+* ClusterGC: GC all processes incrementally [[test](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/sizing/GarbageCollectWholeCluster.java)] [[code](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/structures/tools/jmx/ClusterGC.java)]
+* BinaryCacheSizeCounter: Work out how much data is in your cluster. [[test](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/sizing/CountBinarySizeOfAllObjects.java) [code](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/structures/tools/jmx/BinaryCacheSizeCounter.java)]
 
 **Getting started is simple:**
 * Download the zip or clone this repository
