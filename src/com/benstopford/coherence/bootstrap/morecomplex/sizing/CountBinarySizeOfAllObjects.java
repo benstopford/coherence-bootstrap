@@ -4,7 +4,6 @@ import com.benstopford.coherence.bootstrap.structures.dataobjects.PoJo;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PofObject;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.benstopford.coherence.bootstrap.structures.tools.jmx.BinaryCacheSizeCounter;
-import com.benstopford.coherence.bootstrap.structures.uitl.HeapUtils;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
 import org.junit.Test;
@@ -27,20 +26,15 @@ public class CountBinarySizeOfAllObjects extends ClusterRunner {
         NamedCache bar = getCache("bar");
         assertThat(CacheFactory.getCluster().getMemberSet().size(), is(1));
 
-        HeapUtils.start();
-
         //When we add 10MB to each cache
         addValuesToCache(foo, 1024, new PofObject(new byte[10 * 1024]));//10MB
         addValuesToCache(bar, 1024, new PofObject(new byte[10 * 1024]));//10MB
-
-        long heapIncrease = HeapUtils.printMemoryUsed();
 
         //call the utility
         long measured = new BinaryCacheSizeCounter().sumClusterStorageSize(jmxPort);
 
         //Then the JMX Units Sizer utility should be within 5%. Should be within 10% of memory consumption
         assertWithinTolerance(20 * MB, measured, 0.05);
-        assertWithinTolerance(heapIncrease, measured, 0.10);
     }
 
     @Test

@@ -199,8 +199,8 @@ public abstract class ClusterRunner extends TestUtils{
 
 
     protected void assertWithinTolerance(long expected, long actual, double toleranceFraction) {
-        System.out.printf("Expected:%,d, Actual: %,d, %s \n", expected, actual, toleranceFraction);
-        assertTrue(expected + (toleranceFraction * expected) > actual);
-        assertTrue(expected - (toleranceFraction * expected) < actual);
+        String message = String.format("Expected:%,d, Actual: %,d, %s \n", expected, actual, toleranceFraction);
+        assertTrue(message, expected + (toleranceFraction * expected) > actual);
+        assertTrue(message, expected - (toleranceFraction * expected) < actual);
     }
 }

@@ -46,7 +46,6 @@ public class ClusterGC {
         Map<String, String[]> env = new HashMap<String, String[]>();
 
         String urlPath = "/jndi/rmi://" + jmxHost + ":" + jmxPort + "/jmxrmi";
-        System.out.println("Connecting to " + urlPath);
 
         JMXServiceURL jmxUrl = new JMXServiceURL("rmi", "", 0, urlPath);
         env.put(JMXConnector.CREDENTIALS, new String[]{jmxUser, jmxPassword});

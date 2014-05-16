@@ -23,7 +23,10 @@ public class HeapUtils {
         Runtime java = Runtime.getRuntime();
         System.gc();
         Thread.sleep(800l);
-        return (java.totalMemory() - java.freeMemory());
+        long now = java.totalMemory() - java.freeMemory();
+        System.out.printf("Heap now: %,dB [%,d-%,d]\n", now, java.totalMemory(), java.freeMemory());
+       // GcInformation.printGCInfo();
+        return now;
     }
 
     public static void start() throws InterruptedException {

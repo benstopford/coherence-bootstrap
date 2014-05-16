@@ -19,15 +19,14 @@ public class GarbageCollectWholeCluster extends ClusterRunner {
     public void shouldCollectLocalJvmViaJmx() throws Exception {
         startLocalJMXServer(10001);
 
-        long initialGcCount = GcInformation.getGCMBean().getCollectionCount();
+        long initialGcCount = GcInformation.getOldGenBean().getCollectionCount();
 
-        long iterations = 10;
-        for (int i = 0; i < iterations; i++) {
+        long gcCount = 10;
+        for (int i = 0; i < gcCount; i++) {
             new ClusterGC().run(new String[]{"localhost:10001"});
         }
 
-        long expectedCount = iterations * 2; //Count goes up twice for each GC (Young/Tenured)
-        assertThat(GcInformation.getGCMBean().getCollectionCount() - initialGcCount, is(expectedCount));
+        assertThat(GcInformation.getOldGenBean().getCollectionCount() - initialGcCount, is(gcCount));
     }
 
     @Test

@@ -4,6 +4,7 @@ import com.benstopford.coherence.bootstrap.structures.dataobjects.ByteArrayWrapp
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PofByteObject;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.benstopford.coherence.bootstrap.structures.tools.jmx.IndexInfoCounter;
+import com.benstopford.coherence.bootstrap.structures.uitl.GcInformation;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.extractor.PofExtractor;
@@ -144,11 +145,13 @@ public class IsCoherenceIndexFootprintMbeanAccurate extends ClusterRunner {
 
         long initialMemory = memoryUsedNow();
         System.out.println("Initial memory is " + initialMemory);
+        System.out.println("GCInfo says last gc was"+ GcInformation.getOldGenBean().getLastGcInfo().getMemoryUsageAfterGc());
 
         while (all.size() * block <= 60 * MB) {
             all.add(new byte[block]);
             long now = memoryUsedNow();
             System.out.println("Measured memory as " + now);
+            System.out.println("GCInfo says last gc was"+ GcInformation.getOldGenBean().getLastGcInfo().getMemoryUsageAfterGc());
             assertWithinTolerance(all.size() * block, (now - initialMemory), 0.10);
         }
     }
