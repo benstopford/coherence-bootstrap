@@ -1,25 +1,49 @@
 package com.benstopford.coherence.bootstrap.structures.framework;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PerformanceTimer {
+
     public enum TimeFormat {ns, us, ms, s}
 
     private static long start;
+    private static List<Long> checkpoints = new ArrayList<Long>();
 
     public static void start() {
         start = System.nanoTime();
+        checkpoints.clear();
+    }
+
+    public static void checkpoint() {
+        checkpoints.add(System.nanoTime());
     }
 
     public static Took end() {
-        return new Took(System.nanoTime() - start);
+        if (checkpoints.size() > 0) {
+            return new Took(start, System.nanoTime(), checkpoints.toArray(new Long[]{}));
+        } else {
+            return new Took(System.nanoTime() - start);
+        }
     }
 
     public static class Took {
         long tookInNs;
+        long start;
+        long end;
+        Long[] checkpoints;
+
 
         public Took(long ns) {
             this.tookInNs = ns;
+        }
+
+        public Took(long start, long end, Long[] checkpoints) {
+            this.start = start;
+            this.end = end;
+            tookInNs = end - start;
+            this.checkpoints = checkpoints;
         }
 
         public long ns() {
@@ -96,6 +120,7 @@ public class PerformanceTimer {
         public Took printAverage(long iterations) {
             return printAverage(iterations, TimeFormat.us);
         }
+
         public Took printAverage(long iterations, TimeFormat f) {
             return printAverage(iterations, f, String.format("The average over %s iterations was: ", iterations));
         }
@@ -103,6 +128,61 @@ public class PerformanceTimer {
         public Took printAverage(long iterations, TimeFormat f, String prefex) {
             print(format(prefex, average(iterations, f), f));
             return this;
+        }
+
+        public Took printAverageOfCheckpoints() {
+            if (checkpoints.length == 0) {
+                throw new IllegalArgumentException("This method requires that you collected checkpoints during your run.");
+            }
+            Double mean = mean();
+            Double sd = standardDeviation(mean);
+
+            DecimalFormat f = decimalFormat(TimeFormat.ns);
+
+            System.out.println("Checkpoints: "+listDeltas());
+
+            System.out.printf("Average(%s checkpoints): %sns\n"
+                    , checkpoints.length
+                    , f.format(mean));
+            System.out.printf("Standard Deviation: %sns\n", f.format(sd));
+            return this;
+        }
+
+        private Double standardDeviation(Double mean) {
+            double totalDeltaSq = 0;
+            long previous = start;
+            for (long checkpoint : checkpoints) {
+                double deltaSq = deltaSq(mean, previous, checkpoint);
+                totalDeltaSq += deltaSq;
+                previous = checkpoint;
+            }
+            return Math.sqrt(totalDeltaSq / (checkpoints.length));
+        }
+
+        private double deltaSq(Double mean, long previous, long next) {
+            long valueNs = next - previous;
+            double delta = mean - valueNs;
+            return delta * delta;
+        }
+
+        private Double mean() {
+            long total = 0;
+            long previous = start;
+            for (long checkpoint : checkpoints) {
+                long delta = checkpoint - previous;
+                total += delta;
+                previous = checkpoint;
+            }
+            return ((double) total) / (checkpoints.length);
+        }
+
+        private List<Long> listDeltas() {
+            List<Long> deltas = new ArrayList<Long>(checkpoints.length);
+            long previous = start;
+            for (long checkpoint : checkpoints) {
+                deltas.add(checkpoint - previous);
+            }
+            return deltas;
         }
 
         private String format(String prefix, TimeFormat f) {
@@ -172,5 +252,17 @@ public class PerformanceTimer {
         end.printAverage(10).printUs("The total was:");
         //==> The average over 10 iterations was: 20,643.0us
         //==> Total:206,437.0us
+
+
+        System.out.println("****Using Checkpoints****");
+
+        start();
+        for (int i = 0; i < 5; i++) {
+            Thread.sleep(5);
+            PerformanceTimer.checkpoint();
+        }
+        end().printAverageOfCheckpoints();
+        //=> Average(5 checkpoints): 5,395,400ns
+        //=> Standard Deviation: 228,499ns
     }
 }
