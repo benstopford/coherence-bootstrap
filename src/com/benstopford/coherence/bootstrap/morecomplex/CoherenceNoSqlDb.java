@@ -21,11 +21,7 @@ import static org.junit.Assert.assertThat;
 public class CoherenceNoSqlDb extends TestUtils {
 
 
-    private int bufferEntryCount;
-    private long bytesToAdd;
-    private int valueSize;
     private ClassLoader cl = getClass().getClassLoader();
-    ;
     private NamedCache cache;
 
     @Ignore @Test
