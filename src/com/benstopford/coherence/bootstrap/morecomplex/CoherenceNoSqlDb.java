@@ -19,12 +19,10 @@ import static org.junit.Assert.assertThat;
  * Work in progress
  */
 public class CoherenceNoSqlDb extends TestUtils {
-
-
     private ClassLoader cl = getClass().getClassLoader();
     private NamedCache cache;
 
-    @Ignore @Test
+    @Test
     public void timeIndividualWritesSmallObject() throws Exception {
         String flash = "config/basic-cache-persistent.xml";
 
@@ -38,19 +36,15 @@ public class CoherenceNoSqlDb extends TestUtils {
         initialiseCohernece();
         System.out.println("Running...");
 
-
+        PerformanceTimer.start();
         for (int runs = 0; runs < 10; runs++) {
-            PerformanceTimer.start();
-            for (int i = 0; i < 10; i++) {
-                cache.put(i, new byte[1024]);
-                PerformanceTimer.checkpoint();
-            }
-            PerformanceTimer.end().printAverageOfCheckpoints();
-            System.out.println("----");
+            cache.put(runs, new byte[1024]);
+            PerformanceTimer.checkpoint();
         }
+        PerformanceTimer.end().printAverageOfCheckpoints();
     }
 
-    @Ignore @Test
+    @Test
     public void timeBatchWriteSmallObject() throws Exception {
         String flash = "config/basic-cache-persistent.xml";
 
@@ -78,7 +72,7 @@ public class CoherenceNoSqlDb extends TestUtils {
         PerformanceTimer.end().printAverageOfCheckpoints();
     }
 
-    @Ignore @Test
+    @Test
     public void timeBatchWriteLargeObject() throws Exception {
         String flash = "config/basic-cache-persistent.xml";
 
@@ -95,7 +89,7 @@ public class CoherenceNoSqlDb extends TestUtils {
 
         Map data = new HashMap();
         for (int i = 0; i < 10; i++) {
-            data.put(i, new byte[1024*1024]);
+            data.put(i, new byte[1024 * 1024]);
         }
 
         PerformanceTimer.start();
