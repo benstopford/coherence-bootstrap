@@ -121,47 +121,6 @@ public class CoherenceNoSqlDb extends TestUtils {
         cache.clear();
     }
 
-
-    @Test
-    public void shouldReadAndWriteDataUsingMinimalMemory() throws Exception {
-        String flash = "config/basic-cache-persistent.xml";
-//        startCoherenceProcess(flash);
-
-        NamedCache cache = CacheFactory.getCacheFactoryBuilder()
-                .getConfigurableCacheFactory(flash, getClass().getClassLoader())
-                .ensureCache("stuff", getClass().getClassLoader());
-
-        assertThat(CacheFactory.getCluster().getMemberSet().size(), is(1));
-
-        long start = memoryUsedNow();
-
-        bytesToAdd = 1 * MB;
-        valueSize = 8 * KB;
-        bufferEntryCount = 1;
-
-        Map buffer = new HashMap();
-        PerformanceTimer.start();
-        for (int i = 0; i < bytesToAdd / valueSize; i++) {
-            buffer.put(i, new byte[valueSize]);
-            if (buffer.size() > bufferEntryCount) {
-                commitBuffer(cache, buffer);
-            }
-        }
-        if (buffer.size() > 0) {
-            commitBuffer(cache, buffer);
-        }
-        PerformanceTimer.end().printAverageOfCheckpoints();
-
-        long memoryUsed = memoryUsedNow() - start;
-
-//        assertTrue(memoryUsed < 10 * MB); //
-
-        System.out.printf("Adding %,d KB to the cache resulted in a memory useage of %,d.\n", bytesToAdd / KB, memoryUsed / KB);
-
-        //persistent so need to clear this guy
-        cache.clear();
-    }
-
     private void commitBuffer(NamedCache cache, Map buffer) {
 
         cache.putAll(buffer);
