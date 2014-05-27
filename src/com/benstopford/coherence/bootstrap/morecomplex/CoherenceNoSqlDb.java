@@ -5,13 +5,12 @@ import com.benstopford.coherence.bootstrap.structures.framework.TestUtils;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
 import org.junit.After;
-import org.junit.Ignore;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.benstopford.coherence.bootstrap.structures.uitl.HeapUtils.memoryUsedNow;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -21,15 +20,11 @@ import static org.junit.Assert.assertThat;
 public class CoherenceNoSqlDb extends TestUtils {
     private ClassLoader cl = getClass().getClassLoader();
     private NamedCache cache;
+    public static final String flash = "config/basic-cache-persistent.xml";
 
     @Test
     public void timeIndividualWritesSmallObject() throws Exception {
-        String flash = "config/basic-cache-persistent.xml";
-
-        cache = CacheFactory
-                .getCacheFactoryBuilder()
-                .getConfigurableCacheFactory(flash, cl)
-                .ensureCache("stuff", cl);
+        cache = cache();
 
         assertThat(CacheFactory.getCluster().getMemberSet().size(), is(1));
 
@@ -37,7 +32,7 @@ public class CoherenceNoSqlDb extends TestUtils {
         System.out.println("Running...");
 
         PerformanceTimer.start();
-        for (int runs = 0; runs < 10; runs++) {
+        for (int runs = 0; runs < 100; runs++) {
             cache.put(runs, new byte[1024]);
             PerformanceTimer.checkpoint();
         }
@@ -46,12 +41,7 @@ public class CoherenceNoSqlDb extends TestUtils {
 
     @Test
     public void timeBatchWriteSmallObject() throws Exception {
-        String flash = "config/basic-cache-persistent.xml";
-
-        cache = CacheFactory
-                .getCacheFactoryBuilder()
-                .getConfigurableCacheFactory(flash, cl)
-                .ensureCache("stuff", cl);
+        cache = cache();
 
         assertThat(CacheFactory.getCluster().getMemberSet().size(), is(1));
 
@@ -74,12 +64,7 @@ public class CoherenceNoSqlDb extends TestUtils {
 
     @Test
     public void timeBatchWriteLargeObject() throws Exception {
-        String flash = "config/basic-cache-persistent.xml";
-
-        cache = CacheFactory
-                .getCacheFactoryBuilder()
-                .getConfigurableCacheFactory(flash, cl)
-                .ensureCache("stuff", cl);
+        cache = cache();
 
         assertThat(CacheFactory.getCluster().getMemberSet().size(), is(1));
 
@@ -101,7 +86,6 @@ public class CoherenceNoSqlDb extends TestUtils {
     }
 
     private void initialiseCohernece() throws InterruptedException {
-        //initialise
         cache.put(0, new byte[1024]);
         Thread.sleep(1000);
     }
@@ -111,11 +95,15 @@ public class CoherenceNoSqlDb extends TestUtils {
         cache.clear();
     }
 
-    private void commitBuffer(NamedCache cache, Map buffer) {
-
-        cache.putAll(buffer);
-        PerformanceTimer.checkpoint();
-        buffer.clear();
+    @Before
+    public void before() {
+        cache().clear();
     }
 
+    private NamedCache cache() {
+        return CacheFactory
+                .getCacheFactoryBuilder()
+                .getConfigurableCacheFactory(flash, cl)
+                .ensureCache("stuff", cl);
+    }
 }
