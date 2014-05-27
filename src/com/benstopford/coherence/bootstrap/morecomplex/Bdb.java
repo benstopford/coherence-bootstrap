@@ -8,8 +8,8 @@ import com.sleepycat.je.*;
 import java.io.File;
 
 /**
- * Work in progress
- *
+ * This is a hacked version of the BDB example from teh BDB JE download 
+ * <p/>
  * SimpleExample creates a database environment, a database, and a database
  * cursor, inserts and retrieves data.
  */
@@ -23,9 +23,9 @@ class Bdb {
     private File envDir;
 
     public Bdb(int numRecords,
-                         boolean doInsert,
-                         File envDir,
-                         int offset) {
+               boolean doInsert,
+               File envDir,
+               int offset) {
         this.numRecords = numRecords;
         this.doInsert = doInsert;
         this.envDir = envDir;
@@ -47,15 +47,13 @@ class Bdb {
      * Main
      */
     public static void main(String argv[]) {
+        argv = new String[]{"data/bdb", "insert", "1000"};
 
-        if (argv.length < 2) {
-            usage();
-            return;
-        }
         File envHomeDirectory = new File(argv[0]);
-        System.out.println("Currently in "+new File("data").getAbsolutePath());
-        System.out.println("arg "+argv[0]);
-        System.out.println("Exists? "+envHomeDirectory.isDirectory());
+
+        if (envHomeDirectory.exists() == false) {
+            envHomeDirectory.mkdir();
+        }
 
         boolean doInsertArg = false;
         if (argv[1].equalsIgnoreCase("insert")) {
@@ -153,10 +151,8 @@ class Bdb {
                 /* Use a binding to convert the int into a DatabaseEntry. */
 
 
-
-
                 IntegerBinding.intToEntry(i, keyEntry);
-                IntegerBinding.intToEntry(i+1, dataEntry);
+                IntegerBinding.intToEntry(i + 1, dataEntry);
                 OperationStatus status =
                         exampleDb.put(txn, keyEntry, dataEntry);
 
@@ -175,7 +171,7 @@ class Bdb {
                 }
                 txn.commit();
             }
-            PerformanceTimer.end().printAverage(numRecords, PerformanceTimer.TimeFormat.ns, "");
+            PerformanceTimer.end().printAverage(numRecords, PerformanceTimer.TimeFormat.ns, "Average write time for one tansaction is: ");
         } else {
             /* retrieve the data */
             Cursor cursor = exampleDb.openCursor(null, null);
