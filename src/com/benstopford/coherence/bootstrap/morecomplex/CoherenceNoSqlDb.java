@@ -54,7 +54,7 @@ public class CoherenceNoSqlDb extends TestUtils {
         }
     }
 
-    @Test
+    @Ignore @Test
     public void timeBatchWriteSmallObject() throws Exception {
         String flash = "config/basic-cache-persistent.xml";
 
@@ -82,7 +82,7 @@ public class CoherenceNoSqlDb extends TestUtils {
         PerformanceTimer.end().printAverageOfCheckpoints();
     }
 
-    @Test
+    @Ignore @Test
     public void timeBatchWriteLargeObject() throws Exception {
         String flash = "config/basic-cache-persistent.xml";
 
