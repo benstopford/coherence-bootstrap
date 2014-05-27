@@ -139,11 +139,9 @@ public class PerformanceTimer {
 
             DecimalFormat f = decimalFormat(TimeFormat.ns);
 
-            System.out.println("Checkpoints: "+listDeltas());
-
-            System.out.printf("Average(%s checkpoints): %sns\n"
-                    , checkpoints.length
-                    , f.format(mean));
+            System.out.println("Elapsed time:" + f.format(tookInNs));
+            System.out.println("Checkpoints: " + listDeltas());
+            System.out.printf("Average(%s checkpoints): %sns\n", checkpoints.length, f.format(mean));
             System.out.printf("Standard Deviation: %sns\n", f.format(sd));
             return this;
         }

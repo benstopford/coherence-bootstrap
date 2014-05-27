@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<cache-config>
+    <caching-schemes>
+        <distributed-scheme>
+            <scheme-name>simple</scheme-name>
+            <service-name>unlimited-partitioned</service-name>
+            <backing-map-scheme>
+                <transient>false</transient>
+                <local-scheme/>
+            </backing-map-scheme>
+            <persistence>
+                <environment>simple-bdb-environment</environment>
+            </persistence>
+            <!--<partitioned-quorum-policy-scheme>-->
+                <!--<recover-quorum>2</recover-quorum>-->
+            <!--</partitioned-quorum-policy-scheme>-->
+            <autostart>true</autostart>
+        </distributed-scheme>
+    </caching-schemes>
+
+    <caching-scheme-mapping>
+        <cache-mapping>
+            <cache-name>*</cache-name>
+            <scheme-name>simple</scheme-name>
+        </cache-mapping>
+    </caching-scheme-mapping>
+</cache-config>

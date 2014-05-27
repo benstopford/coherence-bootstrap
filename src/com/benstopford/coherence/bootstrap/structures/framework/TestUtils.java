@@ -8,6 +8,9 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
 public class TestUtils {
+    static{
+        System.setProperty("tangosol.coherence.override", "config/tangosol-coherence-override.xml");
+    }
     public static final int MB = 1024 * 1024;
     public static final int KB = 1024;
 

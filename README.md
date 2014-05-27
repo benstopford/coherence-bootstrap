@@ -44,9 +44,10 @@ Topics covered:
 
 **Getting started is simple:**
 * Download the zip or clone this repository
+* If you wish, run 'ant junit' to check everything works ok
 * Create a project in your IDE of choice
-* Add the lib directory and "." to your classpath
-* run/refer to the ant script if you have any problems
+* Add lib/ & "." to your classpath
+* Refer to the ant script if you have any problems
 
 **Outstanding Tasks**
 * Port cluster framework to LittleGrid

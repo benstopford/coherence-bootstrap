@@ -4,7 +4,7 @@
 This operational configuration override file is set up for use with Coherence in
 a development mode.
 -->
-<coherence xmlns="http://xmlns.oracle.com/coherence/coherence-operational-config" >
+<coherence xmlns="http://xmlns.oracle.com/coherence/coherence-operational-config">
     <cluster-config>
         <multicast-listener>
             <time-to-live system-property="tangosol.coherence.ttl">0</time-to-live>
@@ -21,6 +21,16 @@ a development mode.
                 <async-limit>32M</async-limit>
             </flashjournal-manager>
         </journaling-config>
+
+        <persistence-environments>
+            <bdb-environment id="simple-bdb-environment">
+                <persistence-mode>active</persistence-mode>
+                <active-directory>data\store-bdb-active</active-directory>
+                <snapshot-directory>data\store-bdb-snapshot</snapshot-directory>
+                <trash-directory>data\store-bdb-trash</trash-directory>
+            </bdb-environment>
+        </persistence-environments>
+
     </cluster-config>
 
     <logging-config>
