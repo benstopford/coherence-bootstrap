@@ -55,7 +55,6 @@ public class JoinTwoCachesUsingBackingMapAccessAndKeyAssociation extends Cluster
 
         //Run an Aggregator that joins together different trades and valuations
         Object aggregate = trades.aggregate(grabEverything, new JoinAggregator());
-        System.out.println("aggregate " + aggregate);
         Map<Trade, Valuation[]> result = (Map<Trade, Valuation[]>) aggregate;
 
         //Each trade should have two joined valuations
