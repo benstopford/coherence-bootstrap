@@ -3,11 +3,11 @@ package com.benstopford.coherence.bootstrap.structures.framework;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import static java.util.concurrent.TimeUnit.*;
 
 public class PerformanceTimer {
-
-    public enum TimeFormat {ns, us, ms, s}
-
     private static long start;
     private static List<Long> checkpoints = new ArrayList<Long>();
 
@@ -34,7 +34,6 @@ public class PerformanceTimer {
         long end;
         Long[] checkpoints;
 
-
         public Took(long ns) {
             this.tookInNs = ns;
         }
@@ -51,33 +50,43 @@ public class PerformanceTimer {
         }
 
         public long us() {
-            return tookInNs / 1000;
+            return us(tookInNs);
         }
 
         public long ms() {
-            return tookInNs / 1000 / 1000;
+            return ms(tookInNs);
         }
 
         public long s() {
-            return tookInNs;
+            return s(tookInNs);
         }
 
-        public long took(TimeFormat format) {
-            switch (format) {
-                case ns:
-                    return ns();
-                case us:
-                    return us();
-                case ms:
-                    return ms();
-                case s:
-                    return s();
-            }
-            return -1;
+        private long us(long ns) {
+            return MICROSECONDS.convert(ns, NANOSECONDS);
         }
 
-        public double average(long iterations, TimeFormat f) {
-            return took(f) / iterations;
+        private long ms(long ns) {
+            return MILLISECONDS.convert(ns, NANOSECONDS);
+        }
+
+        private long s(long ns) {
+            return SECONDS.convert(ns, NANOSECONDS);
+        }
+
+        public long took(TimeUnit format) {
+            return took(format, tookInNs);
+        }
+
+        public long took(TimeUnit format, long took) {
+            return format.convert(took, NANOSECONDS);
+        }
+
+        public long average(long iterations) {
+            return Math.round(tookInNs / iterations);
+        }
+
+        public String averageFormatted(int size, TimeUnit formatAs) {
+            return format(average(size),formatAs);
         }
 
         public Took printNs() {
@@ -97,56 +106,55 @@ public class PerformanceTimer {
         }
 
         public Took printNs(String prefix) {
-            return print(format(prefix, TimeFormat.ns));
+            return print(format(prefix, tookInNs, NANOSECONDS));
         }
 
         public Took printUs(String prefix) {
-            return print(format(prefix, TimeFormat.us));
+            return print(format(prefix, tookInNs, MICROSECONDS));
         }
 
         public Took printMs(String prefix) {
-            return print(format(prefix, TimeFormat.ms));
+            return print(format(prefix, tookInNs, MILLISECONDS));
         }
 
         public Took printS(String prefix) {
-            return print(format(prefix, TimeFormat.s));
+            return print(format(prefix, tookInNs, SECONDS));
         }
 
-        public Took print(TimeFormat format, String prefix) {
+        public Took print(TimeUnit format, String prefix) {
             took(format);
             return print(prefix + s());
         }
 
         public Took printAverage(long iterations) {
-            return printAverage(iterations, TimeFormat.us);
+            return printAverage(iterations, MICROSECONDS);
         }
 
-        public Took printAverage(long iterations, TimeFormat f) {
+        public Took printAverage(long iterations, TimeUnit f) {
             return printAverage(iterations, f, String.format("The average over %s iterations was: ", iterations));
         }
 
-        public Took printAverage(long iterations, TimeFormat f, String prefex) {
-            print(format(prefex, average(iterations, f), f));
+        public Took printAverage(long iterations, TimeUnit f, String prefex) {
+            long average = average(iterations);
+            print(format(prefex, average, f));
             return this;
         }
 
-        public Took printAverageOfCheckpoints() {
+        public Took printAverageOfCheckpoints(TimeUnit f) {
             if (checkpoints.length == 0) {
                 throw new IllegalArgumentException("This method requires that you collected checkpoints during your run.");
             }
-            Double mean = mean();
-            Double sd = standardDeviation(mean);
+            long mean = mean();
+            long sd = standardDeviation(mean);
 
-            DecimalFormat f = decimalFormat(TimeFormat.ns);
-
-            System.out.println("Elapsed time:" + f.format(tookInNs));
-            System.out.println("Checkpoints: " + listDeltas());
-            System.out.printf("Average(%s checkpoints): %sns\n", checkpoints.length, f.format(mean));
-            System.out.printf("Standard Deviation: %sns\n", f.format(sd));
+            System.out.println("Elapsed time:" + format(tookInNs, f));
+            System.out.println("Checkpoints: " + prettyPrintDeltas(f));
+            System.out.printf("Average(%s checkpoints): %s\n", checkpoints.length, format(mean, f));
+            System.out.printf("Standard Deviation: %s\n", format(sd, f));
             return this;
         }
 
-        private Double standardDeviation(Double mean) {
+        private long standardDeviation(long mean) {
             double totalDeltaSq = 0;
             long previous = start;
             for (long checkpoint : checkpoints) {
@@ -154,16 +162,16 @@ public class PerformanceTimer {
                 totalDeltaSq += deltaSq;
                 previous = checkpoint;
             }
-            return Math.sqrt(totalDeltaSq / (checkpoints.length));
+            return Math.round(Math.sqrt(totalDeltaSq / (checkpoints.length)));
         }
 
-        private double deltaSq(Double mean, long previous, long next) {
+        private double deltaSq(long mean, long previous, long next) {
             long valueNs = next - previous;
             double delta = mean - valueNs;
             return delta * delta;
         }
 
-        private Double mean() {
+        private long mean() {
             long total = 0;
             long previous = start;
             for (long checkpoint : checkpoints) {
@@ -171,48 +179,54 @@ public class PerformanceTimer {
                 total += delta;
                 previous = checkpoint;
             }
-            return ((double) total) / (checkpoints.length);
+            return Math.round(((double) total) / (checkpoints.length));
         }
 
-        private List<Long> listDeltas() {
-            List<Long> deltas = new ArrayList<Long>(checkpoints.length);
+        private List<String> prettyPrintDeltas(TimeUnit f) {
+            List<String> deltas = new ArrayList<String>(checkpoints.length);
             long previous = start;
             for (long checkpoint : checkpoints) {
-                deltas.add(checkpoint - previous);
+                long deltaNs = checkpoint - previous;
+                String pretty = format(deltaNs, f);
+                deltas.add(pretty);
+                previous = checkpoint;
             }
             return deltas;
         }
 
-        private String format(String prefix, TimeFormat f) {
-            return format(prefix, Double.valueOf(took(f)), f);
+        private String format(long took, TimeUnit tu) {
+            return format("", took, tu);
         }
 
-        private String format(String prefix, double took, TimeFormat format) {
-            DecimalFormat decFormat = decimalFormat(format);
+        private String format(String prefix, long ns, TimeUnit tu) {
+            DecimalFormat decFormat = decimalFormat();
+            long took = tu.convert(ns, NANOSECONDS);
 
             if (prefix.contains("%")) {
-                return (String.format(prefix.replace("%", "%s" + format), decFormat.format(took)));
+                return (String.format(prefix.replace("%", "%s" + little(tu)), decFormat.format(took)));
             } else {
-                return (prefix + decFormat.format(took) + format);
+                return (prefix + decFormat.format(took) + little(tu));
             }
         }
 
-        private DecimalFormat decimalFormat(TimeFormat format) {
-            DecimalFormat decFormat = null;
-            switch (format) {
-                case ns:
-                    decFormat = new DecimalFormat("#,###");
-                    break;
-                case us:
-                    decFormat = new DecimalFormat("#,###.0");
-                    break;
-                case ms:
-                    decFormat = new DecimalFormat("#,###.0");
-                    break;
-                case s:
-                    decFormat = new DecimalFormat("#,###.0");
+        private String little(TimeUnit tu) {
+            if (tu == NANOSECONDS) {
+                return "ns";
             }
-            return decFormat;
+            if (tu == MICROSECONDS) {
+                return "us";
+            }
+            if (tu == MILLISECONDS) {
+                return "ms";
+            }
+            if (tu == SECONDS) {
+                return "s";
+            }
+            throw new RuntimeException(tu.toString() + " not supported");
+        }
+
+        private DecimalFormat decimalFormat() {
+            return new DecimalFormat("#,###");
         }
 
         private Took print(String s) {
@@ -221,7 +235,11 @@ public class PerformanceTimer {
         }
 
         public String toString() {
-            return format("Took: ", TimeFormat.ns);
+            return "Took: " + format(tookInNs, NANOSECONDS);
+        }
+
+        public void printAverageOfCheckpoints() {
+            printAverageOfCheckpoints(MILLISECONDS);
         }
     }
 
@@ -241,26 +259,27 @@ public class PerformanceTimer {
         end.printUs();
         //==> Took: 205,866.0us
 
-        end.printAverage(10, TimeFormat.ns);
+        end.printAverage(10, NANOSECONDS);
         //==> The average over 10 iterations was: 20,643,600ns
 
-        end.printAverage(10, TimeFormat.us, "The av time over 10 cycles of % was a great result");
+        end.printAverage(10, MICROSECONDS, "The av time over 10 cycles of % was a great result");
         //==> The av time over 10 cycles of 20,586.0us was a great result
 
         end.printAverage(10).printUs("The total was:");
         //==> The average over 10 iterations was: 20,643.0us
         //==> Total:206,437.0us
 
-
-        System.out.println("****Using Checkpoints****");
+        System.out.println("\n****Using Checkpoints****");
 
         start();
         for (int i = 0; i < 5; i++) {
             Thread.sleep(5);
             PerformanceTimer.checkpoint();
         }
-        end().printAverageOfCheckpoints();
-        //=> Average(5 checkpoints): 5,395,400ns
-        //=> Standard Deviation: 228,499ns
+        end().printAverageOfCheckpoints(MICROSECONDS);
+        //Elapsed time:24,647us
+        //Checkpoints: [4,651us, 4,987us, 5,005us, 4,996us, 4,999us]
+        //Average(5 checkpoints): 4,927us
+        //Standard Deviation: 138us
     }
 }

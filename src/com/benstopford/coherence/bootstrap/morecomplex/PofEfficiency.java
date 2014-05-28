@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Random;
 
 import static com.benstopford.coherence.bootstrap.structures.framework.PerformanceTimer.*;
-import static com.benstopford.coherence.bootstrap.structures.framework.PerformanceTimer.TimeFormat.ns;
+import static java.util.concurrent.TimeUnit.NANOSECONDS;
 
 
 public class PofEfficiency {
@@ -87,7 +87,7 @@ public class PofEfficiency {
         }
         Took end = end();
 
-        Double d = Double.valueOf(end.average(data.size(), ns));
+        Double d = Double.valueOf(end.average(data.size()));
 
         if (print)
             System.out.printf("On average full deserialisation of a %s field object took %sns\n", numberOfFieldsOnObject, d);
@@ -130,7 +130,7 @@ public class PofEfficiency {
         Took took = end();
         System.out.printf("On average pof extraction of %s %s fields of %s took %sns\n",
                 entryPoint == Type.end ? "last" : entryPoint == Type.start ? "first" : "random",
-                numberOfFieldsToExract, numberOfFieldsOnObject, took.average(data.size(), ns));
+                numberOfFieldsToExract, numberOfFieldsOnObject, took.averageFormatted(data.size(), NANOSECONDS));
     }
 
     private static void extract(SimplePofContext context, Binary b, int index) {
@@ -186,7 +186,7 @@ public class PofEfficiency {
             PofValue value = PofValueParser.parse(b, context);
             pofExtractor.getNavigator().navigate(value).getValue();
         }
-        end().printAverage(total, TimeFormat.ns, "Average extraction time for navigator " + navigator.toString() + " is ");
+        end().printAverage(total, NANOSECONDS, "Average extraction time for navigator " + navigator.toString() + " is ");
     }
 }
 

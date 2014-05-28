@@ -1,4 +1,4 @@
-package com.benstopford.coherence.bootstrap.morecomplex;
+package com.benstopford.coherence.bootstrap.morecomplex.recoverablecaching;
 
 
 import com.benstopford.coherence.bootstrap.structures.framework.PerformanceTimer;
@@ -6,6 +6,7 @@ import com.sleepycat.bind.tuple.IntegerBinding;
 import com.sleepycat.je.*;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Work in progress
@@ -175,7 +176,7 @@ class Bdb {
                 }
                 txn.commit();
             }
-            PerformanceTimer.end().printAverage(numRecords, PerformanceTimer.TimeFormat.ns, "");
+            PerformanceTimer.end().printAverage(numRecords, TimeUnit.NANOSECONDS, "");
         } else {
             /* retrieve the data */
             Cursor cursor = exampleDb.openCursor(null, null);
