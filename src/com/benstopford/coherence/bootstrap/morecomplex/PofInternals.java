@@ -1,5 +1,6 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
+import com.benstopford.coherence.bootstrap.structures.dataobjects.ComplexPofObject;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PofObject;
 import com.tangosol.io.ReadBuffer;
 import com.tangosol.io.pof.PofHelper;
@@ -17,7 +18,7 @@ import static org.junit.Assert.assertThat;
 public class PofInternals {
 
     @Test
-    public void shouldNavigateSingleObject() throws IOException {
+    public void navigateSingleObject() throws IOException {
         SimplePofContext context = new SimplePofContext();
         context.registerUserType(1042, PofObject.class, new PortableObjectSerializer(1042));
 
@@ -64,7 +65,7 @@ public class PofInternals {
         assertThat(String.valueOf(field), is("TheData"));
 
         //And we're at the end (There is a trailing byte if you use PortableObject serialisation - I'm not sure why)
-        assertThat(stream.getOffset()+1, is(binary.length()));
+        assertThat(stream.getOffset() + 1, is(binary.length()));
 
         //reset the stream
         stream = binary.getBufferInput();
@@ -90,7 +91,44 @@ public class PofInternals {
 
 
     @Test
-    public void shouldNavigateNestedObject() throws IOException {
+    public void navigateObjectWithFields() throws IOException {
+        SimplePofContext context = new SimplePofContext();
+        context.registerUserType(1042, ComplexPofObject.class, ComplexPofObject.serializer);
+
+        //this time create an tiered object
+        ComplexPofObject object = new ComplexPofObject(50, 51, "fifty two", 53, "fifty four");
+
+        //get the binary stream
+        Binary bob = ExternalizableHelper.toBinary(object, context);
+        ReadBuffer.BufferInput stream = bob.getBufferInput();
+
+        System.out.println("Header byte is: " + stream.readPackedInt());
+        System.out.println("Class type is: " + stream.readPackedInt());
+        System.out.println("Class version is: " + stream.readPackedInt());
+        System.out.println("Field Pof Id is: " + stream.readPackedInt());
+        System.out.println("Field data type is: " + stream.readPackedInt());
+        System.out.println("Number of fields: " + stream.readPackedInt());
+
+        while (stream.available() > 1) {
+            System.out.printf("{pofid:" + stream.readPackedInt()+", ");
+            int type = stream.readPackedInt();
+            System.out.printf(",typeId:" + type);
+            if (type == -2)
+                System.out.printf("(int), Value:" + stream.readPackedInt() + "}\n");
+            if (type == -15) {
+                int stringLen = stream.readPackedInt();
+                char[] field = new char[stringLen];
+                for (int i = 0; i < stringLen; i++) {
+                    field[i] = PofHelper.readChar(stream);
+                }
+                System.out.printf("(str), Value:'" + String.valueOf(field) + "'}\n");
+            }
+        }
+    }
+
+
+    @Test
+    public void navigateNestedObject() throws IOException {
         SimplePofContext context = new SimplePofContext();
         context.registerUserType(1042, PofObject.class, new PortableObjectSerializer(1042));
 
@@ -120,7 +158,6 @@ public class PofInternals {
         System.out.printf("Value is '%s'\n", String.valueOf(field));
 
         //And we're at the end (There are two trailing bytes if you use PortableObject serialisation - one per object - I'm not sure why)
-        assertThat(stream.getOffset()+2, is(bob.length()));
+        assertThat(stream.getOffset() + 2, is(bob.length()));
     }
-
 }
