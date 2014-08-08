@@ -148,7 +148,7 @@ public class PerformanceTimer {
             long sd = standardDeviation(mean);
 
             System.out.println("Elapsed time:" + format(tookInNs, f));
-            System.out.println("Checkpoints: " + prettyPrintDeltas(f));
+//            System.out.println("Checkpoints: " + prettyPrintDeltas(f));
             System.out.printf("Average(%s checkpoints): %s\n", checkpoints.length, format(mean, f));
             System.out.printf("Standard Deviation: %s\n", format(sd, f));
             return this;

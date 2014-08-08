@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<cache-config>
+
+    <caching-scheme-mapping>
+        <cache-mapping>
+            <cache-name>*</cache-name>
+            <scheme-name>connect</scheme-name>
+        </cache-mapping>
+    </caching-scheme-mapping>
+
+    <caching-schemes>
+        <remote-cache-scheme>
+            <scheme-name>connect</scheme-name>
+            <service-name>extend-service</service-name>
+            <initiator-config>
+                <tcp-initiator>
+                    <remote-addresses>
+                        <socket-address>
+                            <address>localhost</address>
+                            <port system-property="client.extend.port">-1</port>
+                        </socket-address>
+                    </remote-addresses>
+                </tcp-initiator>
+            </initiator-config>
+        </remote-cache-scheme>
+    </caching-schemes>
+</cache-config>

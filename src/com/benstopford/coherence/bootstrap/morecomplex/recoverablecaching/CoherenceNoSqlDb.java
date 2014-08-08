@@ -6,6 +6,7 @@ import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
@@ -51,7 +52,7 @@ public class CoherenceNoSqlDb extends ClusterRunner {
         }
     }
 
-//    @Test
+    @Test
     public void timeIndividualWritesSmallObject() throws Exception {
         cache = startCluster(config);
 

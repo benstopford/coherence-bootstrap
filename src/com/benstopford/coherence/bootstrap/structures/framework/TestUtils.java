@@ -11,7 +11,7 @@ public class TestUtils {
     static{
         System.setProperty("tangosol.coherence.override", "config/tangosol-coherence-override.xml");
     }
-    public static final int MB = 1024 * 1024;
+    public static final long MB = 1024 * 1024;
     public static final int KB = 1024;
 
 

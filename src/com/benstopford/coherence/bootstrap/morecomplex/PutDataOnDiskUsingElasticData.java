@@ -15,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 public class PutDataOnDiskUsingElasticData extends ClusterRunner {
 
     @Test
-    public void shouldPutDataOnDisk() throws IOException, InterruptedException {
+    public void shouldPutDataOnDiskWithoutEatingMuchRAM() throws IOException, InterruptedException {
 
         String flash = "config/basic-cache-elastic-data.xml";
         startCoherenceProcess(flash);
@@ -34,7 +34,6 @@ public class PutDataOnDiskUsingElasticData extends ClusterRunner {
 
         assertTrue(memoryUsed < 10 * MB); //
 
-        System.out.printf("Adding %,d KB to the cache resulted in a memory useage of %,d.\n", bytesToAdd/KB, memoryUsed/KB);
+        System.out.printf("Adding %,d KB to the cache resulted in a memory useage of %,d.\n", bytesToAdd / KB, memoryUsed / KB);
     }
-
 }

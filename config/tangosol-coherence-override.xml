@@ -7,7 +7,7 @@ a development mode.
 <coherence xmlns="http://xmlns.oracle.com/coherence/coherence-operational-config">
     <cluster-config>
         <multicast-listener>
-            <time-to-live system-property="tangosol.coherence.ttl">0</time-to-live>
+            <time-to-live system-property="tangosol.coherence.ttl">1</time-to-live>
             <join-timeout-milliseconds>3000</join-timeout-milliseconds>
         </multicast-listener>
 
