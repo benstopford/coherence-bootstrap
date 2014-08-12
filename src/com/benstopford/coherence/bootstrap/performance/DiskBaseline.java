@@ -1,11 +1,13 @@
 package com.benstopford.coherence.bootstrap.performance;
 
 
-import sun.jvm.hotspot.utilities.Assert;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+
+import static junit.framework.Assert.assertTrue;
 
 
 /**
@@ -19,6 +21,7 @@ public class DiskBaseline {
         new DiskBaseline().diskControlTest();
     }
 
+    @Test
     public void diskControlTest() throws IOException {
         new File(file).delete();
 
@@ -26,8 +29,8 @@ public class DiskBaseline {
         long write = write(file, datasize);
         long read = read("/tmp/data.txt", datasize);
 
-        Assert.that(write == read, "checksums should match");
-        Assert.that(write != 0, "checksums should not be zero");
+        assertTrue(write == read);
+        assertTrue(write == 0);
     }
 
     private long write(String fileName, long amount) throws IOException {
