@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 public class ProcessExecutor {
+    public static int COHERERENCE_PROCESS_MEMORY = 128;
     private final ArrayList<Process> runningProcesses = new ArrayList<Process>();
     private Properties defaultProperties;
 
@@ -24,12 +25,12 @@ public class ProcessExecutor {
     public Process startOutOfProcess(String config, String propertiesAdditions) {
         Process process = null;
         try {
-            String command = "java -Xms128m -Xmx128m -verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDetails " +
-                    convertToMinusD(properties(config)) +
-                    propertiesAdditions + " " +
-                    classpath() +
-                    "com.tangosol.net.DefaultCacheServer";
-
+            String command = String.format("java -Xms%sm -Xmx%sm -verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDetails %s %s %s com.tangosol.net.DefaultCacheServer",
+                    COHERERENCE_PROCESS_MEMORY,
+                    COHERERENCE_PROCESS_MEMORY,
+                    convertToMinusD(properties(config)),
+                    propertiesAdditions,
+                    classpath());
             process = Runtime.getRuntime().exec(command);
 
             ProcessLogger.wrapLogging(process);

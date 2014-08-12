@@ -14,7 +14,7 @@ public class StandaloneClusterConnection extends ClusterRunner {
 
     public static void main(String[] args) throws Exception {
 
-        Integer port = 34183;//put the correct port here
+        Integer port = 34285;//put the correct port here
         System.setProperty("client.extend.port", port.toString());
         NamedCache cache = CacheFactory.getCacheFactoryBuilder()
                 .getConfigurableCacheFactory("config/client.xml", classLoader)

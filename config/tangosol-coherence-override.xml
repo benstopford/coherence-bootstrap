@@ -14,10 +14,10 @@ a development mode.
         <journaling-config>
             <flashjournal-manager>
                 <maximum-value-size>64K</maximum-value-size>
-                <maximum-file-size>8M</maximum-file-size>
+                <maximum-file-size>64M</maximum-file-size>
                 <block-size>512K</block-size>
                 <maximum-pool-size>32M</maximum-pool-size>
-                <directory>/tmp/coh-data</directory>
+                <directory>data/journalling</directory>
                 <async-limit>32M</async-limit>
             </flashjournal-manager>
         </journaling-config>
@@ -25,9 +25,9 @@ a development mode.
         <persistence-environments>
             <bdb-environment id="simple-bdb-environment">
                 <persistence-mode>active</persistence-mode>
-                <active-directory>data\store-bdb-active</active-directory>
-                <snapshot-directory>data\store-bdb-snapshot</snapshot-directory>
-                <trash-directory>data\store-bdb-trash</trash-directory>
+                <active-directory>data/bdb/store-bdb-active</active-directory>
+                <snapshot-directory>data/bdb/store-bdb-snapshot</snapshot-directory>
+                <trash-directory>data/bdb/store-bdb-trash</trash-directory>
             </bdb-environment>
         </persistence-environments>
 

@@ -22,7 +22,7 @@ import static org.junit.Assert.assertTrue;
  * I strongly suggest that, in your own code, you use the LittleGrid. See JK's post here:
  * http://thegridman.com/coherence/oracle-coherence-testing-with-oracle-tools/
  */
-public abstract class ClusterRunner extends TestUtils{
+public abstract class ClusterRunner extends TestUtils {
     protected ClassLoader classLoader = getClass().getClassLoader();
     public static final String LOCAL_STORAGE_FALSE = "-Dtangosol.coherence.distributed.localstorage=false";
 
@@ -42,6 +42,22 @@ public abstract class ClusterRunner extends TestUtils{
         properties.put("tangosol.coherence.management", "all");
         properties.put("tangosol.coherence.management.remote", "true");
         return properties;
+    }
+
+    public static boolean deleteDirectory(File directory) {
+        if (directory.exists()) {
+            File[] files = directory.listFiles();
+            if (null != files) {
+                for (int i = 0; i < files.length; i++) {
+                    if (files[i].isDirectory()) {
+                        deleteDirectory(files[i]);
+                    } else {
+                        files[i].delete();
+                    }
+                }
+            }
+        }
+        return (directory.delete());
     }
 
     @Before
@@ -160,6 +176,10 @@ public abstract class ClusterRunner extends TestUtils{
         return executor.startOutOfProcess(config, "");
     }
 
+    protected Process startCoherenceProcessWithJmx(String config) {
+        return executor.startOutOfProcess(config, getJMXProperties(4100));
+    }
+
     protected Process startCoherenceProcess(String config, String properties) {
         return executor.startOutOfProcess(config, properties);
     }
@@ -202,5 +222,12 @@ public abstract class ClusterRunner extends TestUtils{
         String message = String.format("Expected:%,d, Actual: %,d, %s \n", expected, actual, toleranceFraction);
         assertTrue(message, expected + (toleranceFraction * expected) > actual);
         assertTrue(message, expected - (toleranceFraction * expected) < actual);
+    }
+
+    protected void clearDataDirectories() {
+        deleteDirectory(new File("data"));
+        new File("data").mkdir();
+        new File("data/journalling").mkdir();
+        new File("data/bdb").mkdir();
     }
 }

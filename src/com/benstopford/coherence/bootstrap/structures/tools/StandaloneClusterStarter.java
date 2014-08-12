@@ -2,6 +2,7 @@ package com.benstopford.coherence.bootstrap.structures.tools;
 
 
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
+import com.benstopford.coherence.bootstrap.structures.framework.ProcessExecutor;
 import com.tangosol.net.CacheFactory;
 
 import static org.hamcrest.core.Is.is;
@@ -16,18 +17,27 @@ public class StandaloneClusterStarter extends ClusterRunner {
     }
 
     private void startServer() throws Exception {
+
+        ProcessExecutor.COHERERENCE_PROCESS_MEMORY = 256;
+
+        super.clearDataDirectories();
+
         super.setUp();
 
-        String config = "config/basic-cache-elastic-data.xml";
+        String config = "config/basic-cache-persistent-and-elastic.xml";
 
         //start data nodes
+        startCoherenceProcess(config);
+        startCoherenceProcess(config);
+        startCoherenceProcess(config);
+        startCoherenceProcess(config);
         startCoherenceProcess(config);
         startCoherenceProcess(config);
 
         //start proxy
         startDataDisabledExtendProxy();
 
-        assertThat(CacheFactory.getCluster().getMemberSet().size(), is(4)); // this process will also join (to do the memberset count)
+        assertThat(CacheFactory.getCluster().getMemberSet().size(), is(8)); // this process will also join (to do the memberset count)
 
         String port = System.getProperty("com.benstopford.extend.port");
 
