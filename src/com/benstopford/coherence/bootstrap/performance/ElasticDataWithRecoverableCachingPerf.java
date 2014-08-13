@@ -4,6 +4,7 @@ import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.benstopford.coherence.bootstrap.structures.framework.ProcessExecutor;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
+import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -18,6 +19,8 @@ import static org.junit.Assert.assertTrue;
 
 public class ElasticDataWithRecoverableCachingPerf extends ClusterRunner {
 
+
+    private int original;
 
     /**
      * Mac with 8GB ram
@@ -34,7 +37,7 @@ public class ElasticDataWithRecoverableCachingPerf extends ClusterRunner {
     public void readAndWriteVeryLargeDataset() throws IOException, InterruptedException {
         clearDataDirectories();
 
-        int original = ProcessExecutor.COHERERENCE_PROCESS_MEMORY;
+        original = ProcessExecutor.COHERERENCE_PROCESS_MEMORY;
         ProcessExecutor.COHERERENCE_PROCESS_MEMORY = 350;
 
         String flash = "config/basic-cache-persistent-and-elastic.xml";
@@ -58,9 +61,34 @@ public class ElasticDataWithRecoverableCachingPerf extends ClusterRunner {
 
         long contents = clusterContains(cache);
         assertTrue("Expected the cache to contain " + bytesToAdd * 4 + " but contained " + contents, contents == bytesToAdd);
+    }
 
+    @Test
+    public void deleteMe() throws IOException, InterruptedException {
 
-        ProcessExecutor.COHERERENCE_PROCESS_MEMORY = original;
+        original = ProcessExecutor.COHERERENCE_PROCESS_MEMORY;
+        ProcessExecutor.COHERERENCE_PROCESS_MEMORY = 1024;
+
+        String flash = "config/basic-cache-persistent-and-elastic.xml";
+        startCoherenceProcess(flash);
+        startCoherenceProcess(flash);
+        startDataDisabledExtendProxy();
+        Thread.sleep(5000);
+
+        NamedCache cache = getRemoteCache("foo");
+        assertThat(CacheFactory.getCluster().getMemberSet().size(), is(4));
+        System.out.println("*****************************UP************************");
+        while (true) {
+            System.out.println(cache.size());
+            Thread.sleep(1000);
+        }
+
+    }
+
+    @After
+    public void tearDown() {
+        if (original > 0)
+            ProcessExecutor.COHERERENCE_PROCESS_MEMORY = original;
     }
 
 
