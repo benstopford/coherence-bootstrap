@@ -23,14 +23,14 @@ Topics covered:
 
 **More Complex:**
 * [Hopping between caches on the server](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/HopBetweenCaches.java)
-* [Is POF always a good idea - testing serialisation times](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/IsPofAlwaysAGoodIdea.java)
+* [Is POF always a good idea - testing serialisation times](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/PofEfficiency.java)
 * [How listeners can lose data](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/ListenersCanLoseData.java)
 * [Membership listeners](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/MembershipListeners.java)
 * [Multithreaded clients](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/MultiThreadedExtendClientExample.java)
 * [PutAll that reports individual errors](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/PutAllThatReportsIndividualExceptions.java)
 * [Overflow caches](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/UsingAnOverflowCacheToExpireEntriesToDiskExample.java)
 * [Using services to isolate work onto groups of hardware](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/UsingServicesToIsolateWorkOnDifferentSetsOfMachines.java)
-* [Sizing the index size in your Coherence Cache](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/CountIndexSizesOverMultipleCachesViaJmx.java)
+* [Sizing the index size in your Coherence Cache](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/sizing/CountIndexSizesOverMultipleCachesViaJmx.java)
 * [Exploring POF internal encodings](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/PofInternals.java)
 * [Understanding POF performance, when it is faster and when it is not?](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/PofEfficiency.java)
 * [Put backups on disk with elastic data](https://github.com/benstopford/coherence-bootstrap/blob/master/src/com/benstopford/coherence/bootstrap/morecomplex/PutBackupsOnDiskUsingElasticData.java)
