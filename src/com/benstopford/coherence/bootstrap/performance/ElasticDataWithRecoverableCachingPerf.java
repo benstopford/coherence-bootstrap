@@ -48,7 +48,7 @@ public class ElasticDataWithRecoverableCachingPerf extends ClusterRunner {
         NamedCache cache = getRemoteCache("foo");
         assertThat(CacheFactory.getCluster().getMemberSet().size(), is(4));
 
-        long bytesToAdd = 16 * 1024 * MB;
+        long bytesToAdd = 4 * 1024 * MB;
         int block = 10 * KB;
 
         start();
@@ -63,27 +63,6 @@ public class ElasticDataWithRecoverableCachingPerf extends ClusterRunner {
         assertTrue("Expected the cache to contain " + bytesToAdd * 4 + " but contained " + contents, contents == bytesToAdd);
     }
 
-    @Test
-    public void deleteMe() throws IOException, InterruptedException {
-
-        original = ProcessExecutor.COHERERENCE_PROCESS_MEMORY;
-        ProcessExecutor.COHERERENCE_PROCESS_MEMORY = 1024;
-
-        String flash = "config/basic-cache-persistent-and-elastic.xml";
-        startCoherenceProcess(flash);
-        startCoherenceProcess(flash);
-        startDataDisabledExtendProxy();
-        Thread.sleep(5000);
-
-        NamedCache cache = getRemoteCache("foo");
-        assertThat(CacheFactory.getCluster().getMemberSet().size(), is(4));
-        System.out.println("*****************************UP************************");
-        while (true) {
-            System.out.println(cache.size());
-            Thread.sleep(1000);
-        }
-
-    }
 
     @After
     public void tearDown() {
