@@ -1,6 +1,9 @@
 package com.benstopford.coherence.bootstrap.performance;
 
 
+import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.io.File;
@@ -15,22 +18,19 @@ import static junit.framework.Assert.assertTrue;
  */
 public class DiskBaseline {
 
-    public static final String file = "/tmp/data.txt";
-
-    public static void main(String[] args) throws IOException {
-        new DiskBaseline().diskControlTest();
-    }
+    public static final String dir = "/tmp/foo/";
+    public static final String file = dir +"data.txt";
 
     @Test
     public void diskControlTest() throws IOException {
         new File(file).delete();
 
-        long datasize = 5 * 1024L * 1024L;//CHANGE ME!
+        long datasize = 5 *1024L * 1024L * 1024L;//CHANGE ME!
         long write = write(file, datasize);
-        long read = read("/tmp/data.txt", datasize);
+        long read = read(file, datasize);
 
         assertTrue(write == read);
-        assertTrue(write == 0);
+        assertTrue(write != 0);
     }
 
     private long write(String fileName, long amount) throws IOException {
@@ -73,6 +73,20 @@ public class DiskBaseline {
         System.out.printf("Reading file of length %,dB took %,dms resulting in throughput %,dKB/s\n ", fileLength, took, (amount / 1024L / took * 1000L));
 
         return checksum;
+    }
+
+    @Before
+    public void start(){
+        File dir = new File(DiskBaseline.dir);
+        ClusterRunner.deleteDirectory(dir);
+        dir.mkdir();
+    }
+
+    @After
+    public void end(){
+        File dir = new File(DiskBaseline.dir);
+        ClusterRunner.deleteDirectory(dir);
+        dir.mkdir();
     }
 
 }
