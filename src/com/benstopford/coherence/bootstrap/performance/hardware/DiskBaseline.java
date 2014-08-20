@@ -1,4 +1,4 @@
-package com.benstopford.coherence.bootstrap.performance;
+package com.benstopford.coherence.bootstrap.performance.hardware;
 
 
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
@@ -19,18 +19,28 @@ import static junit.framework.Assert.assertTrue;
 public class DiskBaseline {
 
     public static final String dir = "/tmp/foo/";
-    public static final String file = dir +"data.txt";
+    public static final String file = dir + "data.txt";
 
+
+    /**
+     * Writing file of length 1,073,741,824B took 10,266ms resulting in throughput 102MB/s
+     * Reading file of length 1,073,741,824B took 3,541ms resulting in throughput 296MB/s
+     */
     @Test
     public void diskControlTest() throws IOException {
-        new File(file).delete();
+        run(dir + "file1");
+        run(dir + "file2");
+        run(dir + "file3");
+        run(dir + "file4");
+    }
 
-        long datasize = 5 *1024L * 1024L * 1024L;//CHANGE ME!
+    private void run(String file) throws IOException {
+        long datasize = 1024L * 1024L * 1024L;//CHANGE ME!
         long write = write(file, datasize);
         long read = read(file, datasize);
 
-        assertTrue(write == read);
         assertTrue(write != 0);
+        assertTrue(write == read);
     }
 
     private long write(String fileName, long amount) throws IOException {
@@ -52,7 +62,7 @@ public class DiskBaseline {
         file.close();
         long took = System.currentTimeMillis() - start;
 
-        System.out.printf("Writing file of length %,dB took %,dms resulting in throughput %,dKB/s\n", fileLength, took, (amount / 1024L / took * 1000L));
+        System.out.printf("Writing file of length %,dB took %,dms resulting in throughput %,dMB/s\n", fileLength, took, (amount / 1024L / took));
 
         return checksum;
     }
@@ -70,20 +80,20 @@ public class DiskBaseline {
         file.close();
         long took = System.currentTimeMillis() - start;
 
-        System.out.printf("Reading file of length %,dB took %,dms resulting in throughput %,dKB/s\n ", fileLength, took, (amount / 1024L / took * 1000L));
+        System.out.printf("Reading file of length %,dB took %,dms resulting in throughput %,dMB/s\n ", fileLength, took, (amount / 1024L / took));
 
         return checksum;
     }
 
     @Before
-    public void start(){
+    public void start() {
         File dir = new File(DiskBaseline.dir);
         ClusterRunner.deleteDirectory(dir);
         dir.mkdir();
     }
 
     @After
-    public void end(){
+    public void end() {
         File dir = new File(DiskBaseline.dir);
         ClusterRunner.deleteDirectory(dir);
         dir.mkdir();
