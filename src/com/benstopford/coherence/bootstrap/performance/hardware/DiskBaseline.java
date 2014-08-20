@@ -30,8 +30,6 @@ public class DiskBaseline {
     public void diskControlTest() throws IOException {
         run(dir + "file1");
         run(dir + "file2");
-        run(dir + "file3");
-        run(dir + "file4");
     }
 
     private void run(String file) throws IOException {

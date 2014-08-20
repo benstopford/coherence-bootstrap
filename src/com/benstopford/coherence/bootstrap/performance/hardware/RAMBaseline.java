@@ -6,6 +6,8 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static com.benstopford.coherence.bootstrap.structures.framework.PerformanceTimer.end;
+import static com.benstopford.coherence.bootstrap.structures.framework.PerformanceTimer.start;
 import static junit.framework.Assert.assertTrue;
 
 
@@ -25,15 +27,13 @@ public class RAMBaseline {
     public void ramControlTest() throws IOException {
         run();
         run();
-        run();
-        run();
     }
 
     private void run() throws IOException {
         ArrayList<byte[]> list = new ArrayList();
 
-        long datasize = 1024L * 1024L * 1024L;
-        int page = 512;
+        long datasize = 10 * 1024 * 1024L; //change to 1GB+
+        int page = 8;//change to 512B
 
         long write = write(list, datasize, page);
         long read = read(list, page);
@@ -44,7 +44,7 @@ public class RAMBaseline {
 
     private long write(ArrayList list, long datasize, int page) throws IOException {
         long checksum = 0;
-        long start = System.currentTimeMillis();
+        start();
         for (int i = 0; i < datasize; i = i + page) {
             byte[] e = new byte[page];
             for (int j = 0; j < e.length; j++) {
@@ -53,7 +53,7 @@ public class RAMBaseline {
             }
             list.add(e);
         }
-        long took = System.currentTimeMillis() - start;
+        long took = end().ms();
 
         print(list, page, took, "Writing");
         return checksum;
@@ -61,12 +61,12 @@ public class RAMBaseline {
 
     private long read(ArrayList<byte[]> list, int page) throws IOException {
         long checksum = 0;
-        long start = System.currentTimeMillis();
+        start();
         for (byte[] arr : list) {
             for (byte b : arr)
                 checksum += b;
         }
-        long took = System.currentTimeMillis() - start;
+        long took = end().ms();
 
         print(list, page, took, "Reading");
 
@@ -74,7 +74,7 @@ public class RAMBaseline {
     }
 
     private void print(ArrayList<byte[]> list, int page, long took, String str) {
-        System.out.printf(str + " list of length %,d entries, each of %,dB [%,dMB] took %,dms resulting in throughput %,dMB/s\n ", list.size(), page, (list.size()*page/1024), took, (list.size() * page / 1024L / took));
+        System.out.printf(str + " list of length %,d entries, each of %,dB [%,dMB] took %,dms resulting in throughput %,dMB/s\n ", list.size(), page, (list.size() * page / 1024), took, took == 0 ? 0 : ((list.size() * page) / 1024L / took));
     }
 
 }
