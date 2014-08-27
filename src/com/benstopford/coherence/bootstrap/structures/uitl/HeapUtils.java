@@ -24,7 +24,7 @@ public class HeapUtils {
         System.gc();
         Thread.sleep(800l);
         long now = java.totalMemory() - java.freeMemory();
-        System.out.printf("Heap now: %,dB [%,d-%,d]\n", now, java.totalMemory(), java.freeMemory());
+//        System.out.printf("Heap now: %,dB [%,d-%,d]\n", now, java.totalMemory(), java.freeMemory());
        // GcInformation.printGCInfo();
         return now;
     }

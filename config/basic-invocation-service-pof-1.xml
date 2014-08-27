@@ -13,7 +13,7 @@
         </cache-mapping>
 
         <cache-mapping>
-            <cache-name>foo</cache-name>
+            <cache-name>*</cache-name>
             <scheme-name>simple</scheme-name>
         </cache-mapping>
     </caching-scheme-mapping>

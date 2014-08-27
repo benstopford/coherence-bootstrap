@@ -5,10 +5,11 @@ import com.tangosol.io.pof.PofWriter;
 import com.tangosol.io.pof.PortableObject;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-public class PofByteObject implements  PortableObject {
+public class PofByteObject implements  PortableObject, Serializable {
     protected byte[] data;
 
     public PofByteObject() {
