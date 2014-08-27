@@ -10,6 +10,11 @@ import java.util.Set;
 
 import static java.lang.Thread.currentThread;
 
+/**
+ * Support class for calculating total index sizes of a Coherence Cluster
+ *
+ * This class simply calls an Invocable everywhere and interprets the results
+ */
 public class SizeOfIndexSizer {
     public long calculateIndexSizesForSingleCache(String invocationService, String cache, String config) {
 

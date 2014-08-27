@@ -11,6 +11,11 @@ import java.util.Map;
 import static java.lang.Thread.currentThread;
 
 /**
+ * Class for calculating total index sizes of a Coherence Cluster
+ *
+ * The invocable just loops over each cache service and each cache calculating
+ * the size of the IndexMap using the instrumentation jaf SizeOf.jar
+ *
  * To run this invocable you need to add -javaagent:lib/SizeOf.jar to the command line
  * SizeOf.jar is taken from http://sizeof.sourceforge.net/
  */
