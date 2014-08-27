@@ -17,7 +17,7 @@
 
     <distributed-scheme>
         <scheme-name>simple</scheme-name>
-        <service-name>simple-caching-for-invocables</service-name>
+        <service-name>unlimited-partitioned</service-name>
         <backing-map-scheme>
             <local-scheme/>
         </backing-map-scheme>

@@ -3,22 +3,27 @@ package com.benstopford.coherence.bootstrap.structures.tools;
 import com.tangosol.net.*;
 import net.sourceforge.sizeof.SizeOf;
 
+import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Map;
 
 import static java.lang.Thread.currentThread;
 
-
+/**
+ * To run this invocable you need to add -javaagent:lib/SizeOf.jar to the command line
+ * SizeOf.jar is taken from http://sizeof.sourceforge.net/
+ */
 public class IndexCountingInvocable implements Invocable {
 
     private transient InvocationService service;
     private transient Object result;
     private static final long serialVersionUID = -2369438253692973245L;
     private String cacheName;
-    private String cacheService;
     private String config;
+    private boolean returnByCache;
 
-    public IndexCountingInvocable(String config,String cacheName) {
+    public IndexCountingInvocable(String config, String cacheName) {
         this.config = config;
         this.cacheName = cacheName;
     }
@@ -27,13 +32,15 @@ public class IndexCountingInvocable implements Invocable {
         this.config = config;
     }
 
-
     public void init(InvocationService service) {
         this.service = service;
     }
 
     public void run() {
-        if (cacheName != null) {
+
+        if (returnByCache) {
+            result = getSizeByCache();
+        } else if (cacheName != null) {
             result = size(cacheName);
         } else {
             result = getTotalSize();
@@ -41,18 +48,10 @@ public class IndexCountingInvocable implements Invocable {
     }
 
     private long getTotalSize() {
-        Enumeration serviceNames = service.getCluster().getServiceNames();
+        Collection<Long> sizes = getSizeByCache().values();
         long total = 0;
-        while(serviceNames.hasMoreElements()){
-            Service s = service.getCluster().getService((String) serviceNames.nextElement());
-            if(s instanceof DistributedCacheService){
-                Enumeration cacheNames = ((DistributedCacheService)s).getCacheNames();
-                while (cacheNames.hasMoreElements()) {
-                    String name = (String) cacheNames.nextElement();
-                    total += size(name);
-                }
-            }
-        }
+        for (Long l : sizes)
+            total += l;
         return total;
     }
 
@@ -83,5 +82,27 @@ public class IndexCountingInvocable implements Invocable {
 
     public Object getResult() {
         return result;
+    }
+
+    public void returnByCache(boolean returnByCache) {
+        this.returnByCache = returnByCache;
+    }
+
+    public Map<String, Long> getSizeByCache() {
+        Map<String, Long> out = new HashMap<String, Long>();
+        Enumeration serviceNames = service.getCluster().getServiceNames();
+        long total = 0;
+        while (serviceNames.hasMoreElements()) {
+            String serviceName = (String) serviceNames.nextElement();
+            Service s = service.getCluster().getService(serviceName);
+            if (s instanceof DistributedCacheService) {
+                Enumeration cacheNames = ((DistributedCacheService) s).getCacheNames();
+                while (cacheNames.hasMoreElements()) {
+                    String name = (String) cacheNames.nextElement();
+                    out.put(String.format("%s:%s", serviceName, name), size(name));
+                }
+            }
+        }
+        return out;
     }
 }

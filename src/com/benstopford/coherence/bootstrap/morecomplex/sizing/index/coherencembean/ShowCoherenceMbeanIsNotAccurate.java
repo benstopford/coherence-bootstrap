@@ -1,4 +1,4 @@
-package com.benstopford.coherence.bootstrap.morecomplex.sizing.index;
+package com.benstopford.coherence.bootstrap.morecomplex.sizing.index.coherencembean;
 
 import com.benstopford.coherence.bootstrap.structures.dataobjects.ByteArrayWrapper;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PofByteObject;

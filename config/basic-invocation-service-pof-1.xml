@@ -24,7 +24,7 @@
         -->
         <distributed-scheme>
             <scheme-name>forced-to-fail-via-Failing-Trigger</scheme-name>
-            <service-name>unlimited-partitioned-pof</service-name>
+            <service-name>unlimited-partitioned</service-name>
 
             <backing-map-scheme>
                 <read-write-backing-map-scheme>
@@ -60,7 +60,7 @@
 
         <distributed-scheme>
             <scheme-name>simple</scheme-name>
-            <service-name>unlimited-partitioned-pof</service-name>
+            <service-name>unlimited-partitioned</service-name>
             <backing-map-scheme>
                 <local-scheme/>
             </backing-map-scheme>
