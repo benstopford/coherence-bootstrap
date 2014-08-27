@@ -2,8 +2,8 @@ package com.benstopford.coherence.bootstrap.morecomplex.sizing.index;
 
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PoJo;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
-import com.benstopford.coherence.bootstrap.structures.tools.IndexCountingInvocable;
-import com.benstopford.coherence.bootstrap.structures.tools.SizeOfIndexSizer;
+import com.benstopford.coherence.bootstrap.structures.tools.index.IndexCountingInvocable;
+import com.benstopford.coherence.bootstrap.structures.tools.index.SizeOfIndexSizer;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.InvocationService;
 import com.tangosol.net.Member;

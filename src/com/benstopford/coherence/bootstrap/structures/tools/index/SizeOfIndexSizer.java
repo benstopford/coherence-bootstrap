@@ -1,4 +1,4 @@
-package com.benstopford.coherence.bootstrap.structures.tools;
+package com.benstopford.coherence.bootstrap.structures.tools.index;
 
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.InvocationService;

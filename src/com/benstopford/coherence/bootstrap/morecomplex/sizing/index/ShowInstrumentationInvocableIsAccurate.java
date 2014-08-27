@@ -3,7 +3,7 @@ package com.benstopford.coherence.bootstrap.morecomplex.sizing.index;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.ByteArrayWrapper;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PofByteObject;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
-import com.benstopford.coherence.bootstrap.structures.tools.SizeOfIndexSizer;
+import com.benstopford.coherence.bootstrap.structures.tools.index.SizeOfIndexSizer;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.ValueExtractor;
