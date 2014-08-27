@@ -43,7 +43,8 @@
 
     <target name="junit" depends="jar" >
         <junit printsummary="withOutAndErr" fork="yes" showoutput="true" haltonfailure="true" logfailedtests="on" maxmemory="256m">
-            <jvmarg value="-XX:+UseParallelOldGC -javaagent:lib/SizeOf.jar"/>
+            <jvmarg value="-XX:+UseParallelOldGC"/>
+            <jvmarg value="-javaagent:lib/SizeOf.jar"/>
             <formatter type="plain" usefile="true"/>
             <classpath>
                 <path refid="classpath"/>
