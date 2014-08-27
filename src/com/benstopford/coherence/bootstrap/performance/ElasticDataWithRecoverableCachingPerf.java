@@ -17,6 +17,9 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Work in progress
+ */
 public class ElasticDataWithRecoverableCachingPerf extends ClusterRunner {
 
 

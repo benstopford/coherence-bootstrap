@@ -12,7 +12,7 @@ import static junit.framework.Assert.assertTrue;
 
 
 /**
- * Simple class that baselines the single thread performance of reads and writes to the local drive
+ * Simple class that baselines the single thread performance of reads and writes to RAM
  */
 public class RAMBaseline {
 
@@ -27,15 +27,14 @@ public class RAMBaseline {
      */
     @Test
     public void ramControlTest() throws IOException {
-     while(true)
         run();
     }
 
     private void run() throws IOException {
         ArrayList<byte[]> list = new ArrayList();
 
-        long datasize = 1024 * 1024 * 1024L; //change to 1GB+
-        int page = 512;//change to 512B
+        long datasize = 1024*1024; //change to 1GB+
+        int page = 50;//change to 512B
 
         long write = write(list, datasize, page);
         long read = read(list, page);
@@ -76,7 +75,7 @@ public class RAMBaseline {
     }
 
     private void print(ArrayList<byte[]> list, int page, long took, String str) {
-        System.out.printf(str + " list of length %,d entries, each of %,dB [%,dMB] took %,dms resulting in throughput %,dMB/s\n ", list.size(), page, (list.size() * page / 1024), took, took == 0 ? 0 : ((list.size() * page) / 1024L / took));
+        System.out.printf(str + " list of length %,d entries, each of %,dB [%,dMB] took %,dms resulting in throughput %,dMB/s\n", list.size(), page, (list.size() * page / 1024), took, took == 0 ? 0 : ((list.size() * page) / 1024L / took));
     }
 
 }
