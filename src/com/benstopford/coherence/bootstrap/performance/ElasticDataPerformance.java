@@ -28,9 +28,6 @@ public class ElasticDataPerformance extends ClusterRunner {
         NamedCache cache = getCache(flash, "foo");
         assertThat(CacheFactory.getCluster().getMemberSet().size(), is(2));
 
-        long bytesToAdd = 512 * MB;
-        int block = 10 * KB;
-
         start();
         write(cache, bytesToAdd, block);
         end().printMs("One data node:");
