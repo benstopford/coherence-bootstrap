@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/junit-4.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/littlegrid-2.15.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/coherence-1212.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

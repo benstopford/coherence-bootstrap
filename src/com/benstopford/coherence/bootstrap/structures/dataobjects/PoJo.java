@@ -6,31 +6,19 @@ import java.io.Serializable;
  * BTS, 16-Oct-2008
  */
 public class PoJo implements Serializable, ObjFactory {
-    private byte[] data = null;
-    private Integer o;
+    private Object data = null;
 
-    public PoJo(int o) {
-        this.o = o;
-    }
-
-    public PoJo(byte[] data) {
+    public PoJo(Object data) {
         this.data = data;
     }
 
-    public PoJo() {
-        this(-1);
-    }
-
-    public Object getValue() {
-        return o;
-    }
     public Object getData() {
         return data;
     }
 
 
     public String toString() {
-        return getValue().toString();
+        return data.toString();
     }
 
 

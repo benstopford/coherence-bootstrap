@@ -25,7 +25,7 @@ public class ProcessExecutor {
     public Process startOutOfProcess(String config, String propertiesAdditions) {
         Process process = null;
         try {
-            String command = String.format("java -Xms%sm -Xmx%sm -verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDetails %s %s %s com.tangosol.net.DefaultCacheServer",
+            String command = String.format("java -javaagent:lib/SizeOf.jar -Xms%sm -Xmx%sm -verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDetails %s %s %s com.tangosol.net.DefaultCacheServer",
                     COHERERENCE_PROCESS_MEMORY,
                     COHERERENCE_PROCESS_MEMORY,
                     convertToMinusD(properties(config)),

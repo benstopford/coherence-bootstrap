@@ -18,7 +18,7 @@ public class StandaloneClusterStarter extends ClusterRunner {
 
     private void startServer() throws Exception {
 
-        ProcessExecutor.COHERERENCE_PROCESS_MEMORY = 256;
+        ProcessExecutor.COHERERENCE_PROCESS_MEMORY = 800;
 
         super.clearDataDirectories();
 
@@ -37,7 +37,7 @@ public class StandaloneClusterStarter extends ClusterRunner {
         //start proxy
         startDataDisabledExtendProxy();
 
-        assertThat(CacheFactory.getCluster().getMemberSet().size(), is(8)); // this process will also join (to do the memberset count)
+        assertThat(CacheFactory.getCluster().getMemberSet().size(), is(8));
 
         String port = System.getProperty("com.benstopford.extend.port");
 

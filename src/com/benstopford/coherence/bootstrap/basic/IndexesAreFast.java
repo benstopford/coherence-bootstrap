@@ -46,7 +46,7 @@ public final class IndexesAreFast extends ClusterRunner {
         getFromCacheAndPrintTimings(cache, 100);
 
         cache.clear();
-        cache.addIndex(new ReflectionExtractor("getValue"), false, null);
+        cache.addIndex(new ReflectionExtractor("getData"), false, null);
 
         System.out.println("\n\n******* Timings with index *******");
         addValuesToCache(cache, 10);
@@ -67,7 +67,7 @@ public final class IndexesAreFast extends ClusterRunner {
     private static void getFromCacheAndPrintTimings(NamedCache cache, int number) {
         long start = System.nanoTime();
         for (int i = 0; i < number; i++) {
-            cache.entrySet(new EqualsFilter("getValue", i));
+            cache.entrySet(new EqualsFilter("getData", i));
         }
         long took = System.nanoTime() - start;
 

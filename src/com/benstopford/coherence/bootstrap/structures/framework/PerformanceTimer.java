@@ -3,7 +3,7 @@ package com.benstopford.coherence.bootstrap.structures.framework;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 import static java.util.concurrent.TimeUnit.*;
 
@@ -14,6 +14,21 @@ public class PerformanceTimer {
     public static void start() {
         start = System.nanoTime();
         checkpoints.clear();
+    }
+
+    public static void start(String text, Object... amount) {
+        System.out.printf(text+"\n", amount);
+        start();
+    }
+
+    public static long startTime(){
+        return start;
+    }
+
+    public static long currentDuration(TimeUnit unit){
+        long took = System.nanoTime() - start;
+        long convert = unit.convert(took, NANOSECONDS);
+        return convert;
     }
 
     public static void checkpoint() {
@@ -27,6 +42,32 @@ public class PerformanceTimer {
             return new Took(System.nanoTime() - start);
         }
     }
+
+
+    private static ExecutorService executorService = Executors.newFixedThreadPool(1);
+    private static BlockingQueue<String> printQueue = new LinkedBlockingQueue<String>();
+
+    static {
+        executorService.submit(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        String message = printQueue.take();
+                        System.out.printf(message);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        });
+    }
+
+    public static void progress(String message, Object... args) {
+        printQueue.offer(String.format(message + "\r", args));
+    }
+
 
     public static class Took {
         long tookInNs;
@@ -86,7 +127,7 @@ public class PerformanceTimer {
         }
 
         public String averageFormatted(int size, TimeUnit formatAs) {
-            return format(average(size),formatAs);
+            return format(average(size), formatAs);
         }
 
         public Took printNs() {
