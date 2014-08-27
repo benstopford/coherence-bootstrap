@@ -5,7 +5,6 @@ import com.benstopford.coherence.bootstrap.structures.dataobjects.PofByteObject;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.benstopford.coherence.bootstrap.structures.tools.SizeOfIndexSizer;
 import com.tangosol.net.CacheFactory;
-import com.tangosol.net.InvocationService;
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.ValueExtractor;
 import com.tangosol.util.extractor.PofExtractor;
@@ -170,14 +169,8 @@ public class IsSizeOfInvocableIndexSizingAccurate extends ClusterRunner {
 
         long after = memoryUsedNow();
 
-        //get a handle on the invocation service
-        InvocationService invocationService = (InvocationService) CacheFactory.getCacheFactoryBuilder()
-                .getConfigurableCacheFactory(config, classLoader)
-                .ensureService("MyInvocationService1");
-
-
         //then
-        long coherenceSize = new SizeOfIndexSizer().calculateIndexSizesForSingleCache(invocationService, cache, config);
+        long coherenceSize = new SizeOfIndexSizer().calculateIndexSizesForSingleCache("MyInvocationService1", cache.getCacheName(), config);
 
         System.out.printf("Ran: %,d x %sB fields [%,dKB indexable data], Cardinality of %s [%s entries in index, " +
                         "each containing %s values], SizeOf measured: %,dB. " +

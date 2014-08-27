@@ -3,6 +3,7 @@ package com.benstopford.coherence.bootstrap.morecomplex.sizing;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PoJo;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
 import com.benstopford.coherence.bootstrap.structures.tools.IndexCountingInvocable;
+import com.benstopford.coherence.bootstrap.structures.tools.SizeOfIndexSizer;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.InvocationService;
 import com.tangosol.net.Member;
@@ -16,11 +17,66 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 
 public class UseSizeOfLibraryToCountIndexSizes extends ClusterRunner {
     public static final String config = "config/basic-invocation-service-1.xml";
+    public static final String invocationService = "MyInvocationService1";
+
+
+    @Test
+    public void shouldSizeSingleCache() {
+        //start two remote nodes
+        startCoherenceProcess(config);
+        startCoherenceProcess(config);
+
+        //Three data node coherence cluster for this test
+        assertThat(CacheFactory.getCluster().getMemberSet().size(), is(3));
+
+        NamedCache foo = getCache(config, "foo");
+
+        //add some data
+        addValuesToCache(foo, 1000, new PoJo(Long.MAX_VALUE));
+
+        //add indexes (which index the value in its entirety to keep the maths simple)
+        foo.addIndex(new ReflectionExtractor("getData"), false, null);
+
+        SizeOfIndexSizer sizer = new SizeOfIndexSizer();
+
+        long size = sizer.calculateIndexSizesForSingleCache(invocationService, foo.getCacheName(), config);
+
+        assertWithinTolerance(330 * 1000, size, 1 / 10);
+    }
+
+    @Test
+    public void sizeOfShouldWorkForMultipleCaches() {
+        //start two remote nodes
+        startCoherenceProcess(config);
+        startCoherenceProcess(config);
+
+        //Three data node coherence cluster for this test
+        assertThat(CacheFactory.getCluster().getMemberSet().size(), is(3));
+
+        NamedCache foo = getCache(config, "foo");
+        NamedCache bar = getCache(config, "bar");
+
+        //add some data
+        addValuesToCache(foo, 1000, new PoJo(Long.MAX_VALUE));
+        addValuesToCache(bar, 1000, new PoJo(Long.MAX_VALUE));
+
+        //add indexes (which index the value in its entirety to keep the maths simple)
+        foo.addIndex(new ReflectionExtractor("getData"), false, null);
+        bar.addIndex(new ReflectionExtractor("getData"), false, null);
+
+        SizeOfIndexSizer sizer = new SizeOfIndexSizer();
+
+        long justFoo = sizer.calculateIndexSizesForSingleCache(invocationService, foo.getCacheName(), config);
+        long total = sizer.calculateIndexSizes(invocationService, config);
+
+        assertEquals(2 * justFoo, total);
+    }
 
     @Test
     public void investigateSizingOfDifferentIndexedFields() throws Exception {
