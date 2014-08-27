@@ -1,4 +1,4 @@
-package com.benstopford.coherence.bootstrap.morecomplex.sizing;
+package com.benstopford.coherence.bootstrap.morecomplex.sizing.index;
 
 import com.benstopford.coherence.bootstrap.structures.tools.jmx.IndexInfoCounter;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PoJo;
@@ -16,7 +16,7 @@ import java.util.Map;
  * Warning - this mechanism for measuring index sizes is not accurate due to the
  * underlying footprint mbean being a guestimate of the index size.
  */
-public class CountIndexFootprintOverMultipleCachesViaJmx extends ClusterRunner {
+public class SumCoherenceIndexMbean extends ClusterRunner {
 
     private static byte[] data1K = new byte[1024];
 

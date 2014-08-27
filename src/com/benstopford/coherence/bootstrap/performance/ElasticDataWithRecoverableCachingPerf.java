@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 public class ElasticDataWithRecoverableCachingPerf extends ClusterRunner {
 
 
-    private int original;
+    private int originalMem;
 
     /**
      * Mac with 8GB ram
@@ -37,7 +37,7 @@ public class ElasticDataWithRecoverableCachingPerf extends ClusterRunner {
     public void readAndWriteVeryLargeDataset() throws IOException, InterruptedException {
         clearDataDirectories();
 
-        original = ProcessExecutor.COHERERENCE_PROCESS_MEMORY;
+        originalMem = ProcessExecutor.COHERERENCE_PROCESS_MEMORY;
         ProcessExecutor.COHERERENCE_PROCESS_MEMORY = 350;
 
         String flash = "config/basic-cache-persistent-and-elastic.xml";
@@ -63,11 +63,39 @@ public class ElasticDataWithRecoverableCachingPerf extends ClusterRunner {
         assertTrue("Expected the cache to contain " + bytesToAdd * 4 + " but contained " + contents, contents == bytesToAdd);
     }
 
+//    @Test
+//    public void deleteMe() throws IOException, InterruptedException {
+//
+//        original = ProcessExecutor.COHERERENCE_PROCESS_MEMORY;
+//        ProcessExecutor.COHERERENCE_PROCESS_MEMORY = 1024;
+//
+//        String flash = "config/basic-cache-persistent-and-elastic.xml";
+//        startCoherenceProcess(flash);
+//        startCoherenceProcess(flash);
+//        startDataDisabledExtendProxy();
+//        System.out.println("*****************************started at ************************");
+//        System.out.println(new Date());
+//        Thread.sleep(5000);
+//
+////        NamedCache cache = getRemoteCache("foo");
+////        assertThat(CacheFactory.getCluster().getMemberSet().size(), is(4));
+//
+//        while (true) {
+//            try {
+//                NamedCache cache = getRemoteCache("foo");
+//                System.out.println(cache.size());
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                System.out.println(e.getMessage());
+//            }
+//        }
+//
+//    }
 
     @After
     public void tearDown() {
-        if (original > 0)
-            ProcessExecutor.COHERERENCE_PROCESS_MEMORY = original;
+        if (originalMem > 0)
+            ProcessExecutor.COHERERENCE_PROCESS_MEMORY = originalMem;
     }
 
 

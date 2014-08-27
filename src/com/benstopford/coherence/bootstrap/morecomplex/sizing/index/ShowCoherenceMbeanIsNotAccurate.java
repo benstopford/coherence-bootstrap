@@ -1,4 +1,4 @@
-package com.benstopford.coherence.bootstrap.morecomplex.sizing;
+package com.benstopford.coherence.bootstrap.morecomplex.sizing.index;
 
 import com.benstopford.coherence.bootstrap.structures.dataobjects.ByteArrayWrapper;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PofByteObject;
@@ -26,7 +26,7 @@ import static com.benstopford.coherence.bootstrap.structures.uitl.HeapUtils.memo
  *
  * In particular the concurrent collector has less predictable behaviour
  */
-public class IsCoherenceIndexFootprintMbeanAccurate extends ClusterRunner {
+public class ShowCoherenceMbeanIsNotAccurate extends ClusterRunner {
     public static final int MB = 1024 * 1024;
     public static final int KB = 1024;
     private PofExtractor extractor;

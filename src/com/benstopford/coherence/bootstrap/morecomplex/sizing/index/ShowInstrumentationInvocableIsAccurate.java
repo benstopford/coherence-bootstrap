@@ -1,4 +1,4 @@
-package com.benstopford.coherence.bootstrap.morecomplex.sizing;
+package com.benstopford.coherence.bootstrap.morecomplex.sizing.index;
 
 import com.benstopford.coherence.bootstrap.structures.dataobjects.ByteArrayWrapper;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PofByteObject;
@@ -100,7 +100,7 @@ import static com.benstopford.coherence.bootstrap.structures.uitl.HeapUtils.memo
  *
  * In particular the concurrent collector has less predictable behaviour
  */
-public class IsSizeOfInvocableIndexSizingAccurate extends ClusterRunner {
+public class ShowInstrumentationInvocableIsAccurate extends ClusterRunner {
     public static final String config = "config/basic-invocation-service-pof-1.xml";
 
     public static final int MB = 1024 * 1024;

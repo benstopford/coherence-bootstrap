@@ -20,20 +20,22 @@ public class RAMBaseline {
     public static final String file = dir + "data.txt";
 
     /**
-     * Writing buffer of length 1,073,741,824B took 1,693ms resulting in throughput 619MB/s
-     * Reading file of length 1,073,741,824B took 1,256ms resulting in throughput 834KB/s
+     * long datasize = 1024 * 1024 * 1024L;
+     * int page = 512;
+     * Writing list of length 2,097,152 entries, each of 512B [1,048,576MB] took 736ms resulting in throughput 1,424MB/s
+     * Reading list of length 2,097,152 entries, each of 512B [1,048,576MB] took 488ms resulting in throughput 2,148MB/s
      */
     @Test
     public void ramControlTest() throws IOException {
-        run();
+     while(true)
         run();
     }
 
     private void run() throws IOException {
         ArrayList<byte[]> list = new ArrayList();
 
-        long datasize = 10 * 1024 * 1024L; //change to 1GB+
-        int page = 8;//change to 512B
+        long datasize = 1024 * 1024 * 1024L; //change to 1GB+
+        int page = 512;//change to 512B
 
         long write = write(list, datasize, page);
         long read = read(list, page);

@@ -1,4 +1,4 @@
-package com.benstopford.coherence.bootstrap.morecomplex.sizing;
+package com.benstopford.coherence.bootstrap.morecomplex.sizing.index;
 
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PoJo;
 import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 
-public class UseSizeOfLibraryToCountIndexSizes extends ClusterRunner {
+public class AccurateIndexSixingWithSizeOfLib extends ClusterRunner {
     public static final String config = "config/basic-invocation-service-1.xml";
     public static final String invocationService = "MyInvocationService1";
 
@@ -47,7 +47,7 @@ public class UseSizeOfLibraryToCountIndexSizes extends ClusterRunner {
 
         long size = sizer.calculateIndexSizesForSingleCache(invocationService, foo.getCacheName(), config);
 
-        assertWithinTolerance(330 * 1000, size, 1 / 10);
+        assertWithinTolerance(330 * 1000, size, 0.1);
     }
 
     @Test
@@ -128,9 +128,9 @@ public class UseSizeOfLibraryToCountIndexSizes extends ClusterRunner {
         //add indexes (which index the value in its entirety to keep the maths simple)
         cache.addIndex(new ReflectionExtractor("getData"), false, null);
 
-        Map<Member, Long> indexSizeSmall = invocationService.query(new IndexCountingInvocable(name, config), members);
+        Map<Member, Long> indexSizes = invocationService.query(new IndexCountingInvocable(config), members);
 
-        long total = total(indexSizeSmall);
+        long total = total(indexSizes);
         System.out.printf("%s: Size of %s entries of type %s is: %,d, average cost per entry: %,d\n", name, numberToAdd, objectToIndex.getClass().getSimpleName(), total, total / numberToAdd);
 
         cache.clear();
