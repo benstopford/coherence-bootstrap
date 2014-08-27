@@ -12,57 +12,54 @@ import static java.lang.Thread.currentThread;
 
 /**
  * Support class for calculating total index sizes of a Coherence Cluster
- *
+ * <p/>
  * This class simply calls an Invocable everywhere and interprets the results
  */
 public class SizeOfIndexSizer {
     public long calculateIndexSizesForSingleCache(String invocationService, String cache, String config) {
-
-        IndexCountingInvocable singleCacheInvocable = new IndexCountingInvocable(config, cache);
-
-        return run(invocationService, config, singleCacheInvocable);
+        return invoke(invocationService, config, new IndexCountingInvocable(config, cache));
     }
 
-    private long run(String invocationServiceName, String config, IndexCountingInvocable invocable) {
-        InvocationService invocationService = getInvocationService(invocationServiceName, config);
-        Set members = invocationService.getInfo().getServiceMembers();
-
-        Map<Member, Long> indexes = invocationService.query(invocable, members);
-
-        return total(indexes);
+    public long calculateTotalIndexSize(String invocationService, String config) {
+        return invoke(invocationService, config, new IndexCountingInvocable(config));
     }
 
-    private Map<String, Long> getCacheBreakdown(String invocationServiceName, String config, IndexCountingInvocable invocable) {
+    public Map<String, Long> calculateIndexSizes(String invocationServiceName, String config) {
+        IndexCountingInvocable invocable = new IndexCountingInvocable(config);
         invocable.returnByCache(true);
 
-        InvocationService invocationService = getInvocationService(invocationServiceName, config);
+        InvocationService service = invocationService(invocationServiceName, config);
+        Set members = service.getInfo().getServiceMembers();
 
+        return totalByCache(service.query(invocable, members));
+    }
+
+    private long invoke(String invocationServiceName, String config, IndexCountingInvocable invocable) {
+        InvocationService invocationService = invocationService(invocationServiceName, config);
         Set members = invocationService.getInfo().getServiceMembers();
 
-        Map<Member, Map<String, Long>> indexes = invocationService.query(invocable, members);
-
-        return totalByCache(indexes);
+        return total(invocationService.query(invocable, members));
     }
 
     private Map<String, Long> totalByCache(Map<Member, Map<String, Long>> indexes) {
         Map<String, Long> out = new HashMap<String, Long>();
 
-        for(Map<String, Long> indexesForMember: indexes.values()){
-            for(String cacheName: indexesForMember.keySet()){
+        for (Map<String, Long> indexesForMember : indexes.values()) {
+            for (String cacheName : indexesForMember.keySet()) {
                 Long total = out.get(cacheName);
-                if(total==null)
+                if (total == null)
                     total = 0L;
-                total+=indexesForMember.get(cacheName);
-                out.put(cacheName,total);
+                total += indexesForMember.get(cacheName);
+                out.put(cacheName, total);
             }
         }
         return out;
     }
 
-    private InvocationService getInvocationService(String invocationServiceName, String config) {
+    private InvocationService invocationService(String invocationServiceName, String config) {
         return (InvocationService) CacheFactory.getCacheFactoryBuilder()
-                    .getConfigurableCacheFactory(config, currentThread().getContextClassLoader())
-                    .ensureService(invocationServiceName);
+                .getConfigurableCacheFactory(config, currentThread().getContextClassLoader())
+                .ensureService(invocationServiceName);
     }
 
     private long total(Map<Member, Long> map) {
@@ -72,17 +69,4 @@ public class SizeOfIndexSizer {
         return total;
     }
 
-
-    public long calculateTotalIndexSize(String invocationService, String config) {
-
-        IndexCountingInvocable allCachesInvocable = new IndexCountingInvocable(config);
-
-        return run(invocationService, config, allCachesInvocable);
-    }
-
-    public Map<String, Long> calculateIndexSizes(String invocationService, String config) {
-
-        IndexCountingInvocable allCachesInvocable = new IndexCountingInvocable(config);
-        return getCacheBreakdown(invocationService, config, allCachesInvocable);
-    }
 }
