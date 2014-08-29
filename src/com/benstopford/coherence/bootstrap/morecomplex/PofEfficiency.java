@@ -22,7 +22,9 @@ public class PofEfficiency {
     public static int objectCount;
     static byte[] padding = new byte[10];
 
-    enum Type {start, end, random};
+    enum Type {start, end, random}
+
+    ;
 
     /**
      * Look at performance of pof-extractors in comparison to deserilising the whole object
@@ -154,15 +156,18 @@ public class PofEfficiency {
     @Test
     public void howMuchSlowerIsPullingDataFromTheEndOfTheStreamRatherThanTheStart() throws InterruptedException {
 
-        List<Integer> fields = new ArrayList<Integer>();
+        List<Object> fields = new ArrayList<Object>();
         for (int i = 0; i < 1024; i++) {
-            fields.add(Integer.MAX_VALUE);
+            fields.add(new byte[1]);
         }
 
-        ComplexPofObject o = new ComplexPofObject(fields);
+        ComplexPofObject obj = new ComplexPofObject(fields);
 
         for (int pofFieldPosition = 1; pofFieldPosition <= 1024; pofFieldPosition = pofFieldPosition * 2) {
-            serialisationTime(new SimplePofPath(pofFieldPosition), o);
+            measurePofNavigationTime(
+                    new SimplePofPath(pofFieldPosition),
+                    obj,
+                    1 * 1000 * 1000);
             gc();
         }
     }
@@ -172,8 +177,7 @@ public class PofEfficiency {
         Thread.sleep(1000);
     }
 
-    private void serialisationTime(SimplePofPath navigator, ComplexPofObject o) {
-        int total = 1 * 1000 * 1000, count = total; //10 million is best, reduced to keep test times down
+    private void measurePofNavigationTime(SimplePofPath navigator, ComplexPofObject o, int count) {
 
         SimplePofContext context = new SimplePofContext();
         context.registerUserType(2001, ComplexPofObject.class, ComplexPofObject.serializer);
@@ -182,11 +186,12 @@ public class PofEfficiency {
         Binary b = ExternalizableHelper.toBinary(o, context);
 
         start();
-        while (count-- > 0) {
+        int i = count;
+        while (i-- > 0) {
             PofValue value = PofValueParser.parse(b, context);
             pofExtractor.getNavigator().navigate(value).getValue();
         }
-        end().printAverage(total, NANOSECONDS, "Average extraction time for navigator " + navigator.toString() + " is ");
+        end().printAverage(count, NANOSECONDS, "Average extraction time for navigator " + navigator.toString() + " is ");
     }
 }
 
