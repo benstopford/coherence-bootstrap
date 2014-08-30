@@ -48,7 +48,7 @@ public class PofEfficiency {
      * (and tweaking these for fun) -XX:NewSize=5g -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps
      */
     @Test
-    public void whenDoesPofExtractionStopsBeingMoreEfficient() throws InterruptedException {
+    public void whenDoesPofExtractionStopsBeingMoreEfficientThanDeserialisation() throws InterruptedException {
 
         padding = new byte[64];
         objectCount = 100000; //TODO: Set to ~1,000,000 for accurate test - just set low memory reasons
@@ -87,7 +87,7 @@ public class PofEfficiency {
             data.add(binary);
         }
 
-        //deserialise them all
+        //Deserialise them all
         start();
         for (Binary b : data) {
             ExternalizableHelper.fromBinary(b, context);
