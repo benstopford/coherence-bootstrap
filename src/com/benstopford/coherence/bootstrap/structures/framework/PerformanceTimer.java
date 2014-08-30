@@ -126,10 +126,6 @@ public class PerformanceTimer {
             return Math.round(tookInNs / iterations);
         }
 
-        public String averageFormatted(int size, TimeUnit formatAs) {
-            return format(average(size), formatAs);
-        }
-
         public Took printNs() {
             return printNs("Took: ");
         }

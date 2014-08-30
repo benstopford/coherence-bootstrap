@@ -32,6 +32,19 @@ public class PofEfficiency {
     ;
 
     /**
+     *
+     *
+        ----Break-Even Points (on my machine) for objects with different numbers of fields----
+        - for objects of 5 fields the break even point is deserialising 2 fields with pof
+        - for objects of 20 fields the break even point is deserialising 4 fields with pof
+        - for objects of 50 fields the break even point is deserialising 5 fields with pof
+        - for objects of 100 fields the break even point is deserialising 7 fields with pof
+        - for objects of 200 fields the break even point is deserialising 9 fields with pof
+
+        ----Varying Field Size----
+        - the size of the field (adjusted with fieldPadding) doesn't affect performance much
+
+     *
      * Look at performance of pof-extractors in comparison to deserilising the whole object
      * It is best to use the below memory settings and a larger objectCount to get reliable results:
      * -Xmx8g -Xms8g
@@ -43,6 +56,7 @@ public class PofEfficiency {
         padding = new byte[64];
         objectCount = 100000; //TODO: Set to ~1,000,000 for accurate test - just set low memory reasons
         int fieldCount = 50;
+        int numberOfFieldsToExract = 5; //this is the approximate break even point for a 50 field object
 
         //warm up JVM
         testFullObjectDeserialiation(fieldCount, false);
@@ -51,25 +65,14 @@ public class PofEfficiency {
         testFullObjectDeserialiation(fieldCount, true);
         gc();
 
-        testPofExtractionOfNAttributes(fieldCount, 5, Type.start);
+        testPofExtractionOfNAttributes(fieldCount, numberOfFieldsToExract, Type.start);
         gc();
 
-        testPofExtractionOfNAttributes(fieldCount, 5, Type.end);
+        testPofExtractionOfNAttributes(fieldCount, numberOfFieldsToExract, Type.end);
         gc();
 
-        testPofExtractionOfNAttributes(fieldCount, 5, Type.random);
+        testPofExtractionOfNAttributes(fieldCount, numberOfFieldsToExract, Type.random);
 
-        System.out.println("----Break Even Points (on my machine) for objects with different numbers of fields----");
-        System.out.println("- for objects of 5 fields the break even point is deserialising 2 fields with pof");
-        System.out.println("- for objects of 20 fields the break even point is deserialising 4 fields with pof");
-        System.out.println("- for objects of 50 fields the break even point is deserialising 5 fields with pof");
-        System.out.println("- for objects of 100 fields the break even point is deserialising 7 fields with pof");
-        System.out.println("- for objects of 200 fields the break even point is deserialising 9 fields with pof");
-        System.out.println("----Varying Field Size----");
-        System.out.println("- the size of the field (adjusted with fieldPadding) doesn't affect performance much");
-        System.out.println("----Varying Field Size----");
-        System.out.println("----Conclusion----");
-        System.out.println("Using pof extractors in filters and for indexing is a good idea but if you are doing complex operations in the cache that require access to a broad range of fields it may actually be more efficient to deserialise the whole object");
     }
 
 
@@ -94,15 +97,13 @@ public class PofEfficiency {
         }
         Took end = end();
 
-        Double d = Double.valueOf(end.average(data.size()));
-
         if (print)
-            System.out.printf("On average full deserialisation of a %s field object took %sns\n", numberOfFieldsOnObject, d);
+            System.out.printf("On average full deserialisation of a %s field object took %,dns\n", numberOfFieldsOnObject, end.average(data.size()));
     }
 
     public static void testPofExtractionOfNAttributes(int numberOfFieldsOnObject, int numberOfFieldsToExract, Type entryPoint) {
         SimplePofContext context = new SimplePofContext();
-        List<Binary> data = new ArrayList<Binary>();
+        List<Binary> cache = new ArrayList<Binary>();
 
         //create a test object
         LengthyPofObject o = createPofObject(numberOfFieldsOnObject);
@@ -111,7 +112,7 @@ public class PofEfficiency {
         for (int i = 0; i < objectCount; i++) {
             context.registerUserType(2001, LengthyPofObject.class, LengthyPofObject.serializer);
             Binary binary = ExternalizableHelper.toBinary(o, context);
-            data.add(binary);
+            cache.add(binary);
         }
 
         int[] randomPofIndexes = new int[numberOfFieldsToExract];
@@ -122,26 +123,26 @@ public class PofEfficiency {
 
         //PofExtract some number of fields from the start/end of stream
         start();
-        for (Binary b : data) {
+        for (Binary b : cache) {
+            PofValue value = PofValueParser.parse(b, context);
             for (int i = 0; i < numberOfFieldsToExract; i++) {
                 if (entryPoint == Type.end) {
-                    extract(context, b, numberOfFieldsOnObject - i);
+                    extract(value, numberOfFieldsOnObject - i);
                 } else if (entryPoint == Type.start) {
-                    extract(context, b, i);
+                    extract(value, i);
                 } else if (entryPoint == Type.random) {
-                    extract(context, b, randomPofIndexes[i]);
+                    extract(value, randomPofIndexes[i]);
                 }
             }
         }
         Took took = end();
-        System.out.printf("On average pof extraction of %s %s fields of %s took %sns\n",
+        System.out.printf("On average pof extraction of %s %s fields of %s took %,dns\n",
                 entryPoint == Type.end ? "last" : entryPoint == Type.start ? "first" : "random",
-                numberOfFieldsToExract, numberOfFieldsOnObject, took.averageFormatted(data.size(), NANOSECONDS));
+                numberOfFieldsToExract, numberOfFieldsOnObject, took.average(Long.valueOf(cache.size())));
     }
 
-    private static void extract(SimplePofContext context, Binary b, int index) {
+    private static void extract(PofValue value, int index) {
         PofExtractor pofExtractor = new PofExtractor(null, new SimplePofPath(index));
-        PofValue value = PofValueParser.parse(b, context);
         pofExtractor.getNavigator().navigate(value).getValue();
     }
 
