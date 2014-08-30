@@ -32,18 +32,15 @@ public class PofEfficiency {
     ;
 
     /**
+     * Break-Even Points (on my machine) for objects with different numbers of fields
+     * - for objects of 5 fields the break even point is deserialising 2 fields with pof
+     * - for objects of 20 fields the break even point is deserialising 4 fields with pof
+     * - for objects of 50 fields the break even point is deserialising 5 fields with pof
+     * - for objects of 100 fields the break even point is deserialising 7 fields with pof
+     * - for objects of 200 fields the break even point is deserialising 9 fields with pof
      *
-     *
-        ----Break-Even Points (on my machine) for objects with different numbers of fields----
-        - for objects of 5 fields the break even point is deserialising 2 fields with pof
-        - for objects of 20 fields the break even point is deserialising 4 fields with pof
-        - for objects of 50 fields the break even point is deserialising 5 fields with pof
-        - for objects of 100 fields the break even point is deserialising 7 fields with pof
-        - for objects of 200 fields the break even point is deserialising 9 fields with pof
-
-        ----Varying Field Size----
-        - the size of the field (adjusted with fieldPadding) doesn't affect performance much
-
+     * Varying Field Size:
+     * - the size of the field (adjusted with fieldPadding) doesn't affect performance much
      *
      * Look at performance of pof-extractors in comparison to deserilising the whole object
      * It is best to use the below memory settings and a larger objectCount to get reliable results:
