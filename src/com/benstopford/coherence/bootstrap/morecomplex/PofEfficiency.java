@@ -49,7 +49,6 @@ public class PofEfficiency {
      */
     @Test
     public void whenDoesPofExtractionStopsBeingMoreEfficientThanDeserialisation() throws InterruptedException {
-
         padding = new byte[64];
         objectCount = 100000; //TODO: Set to ~1,000,000 for accurate test - just set low memory reasons
         int fieldCount = 50;
@@ -69,7 +68,6 @@ public class PofEfficiency {
         gc();
 
         testPofExtractionOfNAttributes(fieldCount, numberOfFieldsToExract, Type.random);
-
     }
 
 
