@@ -1,6 +1,8 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
-import com.benstopford.coherence.bootstrap.structures.dataobjects.ComplexPofObject;
+import com.benstopford.coherence.bootstrap.structures.dataobjects.LengthyPofObject;
+import com.tangosol.io.ReadBuffer;
+import com.tangosol.io.pof.PofHelper;
 import com.tangosol.io.pof.SimplePofContext;
 import com.tangosol.io.pof.reflect.PofValue;
 import com.tangosol.io.pof.reflect.PofValueParser;
@@ -10,12 +12,15 @@ import com.tangosol.util.ExternalizableHelper;
 import com.tangosol.util.extractor.PofExtractor;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import static com.benstopford.coherence.bootstrap.structures.framework.PerformanceTimer.*;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
 
 public class PofEfficiency {
@@ -73,11 +78,11 @@ public class PofEfficiency {
         List<Binary> data = new ArrayList<Binary>();
 
         //create a test object
-        ComplexPofObject o = createPofObject(numberOfFieldsOnObject);
+        LengthyPofObject o = createPofObject(numberOfFieldsOnObject);
 
         //create a 'cache' of n binary versions of that object
         for (int i = 0; i < objectCount; i++) {
-            context.registerUserType(2001, ComplexPofObject.class, ComplexPofObject.serializer);
+            context.registerUserType(2001, LengthyPofObject.class, LengthyPofObject.serializer);
             Binary binary = ExternalizableHelper.toBinary(o, context);
             data.add(binary);
         }
@@ -100,11 +105,11 @@ public class PofEfficiency {
         List<Binary> data = new ArrayList<Binary>();
 
         //create a test object
-        ComplexPofObject o = createPofObject(numberOfFieldsOnObject);
+        LengthyPofObject o = createPofObject(numberOfFieldsOnObject);
 
         //create a 'cache' of n binary versions of that object
         for (int i = 0; i < objectCount; i++) {
-            context.registerUserType(2001, ComplexPofObject.class, ComplexPofObject.serializer);
+            context.registerUserType(2001, LengthyPofObject.class, LengthyPofObject.serializer);
             Binary binary = ExternalizableHelper.toBinary(o, context);
             data.add(binary);
         }
@@ -114,7 +119,6 @@ public class PofEfficiency {
         for (int i = 0; i < randomPofIndexes.length; i++) {
             randomPofIndexes[i] = random.nextInt(numberOfFieldsOnObject);
         }
-
 
         //PofExtract some number of fields from the start/end of stream
         start();
@@ -141,12 +145,12 @@ public class PofEfficiency {
         pofExtractor.getNavigator().navigate(value).getValue();
     }
 
-    private static ComplexPofObject createPofObject(int numberOfFields) {
+    private static LengthyPofObject createPofObject(int numberOfFields) {
         Object[] fields = new Object[numberOfFields];
         for (int i = 0; i < numberOfFields; i++) {
             fields[i] = String.valueOf(padding) + i;
         }
-        return new ComplexPofObject(fields);
+        return new LengthyPofObject(fields);
     }
 
 
@@ -154,20 +158,41 @@ public class PofEfficiency {
      * Ignore GC via -Xms8g -Xmx8g -XX:NewSize=4g -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps
      */
     @Test
-    public void howMuchSlowerIsPullingDataFromTheEndOfTheStreamRatherThanTheStart() throws InterruptedException {
+    public void howMuchSlowerIsPullingDataFromTheEndOfTheStreamRatherThanTheStart() throws InterruptedException, IOException {
+        int maxFieldsToTraverse = 1024;
+        int iterationsInTest = 1 * 100 * 1000;
 
         List<Object> fields = new ArrayList<Object>();
-        for (int i = 0; i < 1024; i++) {
-            fields.add(new byte[1]);
+        for (int i = 1; i <= maxFieldsToTraverse; i++) {
+            fields.add(i);
         }
 
-        ComplexPofObject obj = new ComplexPofObject(fields);
+        LengthyPofObject obj = new LengthyPofObject(fields);
 
-        for (int pofFieldPosition = 1; pofFieldPosition <= 1024; pofFieldPosition = pofFieldPosition * 2) {
+        System.out.println("\n***Test WITH PofValueParsing for each extraction***");
+        for (int pofFieldPosition = 1; pofFieldPosition <= maxFieldsToTraverse; pofFieldPosition = pofFieldPosition * 2) {
             measurePofNavigationTime(
-                    new SimplePofPath(pofFieldPosition),
+                    pofFieldPosition,
                     obj,
-                    1 * 1000 * 1000);
+                    iterationsInTest, true);
+            gc();
+        }
+        System.out.println("\n***Test WITHOUT PofValueParsing for each extraction***");
+        for (int pofFieldPosition = 1; pofFieldPosition <= maxFieldsToTraverse; pofFieldPosition = pofFieldPosition * 2) {
+            measurePofNavigationTime(
+                    pofFieldPosition,
+                    obj,
+                    iterationsInTest,
+                    false);
+            gc();
+        }
+
+        System.out.println("\n***Test baseline using just skipPackedInts calls***");
+        for (int pofFieldPosition = 1; pofFieldPosition <= maxFieldsToTraverse; pofFieldPosition = pofFieldPosition * 2) {
+            measurePofNavigationTimeWithSkipsOnly(
+                    pofFieldPosition,
+                    obj,
+                    iterationsInTest);
             gc();
         }
     }
@@ -177,21 +202,48 @@ public class PofEfficiency {
         Thread.sleep(1000);
     }
 
-    private void measurePofNavigationTime(SimplePofPath navigator, ComplexPofObject o, int count) {
+    private void measurePofNavigationTime(int path, LengthyPofObject o, int count, boolean includeParsing) {
+        SimplePofPath simplePofPath = new SimplePofPath(path);
 
         SimplePofContext context = new SimplePofContext();
-        context.registerUserType(2001, ComplexPofObject.class, ComplexPofObject.serializer);
-        PofExtractor pofExtractor = new PofExtractor(ComplexPofObject.class, navigator);
+        context.registerUserType(2001, LengthyPofObject.class, LengthyPofObject.serializer);
+        PofExtractor pofExtractor = new PofExtractor(Integer.class, simplePofPath);
 
         Binary b = ExternalizableHelper.toBinary(o, context);
 
         start();
-        int i = count;
+        int i = count, total = 0;
+        PofValue value = PofValueParser.parse(b, context);
         while (i-- > 0) {
-            PofValue value = PofValueParser.parse(b, context);
-            pofExtractor.getNavigator().navigate(value).getValue();
+            if(includeParsing) value = PofValueParser.parse(b, context);
+            total += (Integer) pofExtractor.getNavigator().navigate(value).getValue();
         }
-        end().printAverage(count, NANOSECONDS, "Average extraction time for navigator " + navigator.toString() + " is ");
+        end().printAverage(count, NANOSECONDS, "Average extraction time for navigator " + simplePofPath.toString() + " is ");
+
+        assertThat(total, is(count * path));
+    }
+
+    private void measurePofNavigationTimeWithSkipsOnly(int fieldPosition, LengthyPofObject o, int count) throws IOException {
+
+        SimplePofContext context = new SimplePofContext();
+        context.registerUserType(2001, LengthyPofObject.class, LengthyPofObject.serializer);
+        Binary b = ExternalizableHelper.toBinary(o, context);
+
+        start();
+        int i = count;
+        int total = 0;
+        while (i-- > 0) {
+            ReadBuffer.BufferInput stream = b.getBufferInput();
+            PofHelper.skipPackedInts(stream, 6); //skip object header with ints for: header,type,version,pofid,type,fieldcount
+            PofHelper.skipPackedInts(stream, (fieldPosition - 1) * 3); //skip to the field we want (each field contains id,type,value)
+
+            stream.readPackedInt();//pofid
+            stream.readPackedInt();//type
+            total += stream.readPackedInt();
+        }
+        end().printAverage(count, NANOSECONDS, "Average extraction time for field position " + fieldPosition + " is ");
+
+        assertThat(total, is(count * fieldPosition));
     }
 }
 

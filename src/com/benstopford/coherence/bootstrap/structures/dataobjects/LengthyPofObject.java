@@ -13,15 +13,15 @@ import java.util.List;
  * An object that takes a list of fields so it can simulate a
  * much larger and more complex domain object (when viewed from pof)
  */
-public class ComplexPofObject {
+public class LengthyPofObject {
     public static PofSerializer serializer = new Serialiser();
     private List fields;
 
-    public ComplexPofObject(List fields) {
+    public LengthyPofObject(List fields) {
         this.fields = fields;
     }
 
-    public ComplexPofObject(Object... fields) {
+    public LengthyPofObject(Object... fields) {
         this.fields = Arrays.asList(fields);
     }
 
@@ -29,7 +29,7 @@ public class ComplexPofObject {
 
         @Override
         public void serialize(PofWriter pofWriter, Object obj) throws IOException {
-            ComplexPofObject o = (ComplexPofObject) obj;
+            LengthyPofObject o = (LengthyPofObject) obj;
             pofWriter.writeInt(0, o.fields.size());
             for (int i = 1; i <= o.fields.size(); i++) {
                 pofWriter.writeObject(i, o.fields.get(i - 1));
@@ -39,7 +39,7 @@ public class ComplexPofObject {
 
         @Override
         public Object deserialize(PofReader pofReader) throws IOException {
-            ComplexPofObject o = new ComplexPofObject();
+            LengthyPofObject o = new LengthyPofObject();
             o.fields = new ArrayList();
             int size = pofReader.readInt(0);
             for (int i = 1; i <= size; i++) {

@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
-import com.benstopford.coherence.bootstrap.structures.dataobjects.ComplexPofObject;
+import com.benstopford.coherence.bootstrap.structures.dataobjects.LengthyPofObject;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PofObject;
 import com.tangosol.io.ReadBuffer;
 import com.tangosol.io.pof.PofHelper;
@@ -93,10 +93,10 @@ public class PofInternals {
     @Test
     public void navigateObjectWithFields() throws IOException {
         SimplePofContext context = new SimplePofContext();
-        context.registerUserType(1042, ComplexPofObject.class, ComplexPofObject.serializer);
+        context.registerUserType(1042, LengthyPofObject.class, LengthyPofObject.serializer);
 
         //this time create an tiered object
-        ComplexPofObject object = new ComplexPofObject(50, 51, "fifty two", 53, "fifty four");
+        LengthyPofObject object = new LengthyPofObject(50, 51, "fifty two", 53, "fifty four");
 
         //get the binary stream
         Binary bob = ExternalizableHelper.toBinary(object, context);

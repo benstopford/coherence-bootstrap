@@ -34,7 +34,6 @@ public class ElasticDataPerformance extends ClusterRunner {
         start();
         write(cache, bytesToAdd, block);
         end().printMs("One data node:");
-       
 
         addAnotherNode(flash, cache);
         assertThat(CacheFactory.getCluster().getMemberSet().size(), is(3));
@@ -59,9 +58,7 @@ public class ElasticDataPerformance extends ClusterRunner {
 
         long contents = clusterContains(cache);
         assertTrue("Expected the cache to contain " + bytesToAdd + " but contained " + contents, contents == bytesToAdd);
-
     }
-
 
     @Ignore
     @Test
