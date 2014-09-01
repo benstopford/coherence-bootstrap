@@ -50,7 +50,7 @@ public class PofEfficiency {
      * (and tweaking these for fun) -XX:NewSize=5g -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps
      */
     @Test
-    public void whenDoesPofExtractionStopsBeingMoreEfficientThanDeserialisation() throws InterruptedException {
+    public void compareFullObjectDeserialisationWithPullingDataFromStreamWithPof() throws InterruptedException {
         data = new byte[64];
         objectCount = 100000; //TODO: Set to ~1,000,000 for accurate test - just set low for memory/time reasons
         int fieldCount = 50;
@@ -158,14 +158,6 @@ public class PofEfficiency {
 
         LengthyPofObject obj = new LengthyPofObject(fields);
 
-        System.out.println("\n***Test WITH PofValueParsing for each extraction***");
-        for (int pofFieldPosition = 1; pofFieldPosition <= maxFieldsToTraverse; pofFieldPosition = pofFieldPosition * 2) {
-            measurePofNavigationTime(
-                    pofFieldPosition,
-                    obj,
-                    iterationsInTest, true);
-            gc();
-        }
         System.out.println("\n***Test WITHOUT PofValueParsing for each extraction***");
         for (int pofFieldPosition = 1; pofFieldPosition <= maxFieldsToTraverse; pofFieldPosition = pofFieldPosition * 2) {
             measurePofNavigationTime(
@@ -175,6 +167,16 @@ public class PofEfficiency {
                     false);
             gc();
         }
+
+        System.out.println("\n***Test WITH PofValueParsing for each extraction***");
+        for (int pofFieldPosition = 1; pofFieldPosition <= maxFieldsToTraverse; pofFieldPosition = pofFieldPosition * 2) {
+            measurePofNavigationTime(
+                    pofFieldPosition,
+                    obj,
+                    iterationsInTest, true);
+            gc();
+        }
+
 
         System.out.println("\n***Test baseline using just skipPackedInts calls***");
         for (int pofFieldPosition = 1; pofFieldPosition <= maxFieldsToTraverse; pofFieldPosition = pofFieldPosition * 2) {
