@@ -19,13 +19,15 @@ import java.util.Random;
 
 import static com.benstopford.coherence.bootstrap.structures.framework.PerformanceTimer.*;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
+import static junit.framework.Assert.fail;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 
 public class PofEfficiency {
     public static int objectCount;
-    static byte[] padding = new byte[10];
+    static byte[] data = new byte[50];
+    private SimplePofContext context = null;
 
     enum Type {start, end, random}
 
@@ -38,10 +40,10 @@ public class PofEfficiency {
      * - for objects of 50 fields the break even point is deserialising 5 fields with pof
      * - for objects of 100 fields the break even point is deserialising 7 fields with pof
      * - for objects of 200 fields the break even point is deserialising 9 fields with pof
-     *
+     * <p/>
      * Varying Field Size:
      * - the size of the field (adjusted with fieldPadding) doesn't affect performance much
-     *
+     * <p/>
      * Look at performance of pof-extractors in comparison to deserilising the whole object
      * It is best to use the below memory settings and a larger objectCount to get reliable results:
      * -Xmx8g -Xms8g
@@ -49,43 +51,44 @@ public class PofEfficiency {
      */
     @Test
     public void whenDoesPofExtractionStopsBeingMoreEfficientThanDeserialisation() throws InterruptedException {
-        padding = new byte[64];
-        objectCount = 100000; //TODO: Set to ~1,000,000 for accurate test - just set low memory reasons
+        data = new byte[64];
+        objectCount = 100000; //TODO: Set to ~1,000,000 for accurate test - just set low for memory/time reasons
         int fieldCount = 50;
-        int numberOfFieldsToExract = 5; //this is the approximate break even point for a 50 field object
+        int numberOfFieldsToExract = 5; //5 is the approximate break even point for a 50 field object
+
+        List<Binary> cache = listOfBinaryObjectsOfSize(createPofObject(fieldCount));
 
         //warm up JVM
-        testFullObjectDeserialiation(fieldCount, false);
+        testFullObjectDeserialiation(cache, false, fieldCount);
         gc();
 
-        testFullObjectDeserialiation(fieldCount, true);
+        testFullObjectDeserialiation(cache, true, fieldCount);
         gc();
 
-        testPofExtractionOfNAttributes(fieldCount, numberOfFieldsToExract, Type.start);
+        testPofExtractionOfNAttributes(cache, numberOfFieldsToExract, fieldCount, Type.start);
         gc();
 
-        testPofExtractionOfNAttributes(fieldCount, numberOfFieldsToExract, Type.end);
+        testPofExtractionOfNAttributes(cache, numberOfFieldsToExract, fieldCount, Type.end);
         gc();
 
-        testPofExtractionOfNAttributes(fieldCount, numberOfFieldsToExract, Type.random);
+        testPofExtractionOfNAttributes(cache, numberOfFieldsToExract, fieldCount, Type.random);
+    }
+
+    private List<Binary> listOfBinaryObjectsOfSize(LengthyPofObject pofObject) {
+        List<Binary> cache = new ArrayList<Binary>();
+
+        //create a 'cache' of n binary versions of that object
+        context = new SimplePofContext();
+        for (int i = 0; i < objectCount; i++) {
+            context.registerUserType(2001, LengthyPofObject.class, LengthyPofObject.serializer);
+            Binary binary = ExternalizableHelper.toBinary(pofObject, context);
+            cache.add(binary);
+        }
+        return cache;
     }
 
 
-    public static void testFullObjectDeserialiation(int numberOfFieldsOnObject, boolean print) {
-        SimplePofContext context = new SimplePofContext();
-        List<Binary> data = new ArrayList<Binary>();
-
-        //create a test object
-        LengthyPofObject o = createPofObject(numberOfFieldsOnObject);
-
-        //create a 'cache' of n binary versions of that object
-        for (int i = 0; i < objectCount; i++) {
-            context.registerUserType(2001, LengthyPofObject.class, LengthyPofObject.serializer);
-            Binary binary = ExternalizableHelper.toBinary(o, context);
-            data.add(binary);
-        }
-
-        //Deserialise them all
+    public void testFullObjectDeserialiation(List<Binary> data, boolean print, int fieldCount) {
         start();
         for (Binary b : data) {
             ExternalizableHelper.fromBinary(b, context);
@@ -93,58 +96,48 @@ public class PofEfficiency {
         Took end = end();
 
         if (print)
-            System.out.printf("On average full deserialisation of a %s field object took %,dns\n", numberOfFieldsOnObject, end.average(data.size()));
+            System.out.printf("On average full deserialisation of a %s field object took %,dns\n", fieldCount, end.average(data.size()));
     }
 
-    public static void testPofExtractionOfNAttributes(int numberOfFieldsOnObject, int numberOfFieldsToExract, Type entryPoint) {
-        SimplePofContext context = new SimplePofContext();
-        List<Binary> cache = new ArrayList<Binary>();
+    public void testPofExtractionOfNAttributes(List<Binary> cache, int numberOfFieldsToExract, int fieldCount, Type entryPoint) {
 
-        //create a test object
-        LengthyPofObject o = createPofObject(numberOfFieldsOnObject);
-
-        //create a 'cache' of n binary versions of that object
-        for (int i = 0; i < objectCount; i++) {
-            context.registerUserType(2001, LengthyPofObject.class, LengthyPofObject.serializer);
-            Binary binary = ExternalizableHelper.toBinary(o, context);
-            cache.add(binary);
-        }
-
-        int[] randomPofIndexes = new int[numberOfFieldsToExract];
+        int[] randomPofIndexes = new int[fieldCount];
         Random random = new Random();
         for (int i = 0; i < randomPofIndexes.length; i++) {
-            randomPofIndexes[i] = random.nextInt(numberOfFieldsOnObject);
+            randomPofIndexes[i] = random.nextInt(fieldCount);
         }
 
         //PofExtract some number of fields from the start/end of stream
         start();
         for (Binary b : cache) {
             PofValue value = PofValueParser.parse(b, context);
-            for (int i = 0; i < numberOfFieldsToExract; i++) {
+            for (int i = 1; i <= numberOfFieldsToExract; i++) {
                 if (entryPoint == Type.end) {
-                    extract(value, numberOfFieldsOnObject - i);
+                    extract(value, fieldCount - i);
                 } else if (entryPoint == Type.start) {
                     extract(value, i);
                 } else if (entryPoint == Type.random) {
-                    extract(value, randomPofIndexes[i]);
+                    int ind = randomPofIndexes[i];
+                    extract(value, ind);
                 }
             }
         }
         Took took = end();
         System.out.printf("On average pof extraction of %s %s fields of %s took %,dns\n",
                 entryPoint == Type.end ? "last" : entryPoint == Type.start ? "first" : "random",
-                numberOfFieldsToExract, numberOfFieldsOnObject, took.average(Long.valueOf(cache.size())));
+                numberOfFieldsToExract, fieldCount, took.average(Long.valueOf(cache.size())));
     }
 
-    private static void extract(PofValue value, int index) {
+    private void extract(PofValue value, int index) {
         PofExtractor pofExtractor = new PofExtractor(null, new SimplePofPath(index));
-        pofExtractor.getNavigator().navigate(value).getValue();
+        byte[] byteArray = pofExtractor.getNavigator().navigate(value).getByteArray();
+        if (byteArray.length != data.length) fail("oops");
     }
 
-    private static LengthyPofObject createPofObject(int numberOfFields) {
+    private LengthyPofObject createPofObject(int numberOfFields) {
         Object[] fields = new Object[numberOfFields];
         for (int i = 0; i < numberOfFields; i++) {
-            fields[i] = String.valueOf(padding) + i;
+            fields[i] = data;
         }
         return new LengthyPofObject(fields);
     }
@@ -211,7 +204,7 @@ public class PofEfficiency {
         int i = count, total = 0;
         PofValue value = PofValueParser.parse(b, context);
         while (i-- > 0) {
-            if(includeParsing) value = PofValueParser.parse(b, context);
+            if (includeParsing) value = PofValueParser.parse(b, context);
             total += (Integer) pofExtractor.getNavigator().navigate(value).getValue();
         }
         end().printAverage(count, NANOSECONDS, "Average extraction time for navigator " + simplePofPath.toString() + " is ");
@@ -219,6 +212,9 @@ public class PofEfficiency {
         assertThat(total, is(count * path));
     }
 
+    /**
+     * This mechanism does the parsing manually (as a control)
+     */
     private void measurePofNavigationTimeWithSkipsOnly(int fieldPosition, LengthyPofObject o, int count) throws IOException {
 
         SimplePofContext context = new SimplePofContext();
