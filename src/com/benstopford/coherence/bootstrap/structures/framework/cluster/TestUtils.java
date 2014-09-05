@@ -1,4 +1,4 @@
-package com.benstopford.coherence.bootstrap.structures.framework;
+package com.benstopford.coherence.bootstrap.structures.framework.cluster;
 
 import javax.management.remote.JMXConnectorServerFactory;
 import javax.management.remote.JMXServiceURL;

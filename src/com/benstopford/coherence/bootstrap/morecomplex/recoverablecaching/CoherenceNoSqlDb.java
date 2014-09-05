@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.morecomplex.recoverablecaching;
 
-import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
+import com.benstopford.coherence.bootstrap.structures.framework.cluster.ClusterRunner;
 import com.benstopford.coherence.bootstrap.structures.framework.PerformanceTimer;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;

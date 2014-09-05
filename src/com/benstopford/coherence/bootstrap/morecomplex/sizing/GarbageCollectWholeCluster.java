@@ -1,11 +1,10 @@
 package com.benstopford.coherence.bootstrap.morecomplex.sizing;
 
-import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
+import com.benstopford.coherence.bootstrap.structures.framework.cluster.ClusterRunner;
 import com.benstopford.coherence.bootstrap.structures.tools.jmx.ClusterGC;
 import com.benstopford.coherence.bootstrap.structures.uitl.GcInformation;
-import org.junit.Test;
-
 import com.sun.management.GarbageCollectorMXBean;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;

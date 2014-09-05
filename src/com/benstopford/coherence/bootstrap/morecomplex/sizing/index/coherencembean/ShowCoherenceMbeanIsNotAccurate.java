@@ -2,7 +2,7 @@ package com.benstopford.coherence.bootstrap.morecomplex.sizing.index.coherencemb
 
 import com.benstopford.coherence.bootstrap.structures.dataobjects.ByteArrayWrapper;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PofByteObject;
-import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
+import com.benstopford.coherence.bootstrap.structures.framework.cluster.ClusterRunner;
 import com.benstopford.coherence.bootstrap.structures.tools.jmx.IndexInfoCounter;
 import com.benstopford.coherence.bootstrap.structures.uitl.GcInformation;
 import com.tangosol.net.CacheFactory;

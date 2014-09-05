@@ -1,7 +1,7 @@
 package com.benstopford.coherence.bootstrap.structures.tools;
 
 
-import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
+import com.benstopford.coherence.bootstrap.structures.framework.cluster.ClusterRunner;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
 

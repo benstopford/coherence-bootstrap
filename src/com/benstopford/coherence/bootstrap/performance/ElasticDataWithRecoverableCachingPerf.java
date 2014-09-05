@@ -1,7 +1,7 @@
 package com.benstopford.coherence.bootstrap.performance;
 
-import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
-import com.benstopford.coherence.bootstrap.structures.framework.ProcessExecutor;
+import com.benstopford.coherence.bootstrap.structures.framework.cluster.ClusterRunner;
+import com.benstopford.coherence.bootstrap.structures.framework.cluster.ProcessExecutor;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
 import org.junit.After;

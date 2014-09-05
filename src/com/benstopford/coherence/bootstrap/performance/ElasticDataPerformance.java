@@ -1,7 +1,7 @@
 package com.benstopford.coherence.bootstrap.performance;
 
-import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
-import com.benstopford.coherence.bootstrap.structures.framework.ProcessExecutor;
+import com.benstopford.coherence.bootstrap.structures.framework.cluster.ClusterRunner;
+import com.benstopford.coherence.bootstrap.structures.framework.cluster.ProcessExecutor;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
 import org.junit.Ignore;
@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
 public class ElasticDataPerformance extends ClusterRunner {
 
 
-   @Ignore
+    @Ignore
     @Test
     public void timeForDifferentNumberOfNodesShouldBeSameOnFixedResources() throws IOException, InterruptedException {
 
@@ -36,7 +36,7 @@ public class ElasticDataPerformance extends ClusterRunner {
         end().printMs("One data node:");
 
         addAnotherNode(flash, cache);
-        assertThat(CacheFactory.getCluster().getMemberSet().size(), is(3));
+        assertClusterStarted();
 
         start();
         write(cache, bytesToAdd, block);
@@ -118,6 +118,7 @@ public class ElasticDataPerformance extends ClusterRunner {
      * Putting 16GB into cache (2 processes, 250m each, 10kb values, putall(1000)
      * writing the data (elastic): 361,223ms
      * reading 5000 entries taken at random: 5,390ms
+     *
      * @throws IOException
      * @throws InterruptedException
      */
@@ -138,8 +139,8 @@ public class ElasticDataPerformance extends ClusterRunner {
         NamedCache cache = getRemoteCache("foo");
         assertThat(CacheFactory.getCluster().getMemberSet().size(), is(4));
 
-        long bytesToAdd = 16 * 1024 *MB ;
-        int block =  10*KB;
+        long bytesToAdd = 16 * 1024 * MB;
+        int block = 10 * KB;
 
         start();
         writeBatch(cache, bytesToAdd, block, 1000);

@@ -1,9 +1,12 @@
-package com.benstopford.coherence.bootstrap.structures.framework;
+package com.benstopford.coherence.bootstrap.structures.framework.cluster;
 
 import java.io.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Push standard out/err from the a process to the console or to a file
+ */
 public class ProcessLogger {
     public static final LogTo loggingProfile = LogTo.fileOnly;
     public static final File file = new File("log/coherence-processes.log");
@@ -11,7 +14,7 @@ public class ProcessLogger {
     private static int processCounter;
     private Process process;
 
-    enum LogTo {
+    public enum LogTo {
         fileOnly, fileAndConsole, consoleOnly;
 
         public boolean in(LogTo... options) {
@@ -93,10 +96,10 @@ public class ProcessLogger {
     public static void switchStdErrToFile() {
         if (loggingProfile.in(LogTo.fileOnly)) {
             System.out.println();
-            System.out.println("*******************************************************************************************************************");
-            System.out.println("******************************************COHERENCE LOGGING DISABLED***********************************************");
-            System.out.println("******************** See ./log dir for all process logs. Change setting via ProcessLogger.LogTo *******************");
-            System.out.println("*******************************************************************************************************************");
+            System.out.println("**********************************************************************************");
+            System.out.println("*************************COHERENCE LOGGING DISABLED*******************************");
+            System.out.println("*** See ./log dir for all process logs. Change setting via ProcessLogger.LogTo ***");
+            System.out.println("**********************************************************************************");
             System.out.println();
 
             try {

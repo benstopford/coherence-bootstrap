@@ -1,4 +1,4 @@
-package com.benstopford.coherence.bootstrap.structures.framework;
+package com.benstopford.coherence.bootstrap.structures.framework.cluster;
 
 import java.util.ArrayList;
 import java.util.Properties;
@@ -7,6 +7,7 @@ public class ProcessExecutor {
     public static int COHERERENCE_PROCESS_MEMORY = 128;
     private final ArrayList<Process> runningProcesses = new ArrayList<Process>();
     private Properties defaultProperties;
+    int countOfStartedNodes = 0;
 
     public ProcessExecutor(Properties defaultProperties) {
         this.defaultProperties = defaultProperties;
@@ -35,6 +36,7 @@ public class ProcessExecutor {
 
             ProcessLogger.wrapLogging(process);
             checkForSuccesfulStart(process);
+            countOfStartedNodes++;
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e);

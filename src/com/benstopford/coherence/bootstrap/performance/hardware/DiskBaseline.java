@@ -1,7 +1,7 @@
 package com.benstopford.coherence.bootstrap.performance.hardware;
 
 
-import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
+import com.benstopford.coherence.bootstrap.structures.framework.cluster.ClusterRunner;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,8 +1,10 @@
-package com.benstopford.coherence.bootstrap.structures.framework;
+package com.benstopford.coherence.bootstrap.structures.framework.cluster;
 
 import com.benstopford.coherence.bootstrap.structures.dataobjects.SizableObject;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.SizableObjectFactory;
-import com.tangosol.net.*;
+import com.tangosol.net.CacheFactory;
+import com.tangosol.net.CacheService;
+import com.tangosol.net.NamedCache;
 import org.junit.After;
 import org.junit.Before;
 
@@ -11,6 +13,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Properties;
 
+import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -19,7 +22,8 @@ import static org.junit.Assert.assertTrue;
  * EDIT 2014: This test framework predates the work done by the Coherence team to internalise this kind of testing
  * into a single JVM and multiple classloaders.Credit for this excellent pattern goes to Andrew (Orange Pheonix) Wilson
  * <p/>
- * I strongly suggest that, in your own code, you use the LittleGrid. See JK's post here:
+ * I strongly suggest that, in your own code, you use the LittleGrid or the Oracle Tools runner. Both of these are much better
+ * than this slightly antiquated tool I use which simply predates them by a few years. See JK's post here:
  * http://thegridman.com/coherence/oracle-coherence-testing-with-oracle-tools/
  */
 public abstract class ClusterRunner extends TestUtils {
@@ -62,10 +66,23 @@ public abstract class ClusterRunner extends TestUtils {
 
     @Before
     public void setUp() throws Exception {
+        executor.countOfStartedNodes = 0;
+        skipWitForProcessTearDown = false;
         deleteContentsOfLogDir();
         ProcessLogger.switchStdErrToFile();
         new PersistentPortTracker().incrementExtendPort();
         System.getProperties().putAll(defaultProperties());
+    }
+
+    @After
+    public void tearDown() throws Exception {
+        shutdownServices();
+        releaseLocalCacheResources();
+        CacheFactory.getCluster().shutdown();
+        CacheFactory.shutdown();
+        executor.killOpenCoherenceProcesses();
+        if (!skipWitForProcessTearDown)
+            waitForAllKilledMembersToTimeOut();
     }
 
     private void deleteContentsOfLogDir() {
@@ -80,16 +97,6 @@ public abstract class ClusterRunner extends TestUtils {
                 log.delete();
             }
         }
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        shutdownServices();
-        releaseLocalCacheResources();
-        CacheFactory.getCluster().shutdown();
-        CacheFactory.shutdown();
-        executor.killOpenCoherenceProcesses();
-        waitForAllKilledMembersToTimeOut();
     }
 
     private void waitForAllKilledMembersToTimeOut() throws InterruptedException {
@@ -176,21 +183,14 @@ public abstract class ClusterRunner extends TestUtils {
         return executor.startOutOfProcess(config, "");
     }
 
-    protected Process startCoherenceProcessWithJmx(String config) {
-        return executor.startOutOfProcess(config, getJMXProperties(4100));
+    protected int startCoherenceProcessWithJmx(String config) {
+        int port = 4100;
+        executor.startOutOfProcess(config, getJMXProperties(port));
+        return port;
     }
 
     protected Process startCoherenceProcess(String config, String properties) {
         return executor.startOutOfProcess(config, properties);
-    }
-
-
-    protected void startExtendEnabledDataNode(boolean enableJMX, String config) throws IOException, InterruptedException {
-        String jmxProps = "";
-        if (enableJMX) {
-            jmxProps = getJMXProperties(3000);
-        }
-        executor.startOutOfProcess(config, jmxProps);
     }
 
     protected NamedCache cacheViaExtend() {
@@ -229,5 +229,24 @@ public abstract class ClusterRunner extends TestUtils {
         new File("data").mkdir();
         new File("data/journalling").mkdir();
         new File("data/bdb").mkdir();
+    }
+
+    boolean skipWitForProcessTearDown = false;
+
+    protected void assertClusterStarted() {
+        if (CacheFactory.getCluster().getMemberSet().size() < executor.countOfStartedNodes+1) {
+            skipWitForProcessTearDown = true;
+            String format = String.format("Started %s nodes but the cluster contains %s. This is likely a problem" +
+                    " with clustering. Make sure you are using the same cache config in different nodes. " +
+                    (ProcessLogger.loggingProfile== ProcessLogger.LogTo.fileOnly?"Your logging is set to file only so change: ProcessLogger.loggingProfile to see Coherence logging in the console. ":""), executor.countOfStartedNodes, CacheFactory.getCluster().getMemberSet().size());
+            fail(format);
+        }else if (CacheFactory.getCluster().getMemberSet().size() > executor.countOfStartedNodes+1) {
+            skipWitForProcessTearDown = true;
+            String format = String.format("Started %s nodes but the cluster contains %s. \nThe most likely cause is " +
+                    "that there are orphaned processes from a previous run clustering with this test. " +
+                    "\nIf you are on a unix system you can fix this by running the below command in your terminal: \n" +
+                    "kill $(ps aux | grep 'DefaultCacheServer' | awk '{print $2}')", executor.countOfStartedNodes, CacheFactory.getCluster().getMemberSet().size());
+            fail(format);
+        }
     }
 }

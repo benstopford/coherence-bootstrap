@@ -1,6 +1,6 @@
 package com.benstopford.coherence.bootstrap.basic;
 
-import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
+import com.benstopford.coherence.bootstrap.structures.framework.cluster.ClusterRunner;
 import com.benstopford.coherence.bootstrap.structures.tools.SampleInvocable;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.InvocationService;
@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import java.util.Map;
 
-import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.matchers.JUnitMatchers.hasItems;
 
@@ -27,7 +26,7 @@ public class DoRemoteWorkWithInvocables extends ClusterRunner {
                 .getConfigurableCacheFactory(config, classLoader)
                 .ensureService("MyInvocationService1");
 
-        assertThat(CacheFactory.getCluster().getMemberSet().size(), is(3));
+        assertClusterStarted();
 
         //create an invocable to do some work - this fella just returns the memberId of the node its running on
         SampleInvocable getMemberIdInvocable = new SampleInvocable();

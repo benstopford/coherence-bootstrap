@@ -1,7 +1,7 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
-import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
-import com.benstopford.coherence.bootstrap.structures.framework.PersistentPortTracker;
+import com.benstopford.coherence.bootstrap.structures.framework.cluster.ClusterRunner;
+import com.benstopford.coherence.bootstrap.structures.framework.cluster.PersistentPortTracker;
 import com.tangosol.net.NamedCache;
 import com.tangosol.net.messaging.ConnectionException;
 import com.tangosol.util.AbstractMapListener;

@@ -1,8 +1,7 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
-import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
+import com.benstopford.coherence.bootstrap.structures.framework.cluster.ClusterRunner;
 import com.tangosol.net.BackingMapContext;
-import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
 import com.tangosol.net.cache.KeyAssociation;
 import com.tangosol.util.Binary;
@@ -39,7 +38,7 @@ public class JoinTwoCachesUsingBackingMapAccessAndKeyAssociation extends Cluster
         startBasicCacheProcess();
         NamedCache trades = getBasicCache("trade");
         NamedCache valuations = getBasicCache("valuations");
-        assertThat(CacheFactory.getCluster().getMemberSet().size(), is(3));
+        assertClusterStarted();
 
         //Add 10 trades with two corresponding valuations for each of them
         for (int i = 1; i < 11; i++) {

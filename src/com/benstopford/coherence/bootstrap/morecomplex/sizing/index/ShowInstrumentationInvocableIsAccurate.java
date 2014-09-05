@@ -2,8 +2,8 @@ package com.benstopford.coherence.bootstrap.morecomplex.sizing.index;
 
 import com.benstopford.coherence.bootstrap.structures.dataobjects.ByteArrayWrapper;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PofByteObject;
-import com.benstopford.coherence.bootstrap.structures.framework.ClusterRunner;
-import com.benstopford.coherence.bootstrap.structures.tools.index.SizeOfIndexSizer;
+import com.benstopford.coherence.bootstrap.structures.framework.cluster.ClusterRunner;
+import com.benstopford.coherence.bootstrap.structures.tools.index.IndexSizer;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.ValueExtractor;
@@ -170,7 +170,8 @@ public class ShowInstrumentationInvocableIsAccurate extends ClusterRunner {
         long after = memoryUsedNow();
 
         //then
-        long coherenceSize = new SizeOfIndexSizer().calculateIndexSizesForSingleCache("MyInvocationService1", cache.getCacheName(), config);
+        IndexSizer sizer = new IndexSizer(config);
+        long coherenceSize = sizer.getTotal();
 
         System.out.printf("Ran: %,d x %sB fields [%,dKB indexable data], Cardinality of %s [%s entries in index, " +
                         "each containing %s values], SizeOf measured: %,dB. " +
