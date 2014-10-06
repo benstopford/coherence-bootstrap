@@ -1,6 +1,7 @@
 package com.benstopford.coherence.bootstrap.structures.tools.index;
 
 import com.tangosol.net.*;
+import com.tangosol.util.MapIndex;
 import net.sourceforge.sizeof.SizeOf;
 
 import java.util.Enumeration;
@@ -36,9 +37,12 @@ public class IndexSizingInvocable implements Invocable {
 
     private long sizeOf(Object indexes) {
         SizeOf.skipStaticField(true);
-        SizeOf.setMinSizeToLog(Long.MAX_VALUE);
+//        SizeOf.setMinSizeToLog(Long.MAX_VALUE);
         SizeOf.turnOffDebug();
-        return SizeOf.deepSizeOf(indexes);
+        MapIndex theIndex = (MapIndex) indexes;
+        long total = SizeOf.deepSizeOf(theIndex);
+
+        return total;
     }
 
     public Object getResult() {
@@ -61,10 +65,10 @@ public class IndexSizingInvocable implements Invocable {
                     BackingMapContext context = cacheService
                             .getBackingMapManager().getContext().getBackingMapContext(name);
                     Map indexes = context.getIndexMap();
-                    for(Object extractor: indexes.keySet()) {
+                    for (Object extractor : indexes.keySet()) {
                         Object index = indexes.get(extractor);
                         long indexSize = sizeOf(index);
-                        result.put(String.format("%s:%s:%s", serviceName, name,extractor), indexSize);
+                        result.put(String.format("%s:%s:%s", serviceName, name, extractor), indexSize);
                     }
                 }
             }

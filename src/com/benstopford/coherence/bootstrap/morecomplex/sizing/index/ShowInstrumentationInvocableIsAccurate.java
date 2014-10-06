@@ -160,7 +160,7 @@ public class ShowInstrumentationInvocableIsAccurate extends ClusterRunner {
         NamedCache cache = initCache("test-cache");
         cache.removeIndex(extractor); //may have created in previous test
         cache.clear();
-        addValuesToCache(cache, numberToAdd, data, cardinality);
+        addValuesToCache(cache, numberToAdd, Arrays.copyOf(data, data.length), cardinality);
 
         //when
         long before = memoryUsedNow();

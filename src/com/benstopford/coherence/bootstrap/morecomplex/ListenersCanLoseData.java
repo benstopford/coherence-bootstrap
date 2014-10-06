@@ -7,6 +7,7 @@ import com.tangosol.net.messaging.ConnectionException;
 import com.tangosol.util.AbstractMapListener;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public final class ListenersCanLoseData extends ClusterRunner {
     private final List<Object> valuesSentToClient2 = new ArrayList<Object>();
 
 
-    //@Test
+    @Test
     public void shouldLoseUpdateWhenConnectionProxyGoesDown() throws Exception {
 
         new PersistentPortTracker().incrementExtendPort("com.benstopford.extend.port2");

@@ -78,6 +78,20 @@
 
 
         <invocation-scheme>
+            <service-name>IndexSizer</service-name>
+            <autostart>true</autostart>
+            <serializer>
+            <class-name>com.tangosol.io.pof.ConfigurablePofContext</class-name>
+            <init-params>
+                <init-param>
+                    <param-type>string</param-type>
+                    <param-value>config/my-pof-config.xml</param-value>
+                </init-param>
+            </init-params>
+            </serializer>
+        </invocation-scheme>
+
+        <invocation-scheme>
             <service-name>MyInvocationService1</service-name>
             <thread-count>10</thread-count>
             <autostart>true</autostart>

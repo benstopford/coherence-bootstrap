@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.System.*;
+
 /**
  * This test shows how to use indexes and how they are much faster.
  * BTS, 25-Jan-2008
@@ -30,7 +32,7 @@ public final class IndexesAreFast extends ClusterRunner {
         startCoherenceProcess("config/basic-cache.xml");
         startCoherenceProcess("config/basic-cache.xml");
 
-        System.out.println("\n\n******* Timings without index *******");
+        out.println("\n\n******* Timings without index *******");
         NamedCache cache = getBasicCache("foo");
 
         addValuesToCache(cache, 10);
@@ -48,7 +50,7 @@ public final class IndexesAreFast extends ClusterRunner {
         cache.clear();
         cache.addIndex(new ReflectionExtractor("getData"), false, null);
 
-        System.out.println("\n\n******* Timings with index *******");
+        out.println("\n\n******* Timings with index *******");
         addValuesToCache(cache, 10);
         getFromCacheAndPrintTimings(cache, 100);
 
@@ -61,25 +63,23 @@ public final class IndexesAreFast extends ClusterRunner {
         addValuesToCache(cache, 10000);
         getFromCacheAndPrintTimings(cache, 100);
 
-        System.out.println("\n\n");
+        out.println("\n\n");
     }
 
     private static void getFromCacheAndPrintTimings(NamedCache cache, int number) {
-        long start = System.nanoTime();
+        long start = nanoTime();
         for (int i = 0; i < number; i++) {
             cache.entrySet(new EqualsFilter("getData", i));
         }
-        long took = System.nanoTime() - start;
+        long took = nanoTime() - start;
 
-        System.out.printf("Selecting from %,d objects took %,dus\n", cache.size(), took / 1000);
+        out.printf("Selecting from %,d objects took %,dus\n", cache.size(), took / 1000);
     }
 
     private void addValuesToCache(NamedCache cache, int numberToAdd) {
-        List value = new ArrayList();
         for (int i = 0; i < numberToAdd; i++) {
             PoJo valueObject = new PoJo(i);
-            value.add(i);
-            cache.put("Key" + i, valueObject);
+            cache.put(i, valueObject);
         }
     }
 
