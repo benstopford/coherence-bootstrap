@@ -12,6 +12,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.System.*;
 import static junit.framework.Assert.assertTrue;
 import static junit.framework.Assert.fail;
 import static org.junit.Assert.assertFalse;
@@ -47,24 +48,24 @@ public final class ListenersCanLoseData extends ClusterRunner {
         //dynamically add listener to connection 1
         cacheViaConnection1.addMapListener(new AbstractMapListener() {
             public void entryInserted(com.tangosol.util.MapEvent mapEvent) {
-                System.out.println("Entry was inserted " + mapEvent.getNewValue());
+                out.println("Entry was inserted " + mapEvent.getNewValue());
                 valuesSentToClient1.add(mapEvent.getNewValue());
             }
 
             public void entryUpdated(com.tangosol.util.MapEvent mapEvent) {
-                System.out.println("Entry was udpated to " + mapEvent.getNewValue());
+                out.println("Entry was udpated to " + mapEvent.getNewValue());
                 valuesSentToClient1.add(mapEvent.getNewValue());
             }
         });
 
         cacheViaConnection2.addMapListener(new AbstractMapListener() {
             public void entryInserted(com.tangosol.util.MapEvent mapEvent) {
-                System.out.println("Entry was inserted " + mapEvent.getNewValue());
+                out.println("Entry was inserted " + mapEvent.getNewValue());
                 valuesSentToClient2.add(mapEvent.getNewValue());
             }
 
             public void entryUpdated(com.tangosol.util.MapEvent mapEvent) {
-                System.out.println("Entry was udpated to " + mapEvent.getNewValue());
+                out.println("Entry was udpated to " + mapEvent.getNewValue());
                 valuesSentToClient2.add(mapEvent.getNewValue());
             }
         });
@@ -75,7 +76,7 @@ public final class ListenersCanLoseData extends ClusterRunner {
 
         //kill the first extend proxy process
         extendProxy1.destroy();
-        System.out.println("waiting for socket to timeout");
+        out.println("waiting for socket to timeout");
         Thread.sleep(40 * 1000);
 
 
