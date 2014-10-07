@@ -1,4 +1,4 @@
-package com.benstopford.coherence.bootstrap.structures.uitl;
+package com.benstopford.coherence.bootstrap.structures.util;
 
 import com.sun.management.GarbageCollectorMXBean;
 import com.sun.management.GcInfo;

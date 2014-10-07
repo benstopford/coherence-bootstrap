@@ -1,4 +1,4 @@
-package com.benstopford.coherence.bootstrap.structures.uitl;
+package com.benstopford.coherence.bootstrap.structures.util;
 
 /**
  * It's tricky measuring heap sizes in tests as the garbage collector can be unpredictable.
