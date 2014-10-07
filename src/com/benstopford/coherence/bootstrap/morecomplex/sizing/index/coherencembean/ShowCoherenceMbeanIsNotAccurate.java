@@ -4,7 +4,7 @@ import com.benstopford.coherence.bootstrap.structures.dataobjects.ByteArrayWrapp
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PofByteObject;
 import com.benstopford.coherence.bootstrap.structures.framework.cluster.ClusterRunner;
 import com.benstopford.coherence.bootstrap.structures.tools.jmx.IndexInfoCounter;
-import com.benstopford.coherence.bootstrap.structures.uitl.GcInformation;
+import com.benstopford.coherence.bootstrap.structures.util.GcInformation;
 import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
 import com.tangosol.util.extractor.PofExtractor;
@@ -16,7 +16,7 @@ import org.junit.Test;
 import java.nio.ByteBuffer;
 import java.util.*;
 
-import static com.benstopford.coherence.bootstrap.structures.uitl.HeapUtils.memoryUsedNow;
+import static com.benstopford.coherence.bootstrap.structures.util.HeapUtils.memoryUsedNow;
 
 
 /**

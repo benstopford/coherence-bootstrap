@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import static com.benstopford.coherence.bootstrap.structures.uitl.HeapUtils.memoryUsedNow;
+import static com.benstopford.coherence.bootstrap.structures.util.HeapUtils.memoryUsedNow;
 
 
 /**

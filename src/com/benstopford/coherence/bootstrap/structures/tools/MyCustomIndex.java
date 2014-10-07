@@ -1,4 +1,4 @@
-package com.benstopford.coherence.bootstrap.morecomplex;
+package com.benstopford.coherence.bootstrap.structures.tools;
 
 import com.tangosol.net.BackingMapContext;
 import com.tangosol.util.ConditionalIndex;

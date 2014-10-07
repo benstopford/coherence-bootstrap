@@ -1,5 +1,6 @@
 package com.benstopford.coherence.bootstrap.morecomplex;
 
+import com.benstopford.coherence.bootstrap.structures.tools.MyCustomIndex;
 import com.benstopford.coherence.bootstrap.structures.dataobjects.PoJo;
 import com.benstopford.coherence.bootstrap.structures.tools.index.IndexSizer;
 import com.tangosol.net.CacheFactory;

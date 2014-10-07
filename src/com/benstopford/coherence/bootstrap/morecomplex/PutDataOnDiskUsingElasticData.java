@@ -8,7 +8,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.Iterator;
 
-import static com.benstopford.coherence.bootstrap.structures.uitl.HeapUtils.memoryUsedNow;
+import static com.benstopford.coherence.bootstrap.structures.util.HeapUtils.memoryUsedNow;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;

@@ -5,7 +5,7 @@ import com.tangosol.net.CacheFactory;
 import com.tangosol.net.NamedCache;
 import org.junit.Test;
 
-import static com.benstopford.coherence.bootstrap.structures.uitl.HeapUtils.memoryUsedNow;
+import static com.benstopford.coherence.bootstrap.structures.util.HeapUtils.memoryUsedNow;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 

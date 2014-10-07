@@ -2,7 +2,7 @@ package com.benstopford.coherence.bootstrap.morecomplex.sizing;
 
 import com.benstopford.coherence.bootstrap.structures.framework.cluster.ClusterRunner;
 import com.benstopford.coherence.bootstrap.structures.tools.jmx.ClusterGC;
-import com.benstopford.coherence.bootstrap.structures.uitl.GcInformation;
+import com.benstopford.coherence.bootstrap.structures.util.GcInformation;
 import com.sun.management.GarbageCollectorMXBean;
 import org.junit.Test;
 
