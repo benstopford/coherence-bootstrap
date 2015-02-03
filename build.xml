@@ -41,7 +41,7 @@
         </jar>
     </target>
 
-    <target name="junit" depends="jar" >
+    <target name="test" depends="jar" >
         <junit printsummary="withOutAndErr" fork="yes" showoutput="true" haltonfailure="true" logfailedtests="on" maxmemory="1g">
             <jvmarg value="-XX:+UseParallelOldGC"/>
             <jvmarg value="-javaagent:lib/SizeOf.jar"/>

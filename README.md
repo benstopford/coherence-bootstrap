@@ -44,7 +44,7 @@ Topics covered:
 
 **Getting started is simple:**
 * Download the zip or clone this repository
-* If you wish, run 'ant junit' to check everything works ok
+* If you wish, run 'ant test' to check everything works ok
 * Create a project in your IDE of choice
 * Add lib/ & "." to your classpath
 * Refer to the ant script if you have any problems
