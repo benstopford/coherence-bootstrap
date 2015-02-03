@@ -1,0 +1,9 @@
+# more info here about TravisCI and Java projects
+# http://docs.travis-ci.com/user/languages/java/
+
+language: java
+
+jdk:
+  - oraclejdk7
+  - openjdk7  
+  
