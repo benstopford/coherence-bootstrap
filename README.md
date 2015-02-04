@@ -1,6 +1,6 @@
 Coherence Bootstrap
 ===================
-https://travis-ci.org/benstopford/coherence-bootstrap.svg?branch=master
+[![Build Status](https://travis-ci.org/benstopford/coherence-bootstrap.svg?branch=master)](https://travis-ci.org/benstopford/coherence-bootstrap)
 
 Set of code snippets designed for getting started with Coherence quickly along with some more advanced tips and tricks.
 The tests and examples are supported by a multi-process test suite which was a precursor to the little-grid / the coherence incubator.
